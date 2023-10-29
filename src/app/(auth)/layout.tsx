@@ -1,5 +1,3 @@
-"use client";
-
 import { ThemeProvider } from "@/components/provider/theme-provider";
 import "../globals.css";
 import type { Metadata } from "next";
@@ -8,7 +6,7 @@ import "./common.css";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
 import { buttonVariants } from "@/components/ui/button";
-import { usePathname } from "next/navigation";
+// import { usePathname } from "next/navigation";
 import { Toaster } from "@/components/ui/toaster";
 import { themes } from "@/lib/config/theme.config";
 
@@ -24,7 +22,7 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const pathname = usePathname();
+  // const pathname = usePathname();
   return (
     <html lang="en" suppressHydrationWarning={true}>
       <head>
@@ -72,18 +70,7 @@ export default function RootLayout({
                   </blockquote>
                 </div>
               </div>
-              <div className="h-full w-full overflow-auto relative flex items-center justify-center">
-                <Link
-                  href={pathname === "/register" ? "/login" : "/register"}
-                  className={cn(
-                    buttonVariants({ variant: "default" }),
-                    "absolute right-4 top-4 md:right-8 md:top-8 hidden lg:block"
-                  )}
-                >
-                  {pathname === "/register" ? "Login" : "Register"}
-                </Link>
-                {children}
-              </div>
+              {children}
             </div>
           </div>
           <Toaster />

@@ -14,6 +14,7 @@ export interface Team {
   members?: string;
   link?: string;
   projects?: Project[];
+  team?: Team;
 }
 export interface Group {
   id?: string;
@@ -36,4 +37,42 @@ export enum StatusColor {
   BACKLOG = "#5a5a5a",
   DONE = "#2b593f",
   CANCELED = "#6e3630",
+}
+
+export enum TaskStatus {
+  TODO = "TODO",
+  "IN PROGRESS" = "IN PROGRESS",
+  PAUSED = "PAUSED",
+  BACKLOG = "BACKLOG",
+  COMPLETED = "COMPLETED",
+  CANCELED = "CANCELED",
+}
+
+export enum TaskStatusColor {
+  // TODO = "#28456c",
+  TODO = "#87909e",
+  // "IN PROGRESS" = "#89632a",
+  "IN PROGRESS" = "#7f77f1",
+  PAUSED = "#492f64",
+  BACKLOG = "#d8d8d8",
+  // COMPLETED = "#2b593f",
+  COMPLETED = "#6bc950",
+  // CANCELED = "#6e3630",
+  CANCELED = "#af2d1f",
+}
+
+export enum TaskPriority {
+  URGENT = "URGENT",
+  HIGH = "HIGH",
+  MEDIUM = "MEDIUM",
+  LOW = "LOW",
+  NONE = "NONE",
+}
+
+export enum TaskPriorityColor {
+  URGENT = "#af1416",
+  HIGH = "#ffff00",
+  MEDIUM = "#6fddff",
+  LOW = "#87909e",
+  NONE = "#87909e",
 }

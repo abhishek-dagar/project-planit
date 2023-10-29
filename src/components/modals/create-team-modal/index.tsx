@@ -15,6 +15,7 @@ import { addUserNewTeam } from "@/lib/helpers/handleUser";
 import { setUser } from "@/redux/features/userSlice";
 import { createProject } from "@/lib/actions/project.action";
 import { Icons } from "@/components/icons";
+import useTeams from "@/components/custom-hooks/teams";
 
 const CreateTeamModal = ({
   handleOpen,
@@ -23,7 +24,7 @@ const CreateTeamModal = ({
   handleOpen: () => void;
   open: boolean;
 }) => {
-  const [team, setTeam] = useState({
+  const [newTeam, setNewTeam] = useState({
     icon: "",
     name: "",
   });
@@ -40,13 +41,14 @@ const CreateTeamModal = ({
   });
 
   const { user } = useSelector((state: any) => state.user);
+  const [_, { addNewTeam }] = useTeams({});
   const dispatch = useDispatch();
 
   const handleTeamName = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTeam((prevState) => ({ ...prevState, name: event.target.value }));
+    setNewTeam((prevState) => ({ ...prevState, name: event.target.value }));
   };
   const handleTeamIcon = (event: React.ChangeEvent<HTMLInputElement>) => {
-    setTeam((prevState) => ({ ...prevState, icon: event.target.value }));
+    setNewTeam((prevState) => ({ ...prevState, icon: event.target.value }));
   };
 
   const handleProjectName = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -60,7 +62,7 @@ const CreateTeamModal = ({
   };
 
   const handleCreateTeam = () => {
-    if (team.name !== "") {
+    if (newTeam.name !== "") {
       setActiveTab(1);
     }
   };
@@ -83,20 +85,19 @@ const CreateTeamModal = ({
       return;
     }
     setIsLoading(true);
-    setTeam({ icon: "", name: "" });
+    setNewTeam({ icon: "", name: "" });
     setProject({ name: "", teamId: "" });
-    createTeam(team).then(async (team) => {
+    createTeam(newTeam).then(async (team) => {
       if (!skip) {
         const newProject = await createProject({
           name: project.name,
           teamId: team.id,
         });
-        // TODO: create a helper function to update team
-        // TODO: create a helper function to update user details
+        //* COMPLETED: create a helper function to update team
+        //* COMPLETED: create a helper function to update user details
         team.projects?.push(newProject);
       }
-      const updateUser = addUserNewTeam(user, team);
-      dispatch(setUser(updateUser));
+      addNewTeam(team);
       setActiveTab(0);
       setIsLoading(false);
       handleOpen();
@@ -109,7 +110,7 @@ const CreateTeamModal = ({
         isError: false,
         errorMessage: "",
       });
-      setTeam({ icon: "", name: "" });
+      setNewTeam({ icon: "", name: "" });
       setProject({ name: "", teamId: "" });
       setActiveTab(0);
     }
@@ -124,12 +125,12 @@ const CreateTeamModal = ({
         <DialogDescription>
           {activeTab === 0
             ? "Starting Fresh: Craft Your Team from the Ground Up"
-            : `Team Name: ${team?.name}`}
+            : `Team Name: ${newTeam?.name}`}
         </DialogDescription>
       </DialogHeader>
       {activeTab === 0 ? (
         <CreateTeam
-          team={team}
+          team={newTeam}
           handleTeamName={handleTeamName}
           handleTeamIcon={handleTeamIcon}
         />

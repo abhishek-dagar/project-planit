@@ -9,20 +9,20 @@ import {
 } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
-import { Team } from "@/lib/interfacesOrEnum/teams-group";
+import { Project, Team } from "@/lib/interfacesOrEnum/teams-group";
 import React, { useState } from "react";
 
 interface Props {
-  team: Team;
+  deleteContent: Team | Project;
 }
 
-const DeleteTeamModal = ({ team }: Props) => {
+const DeleteTeamModal = ({ deleteContent }: Props) => {
   const [confirmText, setConfirmText] = useState("");
   const [isConfirmed, setIsConfirmed] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const handleConfirmText = (e: React.ChangeEvent<HTMLInputElement>) => {
     setConfirmText(e.target.value);
-    if (e.target.value === team.name) {
+    if (e.target.value === deleteContent.name) {
       setIsConfirmed(true);
     } else {
       setIsConfirmed(false);
@@ -39,20 +39,20 @@ const DeleteTeamModal = ({ team }: Props) => {
       <DialogHeader>
         <DialogTitle>Are you absolutely sure?</DialogTitle>
         <DialogDescription>
-          This action cannot be undone. This will permanently delete your team
+          {`This action cannot be undone. This will permanently delete your deleteContent
           along with it's projects and tasks, and remove your data from our
-          servers.
-          <div className=" border-t mt-3 pt-3">
-            <Label>To Confirm, type "{team.name}"</Label>
-            <Input
-              className={
-                "bg-secondary-background border-red-500 focus-visible:border-transparent focus-visible:ring-red-500"
-              }
-              value={confirmText}
-              onChange={handleConfirmText}
-            />
-          </div>
+          servers.`}
         </DialogDescription>
+        <div className=" border-t mt-3 pt-3">
+          <Label>{`To Confirm, type "${deleteContent.name}"`}</Label>
+          <Input
+            className={
+              "bg-secondary-background border-red-500 focus-visible:border-transparent focus-visible:ring-red-500"
+            }
+            value={confirmText}
+            onChange={handleConfirmText}
+          />
+        </div>
       </DialogHeader>
       <DialogFooter>
         <Button

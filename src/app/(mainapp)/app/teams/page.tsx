@@ -9,11 +9,14 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 import { CalendarDays, Group, Plus, Search } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import CreateTeamModal from "@/components/modals/create-team-modal";
+import useTeams from "@/components/custom-hooks/teams";
+import useUser from "@/components/custom-hooks/user";
+import { useRouter } from "next/navigation";
+import { Skeleton } from "@/components/ui/skeleton";
 
 interface Menus {
   title: string;
@@ -22,10 +25,12 @@ interface Menus {
 
 const Teams = () => {
   const [isTab, setIsTab] = useState<boolean>(false);
-  const { user } = useSelector((state: any) => state.user);
   const [menus, setMenus] = useState<Menus[]>([]);
   const [searchQuery, setSearchQuery] = useState<string>("");
   const [open, setOpen] = useState<boolean>(false);
+  const router = useRouter();
+  const [teams] = useTeams({});
+  const [user] = useUser({});
 
   const handleOpen = () => {
     setOpen((prev) => !prev);
@@ -34,6 +39,12 @@ const Teams = () => {
   const handleSearchQuery = (event: React.ChangeEvent<HTMLInputElement>) => {
     setSearchQuery(event.target.value);
   };
+  useEffect(() => {
+    console.log(user?.role);
+    if (user && user?.role.toLowerCase() !== "manager") {
+      router.push("/app/dashboard");
+    }
+  }, []);
 
   useEffect(() => {
     const handleWindowResize = () => {
@@ -47,7 +58,6 @@ const Teams = () => {
   }, []);
 
   useEffect(() => {
-    const teams = user?.teams;
     if (teams) {
       const tempMenu: Menus[] = [
         {
@@ -71,9 +81,9 @@ const Teams = () => {
 
       setMenus(tempMenu);
     }
-  }, [user, searchQuery]);
+  }, [teams, searchQuery]);
 
-  return (
+  return user ? (
     <div className="w-full h-full">
       <div className="flex flex-col h-full">
         <div className="flex flex-col gap-4  px-5 pt-5">
@@ -122,6 +132,14 @@ const Teams = () => {
             );
           })}
         </ScrollArea>
+      </div>
+    </div>
+  ) : (
+    <div className="w-full h-full">
+      <div className="flex flex-col h-full">
+        <div className="flex flex-col gap-4  px-5 pt-5">
+          <Skeleton className="w-[200px] h-8" />
+        </div>
       </div>
     </div>
   );

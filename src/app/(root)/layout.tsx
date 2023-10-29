@@ -1,4 +1,4 @@
-"use client";
+// "use client";
 import HomeNavigation from "@/components/navigation-bars/home-navigation-bar";
 import "../globals.css";
 import type { Metadata } from "next";

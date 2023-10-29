@@ -1,5 +1,5 @@
 "use client";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import { homeMenu } from "@/lib/config/menu.config";
 import Link from "next/link";
@@ -14,9 +14,18 @@ import {
 } from "../ui/sheet";
 import Logo from "../logo";
 import { Menu } from "lucide-react";
+import { fetchUser } from "@/lib/actions/user.actions";
 
 const HomeNavigation = () => {
   const pathname = usePathname();
+  const [open, setOpen] = useState(false);
+  // const [user, setUser] = useState();
+  // useEffect(() => {
+  //   fetchUser().then(({ response }) => {
+  //     setUser(response);
+  //   });
+  // }, []);
+
   return (
     <div className="md:container sticky top-0 z-20 bg-background">
       <div className="flex justify-between p-4 border-b-2">
@@ -37,6 +46,20 @@ const HomeNavigation = () => {
             ))}
           </ul>
           <div className="flex gap-3">
+            {/* {user ? (
+              <Button
+                className="shadow-button hidden min-[375px]:block hover:shadow-none transition-shadow ease-in"
+                asChild
+              >
+                <Link
+                  href={"/app/dashboard"}
+                  className="text-[14px] text-center"
+                >
+                  Go to app
+                </Link>
+              </Button>
+            ) : (
+              <> */}
             <Button
               className="shadow-button hidden min-[375px]:block hover:shadow-none transition-shadow ease-in"
               asChild
@@ -52,10 +75,12 @@ const HomeNavigation = () => {
             >
               <Link href={"/login"}>login</Link>
             </Button>
+            {/* </>
+            )} */}
           </div>
           {/* Small device side bar */}
           <div className="lg:hidden">
-            <Sheet>
+            <Sheet open={open} onOpenChange={setOpen}>
               <SheetTrigger asChild>
                 <Button variant={"ghost"} className="p-3">
                   <Menu className="text-[24px]" />

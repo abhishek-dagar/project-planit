@@ -45,7 +45,7 @@ const Cart = () => {
         {/* First section */}
         <div className="flex flex-col gap-5">
           <h1 className="text-[26px] md:text-[37px] font-extrabold text-primary">
-            You're almost there! Complete your order
+            {"You're almost there! Complete your order"}
           </h1>
           <div className="flex gap-3 items-baseline">
             <p>Selected Plan: </p>

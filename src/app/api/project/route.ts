@@ -18,7 +18,7 @@ export const POST = async (req: NextRequest) => {
     }
     const team = await Team.findById(reqBody.teamId);
     if (!team)
-      return NextResponse.json({ message: "Team not found" }, { status: 404});
+      return NextResponse.json({ message: "Team not found" }, { status: 404 });
     const newProject = new Project({
       ...reqBody,
     });
@@ -37,6 +37,38 @@ export const POST = async (req: NextRequest) => {
         project: { ...newProject._doc, id: newProject._id },
       },
       { status: 201 }
+    );
+  } catch (error: any) {
+    return NextResponse.json({ message: error.message }, { status: 500 });
+  }
+};
+
+export const PUT = async (req: NextRequest) => {
+  try {
+    const reqBody = await req.json();
+
+    const project = await Project.findById(reqBody.id);
+    if (!project) {
+      return NextResponse.json(
+        { message: "project Not found", success: false },
+        { status: 404 }
+      );
+    }
+
+    const tasks: any = reqBody.tasks.map((tasks: any) => tasks.id);
+
+    const updatedProject = await Project.findByIdAndUpdate(reqBody.id, {
+      ...reqBody,
+      tasks,
+    });
+
+    return NextResponse.json(
+      {
+        message: "project updated Successfully",
+        success: true,
+        project: updatedProject,
+      },
+      { status: 202 }
     );
   } catch (error: any) {
     return NextResponse.json({ message: error.message }, { status: 500 });

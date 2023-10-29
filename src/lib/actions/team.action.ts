@@ -1,11 +1,15 @@
 import axios from "axios";
 import { Team } from "../interfacesOrEnum/teams-group";
+import axiosClient from "../axios-functions/client";
 
-export async function getTeam(teamId: string) {
+export async function getTeam(teamId: string, ssr?: boolean) {
   try {
-    const team = await axios.get(`/api/team/${teamId}`);
+    const team: any = await axiosClient.get(`/team/${teamId}`);
     if (team.data.success) {
       return { team: team.data.data };
+    }
+    if (ssr && team.success) {
+      return team.data;
     }
   } catch (error) {
     return error;

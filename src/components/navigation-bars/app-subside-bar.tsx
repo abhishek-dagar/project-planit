@@ -6,26 +6,83 @@ import { Button } from "../ui/button";
 import { ScrollArea } from "../ui/scroll-area";
 import Collapse from "../shared/collapse";
 import Link from "next/link";
-import { Group, Team } from "../../lib/interfacesOrEnum/teams-group";
+import { Group, Project, Team } from "../../lib/interfacesOrEnum/teams-group";
 import { ChevronLeft, ChevronRight, Plus, Search } from "lucide-react";
 import { Dialog, DialogTrigger } from "../ui/dialog";
 import CreateTeamModal from "../modals/create-team-modal";
+import useTeams from "../custom-hooks/teams";
 
 interface Props {
   title: string;
   icon?: any;
-  menus?: Group[];
+  // menus?: Group[];
 }
-const AppSubsideBar = ({ title, icon, menus = [] }: Props) => {
+const AppSubsideBar = ({ title, icon }: Props) => {
   const [isTab, setIsTab] = useState<boolean>(false);
   const [open, setOpen] = useState<boolean>(false);
   const [isSidebarOpen, setIsSidebarOpen] = useState(false);
+  const [searchQuery, setSearchQuery] = useState<string>("");
 
   const handleOpen = () => {
     setOpen((prev) => !prev);
   };
 
-  const handleSideBarOpen = () => setIsSidebarOpen((prev) => !prev);
+  const handleSearchQuery = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchQuery(e.target.value);
+  };
+
+  const handleSideBarOpen = () =>
+    setIsSidebarOpen((prev) => {
+      if (prev) {
+        localStorage.setItem("isSidebarOpen", "false");
+      } else {
+        localStorage.setItem("isSidebarOpen", "true");
+      }
+      return !prev;
+    });
+
+  const [teams] = useTeams({});
+
+  const [menus, setMenus] = useState<Group[]>([]);
+  useEffect(() => {
+    if (teams) {
+      const tempMenu: Group[] = [
+        {
+          title: "Pinned",
+          menu: [],
+        },
+        {
+          title: "Team/Projects",
+          menu: [],
+        },
+      ];
+      teams.map((team: any) => {
+        const projects: Project[] = team.projects.map((project: Project) => ({
+          name: project.name,
+          link: `/app/teams/${team.id}/${project.id}`,
+          status: project.status,
+        }));
+        if (team.pinned) {
+          tempMenu[0].menu?.push({
+            name: team.name,
+            link: `/app/teams/${team.id}`,
+            icon: team.icon,
+            projects: projects,
+            team: team,
+          });
+        }
+        tempMenu[1].menu?.push({
+          name: team.name,
+          link: `/app/teams/${team.id}`,
+          icon: team.icon,
+          projects: projects,
+          team: team,
+        });
+      });
+
+      setMenus(tempMenu);
+    }
+  }, [teams]);
 
   useEffect(() => {
     const handleWindowResize = () => {
@@ -37,12 +94,25 @@ const AppSubsideBar = ({ title, icon, menus = [] }: Props) => {
       window.removeEventListener("resize", handleWindowResize);
     };
   }, []);
+
+  useEffect(() => {
+    if (localStorage.getItem("isSidebarOpen")) {
+      if (localStorage.getItem("isSidebarOpen") === "true") {
+        setIsSidebarOpen(true);
+      } else {
+        setIsSidebarOpen(false);
+      }
+    } else {
+      setIsSidebarOpen(true);
+    }
+  }, []);
+
   return (
     !isTab && (
       <div
         className={
           "relative h-full border-r-[1px] hidden md:block bg-secondary-background transition-all " +
-          (isSidebarOpen ? "py-5 px-3 w-[220px]" : "w-0")
+          (isSidebarOpen ? "py-5 px-3 w-[220px] flex-none" : "w-0")
         }
       >
         {isSidebarOpen && (
@@ -57,6 +127,8 @@ const AppSubsideBar = ({ title, icon, menus = [] }: Props) => {
                 clName={"h-8"}
                 frontIcon={<Search size={16} />}
                 placeholder="search"
+                value={searchQuery}
+                onChange={handleSearchQuery}
               />
             </div>
             <ScrollArea className="h-full w-full">
@@ -74,13 +146,18 @@ const AppSubsideBar = ({ title, icon, menus = [] }: Props) => {
                         </Link>
                         {menu.menu.map((me: Team) => {
                           return (
-                            <Collapse
-                              key={me.name}
-                              name={me.name}
-                              icon={me.icon}
-                              link={me.link}
-                              element={me.projects}
-                            />
+                            me.name
+                              .toLowerCase()
+                              .includes(searchQuery.toLowerCase()) && (
+                              <Collapse
+                                key={me.name}
+                                name={me.name}
+                                icon={me.icon}
+                                link={me.link}
+                                element={me.projects}
+                                team={me.team}
+                              />
+                            )
                           );
                         })}
                       </div>
@@ -107,7 +184,7 @@ const AppSubsideBar = ({ title, icon, menus = [] }: Props) => {
         )}
         <div
           className={
-            "absolute flex justify-center items-center h-6 w-6 rounded-full border bg-primary top-14 -right-3 z-10 " +
+            "absolute flex justify-center items-center h-6 w-6 rounded-full border bg-primary top-14 -right-3 z-[45] " +
             (isSidebarOpen
               ? ""
               : "-right-7 rounded-none rounded-r-full top-16 h-7 w-7")

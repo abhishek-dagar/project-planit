@@ -17,15 +17,12 @@ import { LayoutGrid, List, Pin, PinOff } from "lucide-react";
 import { useDispatch, useSelector } from "react-redux";
 import { setUser } from "@/redux/features/userSlice";
 import { updateTeam } from "@/lib/actions/team.action";
+import useTeams from "@/components/custom-hooks/teams";
 
-interface DataTableProps<
-  TData extends { id?: string; pinned?: boolean; link?: string | undefined },
-  TValue,
-  icon
-> {
+interface DataTableProps<TData, TValue, icon> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
-  icon?: React.ReactNode;
+  icon?: icon;
 }
 
 export function DataTable<
@@ -38,7 +35,7 @@ export function DataTable<
   TValue,
   icon
 >({ columns, data, icon }: DataTableProps<TData, TValue, icon>) {
-  const { user } = useSelector((state: any) => state.user);
+  const teams = useTeams({});
   const [currentTab, setCurrentTab] = useState("box view");
 
   const dispatch = useDispatch();
@@ -60,21 +57,17 @@ export function DataTable<
   });
 
   const updatePinned = (id: string | undefined) => {
-    const teams = user.teams?.map((team: any) => {
+    teams[0]?.map((team: any) => {
       if (team.id === id) {
         updateTeam({
           ...team,
           pinned: !team.pinned,
         });
+        teams[1].updateTeam({ ...team, pinned: !team.pinned });
         return { ...team, pinned: !team.pinned };
       }
       return team;
     });
-
-    const tempUser = JSON.parse(JSON.stringify(user));
-    tempUser.teams = teams;
-
-    dispatch(setUser(tempUser));
   };
 
   return (
@@ -117,7 +110,7 @@ export function DataTable<
               <TableHead className="w-[90px]">
                 <TabsList className="bg-background">
                   <TabsTrigger value="box view">
-                    <LayoutGrid size={18}/>
+                    <LayoutGrid size={18} />
                   </TabsTrigger>
                   <TabsTrigger value="list view">
                     <List size={18} />
@@ -183,17 +176,18 @@ export function DataTable<
       </TabsContent>
       <TabsContent value="box view">
         {table.getRowModel().rows?.length ? (
-          <div className="flex pl-1 gap-6 justify-start flex-wrap select-none">
+          // <div className="flex pl-1 gap-6 justify-start flex-wrap select-none">
+          <div className="grid grid-cols-1 xs:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 xl:grid-cols-5 gap-6 select-none">
             {table.getRowModel().rows.map((row) => {
               return (
                 <div
                   key={row.id}
-                  className="relative scale-[0.95] transition-all hover:scale-100 focus:scale-100"
+                  className="relative scale-[0.95] transition-all hover:scale-100 focus:scale-100 w-[100%] xs:w-auto"
                 >
                   <Link
                     href={`/app/teams/${row.original.link}`}
                     data-state={row.getIsSelected() && "selected"}
-                    className="w-[160px] md:w-[250px] md:h-[180px] border-[1px] hover:border-primary bg-secondary-background flex flex-col items-start rounded-md shadow-md"
+                    className="md:h-[180px] border-[1px] hover:border-primary bg-secondary-background flex flex-col items-start rounded-md shadow-md"
                   >
                     {row.getVisibleCells().map((cell, index) => {
                       return (
@@ -202,8 +196,11 @@ export function DataTable<
                           className={
                             "p-3 w-full " +
                             (index > 0
-                              ? "text-[12px] md:text-[16px] py-1 opacity-50"
-                              : "text-[12px] md:text-[20px] font-bold border-b-[1px] hover:border-primary flex items-center gap-2 p-3")
+                              ? "text-[12px] md:text-[14px] py-1 opacity-50 "
+                              : "text-[12px] md:text-[16px] font-bold border-b-[1px] hover:border-primary flex items-center p-3 ") +
+                            (row.original.icon && row.original.icon !== ""
+                              ? "gap-0"
+                              : "gap-2")
                           }
                         >
                           {index > 0 ? (
@@ -211,13 +208,15 @@ export function DataTable<
                           ) : (
                             <>
                               {icon}
-                              {row.original.icon}
+                              <p>{row.original.icon}</p>
                             </>
                           )}
-                          {flexRender(
-                            cell.column.columnDef.cell,
-                            cell.getContext()
-                          )}
+                          <p className="mr-4 truncate">
+                            {flexRender(
+                              cell.column.columnDef.cell,
+                              cell.getContext()
+                            )}
+                          </p>
                         </div>
                       );
                     })}

@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useEffect, useState } from "react";
 import {
   DialogContent,
@@ -15,6 +17,9 @@ import { createProject } from "@/lib/actions/project.action";
 import { Team } from "@/lib/interfacesOrEnum/teams-group";
 import { Icons } from "@/components/icons";
 import { useToast } from "@/components/ui/use-toast";
+import { setTeams } from "@/redux/features/teamsSlice";
+import useTeams from "@/components/custom-hooks/teams";
+import useProjects from "@/components/custom-hooks/projects";
 
 const CreateProjectModal = ({
   handleOpen,
@@ -35,8 +40,8 @@ const CreateProjectModal = ({
     errorMessage: "",
   });
 
-  const { user } = useSelector((state: any) => state.user);
-  const dispatch = useDispatch();
+  // const [_, { updateTeam }] = useTeams({});
+  const [_, { addNewProject }] = useProjects({});
   const { toast } = useToast();
 
   const handleProjectName = (event: React.ChangeEvent<HTMLInputElement>) => {
@@ -58,17 +63,15 @@ const CreateProjectModal = ({
       return;
     }
     setIsLoading(true);
-    if (team.id && team.id !== null && team.id !== "") {
+    const tempTeam = JSON.parse(JSON.stringify(team));
+    if (tempTeam.id && tempTeam.id !== null && tempTeam.id !== "") {
       const newProject = await createProject({
         name: project.name,
-        teamId: team.id,
+        teamId: tempTeam.id,
       });
-      team.projects?.push(newProject);
+      //* COMPLETED: handle the error something is wrong with when I create project from sub-side bar
+      addNewProject(team.id, newProject);
     }
-
-    const updateUser = updateUserTeam(user, team);
-
-    dispatch(setUser(updateUser));
     handleOpen();
     setIsLoading(false);
     setProject({ name: "", teamId: "" });
@@ -85,23 +88,27 @@ const CreateProjectModal = ({
   }, [open]);
 
   return (
-    <DialogContent>
-      <DialogHeader>
-        <DialogTitle className="uppercase">Create a Project</DialogTitle>
-        <DialogDescription>{`Team Name: ${team.name}`}</DialogDescription>
-      </DialogHeader>
-      <CreateProject
-        project={project}
-        handleProjectName={handleProjectName}
-        error={error}
-      />
-      <DialogFooter>
-        <Button onClick={handleCreateProject} disabled={isLoading}>
-          {isLoading && <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />}
-          Create Project
-        </Button>
-      </DialogFooter>
-    </DialogContent>
+    team && (
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle className="uppercase">Create a Project</DialogTitle>
+          <DialogDescription>{`Team Name: ${team.name}`}</DialogDescription>
+        </DialogHeader>
+        <CreateProject
+          project={project}
+          handleProjectName={handleProjectName}
+          error={error}
+        />
+        <DialogFooter>
+          <Button onClick={handleCreateProject} disabled={isLoading}>
+            {isLoading && (
+              <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+            )}
+            Create Project
+          </Button>
+        </DialogFooter>
+      </DialogContent>
+    )
   );
 };
 

@@ -41,6 +41,7 @@ const userSchema = new mongoose.Schema(
     tasks: [{ type: mongoose.Schema.ObjectId, ref: "Task" }],
     teams: [{ type: mongoose.Schema.ObjectId, ref: "Team" }],
     isActive: { type: Boolean, default: false },
+    managerId: { type: mongoose.Schema.ObjectId, ref: "User" },
   },
   modelOptions
 );

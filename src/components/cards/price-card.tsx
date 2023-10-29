@@ -50,8 +50,8 @@ const PriceCards = ({
         <CardTitle className="text-[38px]">{title}</CardTitle>
         <CardDescription className={`text-[20px] ${active && "text-white"}`}>
           {description}
-          <p className="text-[14px]">{disabled && "(coming soon)"}</p>
         </CardDescription>
+        <p className="text-[14px]">{disabled && "(coming soon)"}</p>
       </CardHeader>
       <CardContent className="flex gap-4 flex-col px-4">
         <div className="flex items-end">

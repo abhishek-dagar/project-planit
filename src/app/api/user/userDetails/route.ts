@@ -5,19 +5,28 @@ import { getDataFromToken } from "@/lib/helpers/getDataFromToken";
 import Pricing from "@/lib/mongoose/models/pricing.model";
 import Team from "@/lib/mongoose/models/team.model";
 import Project from "@/lib/mongoose/models/project.model";
+import Task from "@/lib/mongoose/models/task.model";
 
 connectToDB();
 
 export const GET = async (req: NextRequest) => {
   try {
     const userId = await getDataFromToken(req);
+
     const user = await User.findOne({ _id: userId })
       .select("-password")
       .populate({ path: "currentPlan", model: Pricing })
       .populate({
         path: "teams",
         model: Team,
-        populate: { path: "projects", model: Project },
+        populate: {
+          path: "projects",
+          model: Project,
+          populate: {
+            path: "tasks",
+            model: Task,
+          },
+        },
       });
     return NextResponse.json({
       message: "User found",
@@ -25,6 +34,6 @@ export const GET = async (req: NextRequest) => {
       success: true,
     });
   } catch (err: any) {
-    return NextResponse.json({ message: err.message }, { status: 404 });
+    return NextResponse.json({ message: err.message }, { status: 500 });
   }
 };

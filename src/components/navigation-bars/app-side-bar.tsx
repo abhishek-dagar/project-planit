@@ -3,7 +3,7 @@
 import { appSideMenu } from "@/lib/config/menu.config";
 import { usePathname } from "next/navigation";
 import { useRouter } from "next13-progressbar";
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Button } from "../ui/button";
 import {
   Tooltip,
@@ -11,23 +11,70 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "../ui/tooltip";
-import { UserSquare2 } from "lucide-react";
+import { UserPlus, UserSquare2 } from "lucide-react";
 import { Icons } from "../icons";
+import SearchModal from "../modals/search-modal";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTrigger,
+} from "../ui/dialog";
+import AddNewUser from "../modals/add-new-user-modal";
+import { RegisterForm } from "../forms/register-form";
+import useUser from "../custom-hooks/user";
 
 const AppSideBar = () => {
   const pathname = usePathname();
   const router = useRouter();
 
+  const [open, setOpen] = useState(false);
+  const [user] = useUser({});
+
+  useEffect(() => {
+    const down = (e: KeyboardEvent) => {
+      if (e.key === "s" && (e.metaKey || e.altKey)) {
+        e.preventDefault();
+        setOpen((open) => !open);
+      }
+      if (e.key === "p" && (e.metaKey || e.altKey)) {
+        e.preventDefault();
+        setOpen(false);
+        router.push("/app/profile");
+      }
+      if (e.key === "t" && (e.metaKey || e.altKey)) {
+        e.preventDefault();
+        setOpen(false);
+        router.push("/app/teams");
+      }
+      if (e.key === "d" && (e.metaKey || e.altKey)) {
+        e.preventDefault();
+        setOpen(false);
+        router.push("/app/dashboard");
+      }
+    };
+
+    document.addEventListener("keydown", down);
+    return () => document.removeEventListener("keydown", down);
+  }, []);
+
   return (
     <div className="hidden md:block w-[60px] h-screen border-r-[1px]">
       <div className="flex flex-col py-5 gap-6 h-full">
         <div className="flex items-center justify-center">
-          <Icons.logo className="text-[#f69220] text-[32px]" />
+          <Icons.logo
+            className="text-[#f69220] text-[32px] cursor-pointer"
+            onClick={() => router.push("/")}
+          />
         </div>
         <div className="flex flex-col justify-between h-full">
           <ul className="flex flex-col items-center justify-center gap-2">
             {appSideMenu.map((menu) => {
               const active = pathname.includes(menu.link) && menu.link !== "";
+
+              if ((!user || user?.role === "member") && menu.title === "Teams")
+                return;
+
               return (
                 <Tooltip key={menu.title}>
                   <TooltipTrigger asChild>
@@ -36,7 +83,12 @@ const AppSideBar = () => {
                         active ? "bg-primary" : ""
                       } p-1.5 rounded-md`}
                       variant={"ghost"}
-                      onClick={() => router.push(menu.link)}
+                      onClick={() => {
+                        if (menu.title.toLowerCase() === "search") {
+                          setOpen(true);
+                        }
+                        router.push(menu.link);
+                      }}
                     >
                       <menu.icon className="text-[24px]" />
                     </Button>
@@ -50,12 +102,25 @@ const AppSideBar = () => {
             })}
           </ul>
           <ul className="flex flex-col items-center justify-center gap-2">
+            <div>
+              <Dialog>
+                <DialogTrigger asChild>
+                  <Button className={`p-1.5 rounded-md`} variant={"ghost"}>
+                    <UserPlus />
+                  </Button>
+                </DialogTrigger>
+                <DialogContent className="bg-background">
+                  {/* <RegisterForm /> */}
+                  <AddNewUser />
+                </DialogContent>
+              </Dialog>
+            </div>
             <Button
               className={`${
                 pathname === "/app/profile" ? "bg-primary hover:bg-primary" : ""
               } p-1.5 rounded-md`}
               variant={"ghost"}
-              onClick={() => router.push("/profile")}
+              onClick={() => router.push("/app/profile")}
             >
               <UserSquare2 />
               {/* <BsPersonCircle className="text-[24px]" /> */}
@@ -63,6 +128,7 @@ const AppSideBar = () => {
           </ul>
         </div>
       </div>
+      <SearchModal open={open} setOpen={setOpen} />
     </div>
   );
 };

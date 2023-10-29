@@ -2,14 +2,14 @@ import mongoose from "mongoose";
 import modelOptions from "./mongoose.options";
 import { Status } from "@/lib/interfacesOrEnum/teams-group";
 
-interface TeamSchema {
+interface ProjectSchema {
   name: string;
   description: string;
   status: Status;
   tasks: mongoose.Schema.Types.ObjectId[];
   pinned: boolean;
 }
-const projectSchema = new mongoose.Schema<TeamSchema>(
+const projectSchema = new mongoose.Schema<ProjectSchema>(
   {
     name: {
       type: String,

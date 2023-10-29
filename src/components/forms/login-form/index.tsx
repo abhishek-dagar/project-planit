@@ -43,19 +43,26 @@ export function UserLoginForm({ className, ...props }: UserLoginFormProps) {
 
   async function onSubmit(values: z.infer<typeof UserLoginValidation>) {
     setIsLoading(true);
-    const response: any = await loginAction(values);
+    try {
+      const response: any = await loginAction(values);
 
-    if (response.response.success) {
+      if (response.response?.success) {
+        toast({
+          description: "Login Successful",
+        });
+        router.push("/app/dashboard");
+      } else {
+        toast({
+          description: response.err.response.data.error,
+        });
+      }
+    } catch {
       toast({
-        description: "Login Successful",
+        description: "Login Failed",
       });
-      router.push("/app/dashboard");
-    } else {
-      toast({
-        description: "Login failed",
-      });
+    } finally {
+      setIsLoading(false);
     }
-    setIsLoading(false);
   }
 
   function handlePassword(value: boolean) {

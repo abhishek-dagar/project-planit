@@ -1,11 +1,4 @@
-"use client";
-
-import { Group, Project } from "@/lib/interfacesOrEnum/teams-group";
 import AppSubsideBar from "@/components/navigation-bars/app-subside-bar";
-import { fetchUser } from "@/lib/actions/user.actions";
-import { setUser } from "@/redux/features/userSlice";
-import { useEffect, useState } from "react";
-import { useDispatch, useSelector } from "react-redux";
 import { CalendarDays } from "lucide-react";
 import { Metadata } from "next";
 
@@ -19,60 +12,9 @@ export default function RootLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const dispatch = useDispatch();
-  const { user } = useSelector((state: any) => state.user);
-  const [menus, setMenus] = useState<Group[]>([]);
-  useEffect(() => {
-    fetchUser().then(({ response }) => {
-      dispatch(setUser(response));
-    });
-  }, []);
-  useEffect(() => {
-    const teams = user?.teams;
-    if (teams) {
-      const tempMenu: Group[] = [
-        {
-          title: "Pinned",
-          menu: [],
-        },
-        {
-          title: "Team Projects",
-          menu: [],
-        },
-      ];
-      teams.map((team: any) => {
-        const projects: Project[] = team.projects.map((project: Project) => ({
-          name: project.name,
-          link: `/app/teams/${team.id}/${project.id}`,
-          status: project.status,
-        }));
-
-        if (team.pinned) {
-          tempMenu[0].menu?.push({
-            name: team.name,
-            link: `/app/teams/${team.id}`,
-            icon: team.icon,
-            projects: projects,
-          });
-        }
-        tempMenu[1].menu?.push({
-          name: team.name,
-          link: `/app/teams/${team.id}`,
-          icon: team.icon,
-          projects: projects,
-        });
-      });
-      setMenus(tempMenu);
-    }
-  }, [user]);
-
   return (
     <div className="flex w-full h-full overflow-hidden">
-      <AppSubsideBar
-        title={"Team/projects"}
-        icon={<CalendarDays />}
-        menus={menus}
-      />
+      <AppSubsideBar title={"Team/projects"} icon={<CalendarDays />} />
       {children}
     </div>
   );
