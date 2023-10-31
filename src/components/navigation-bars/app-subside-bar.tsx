@@ -111,7 +111,7 @@ const AppSubsideBar = ({ title, icon }: Props) => {
     !isTab && (
       <div
         className={
-          "relative h-full border-r-[1px] hidden md:block bg-secondary-background transition-all " +
+          "relative h-full border-r-[1px] hidden md:block bg-background transition-all " +
           (isSidebarOpen ? "py-5 px-3 w-[220px] flex-none" : "w-0")
         }
       >
@@ -123,7 +123,7 @@ const AppSubsideBar = ({ title, icon }: Props) => {
                 {title}
               </p>
               <Input
-                className={"py-0 focus-visible:ring-1"}
+                className={"py-0 bg-secondary-background focus-visible:ring-1"}
                 clName={"h-8"}
                 frontIcon={<Search size={16} />}
                 placeholder="search"

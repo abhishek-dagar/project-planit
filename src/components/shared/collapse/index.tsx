@@ -68,7 +68,7 @@ const Collapse = ({ icon, name, link, element, team }: Props) => {
           {element?.map((ele) => {
             return (
               <Link key={ele.name} href={ele.link ? ele.link : ""}>
-                <div className="flex gap-2 border-b-[1px] pb-2 md:pb-0 md:border-0">
+                <div className="flex gap-2 border-b-[1px] p-1 md:border-0 hover:bg-muted rounded-lg">
                   <Hash style={{ color: StatusColor[ele.status] }} />
                   <p className="text-[14px] w-[120px] truncate">{ele.name}</p>
                 </div>

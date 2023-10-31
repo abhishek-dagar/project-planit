@@ -33,7 +33,7 @@ export default function RootLayout({
           >
             <ProgressbarProviders>
               <TooltipProvider>
-                <div className="flex h-screen flex-col md:flex-row relative overflow-hidden">
+                <div className="flex bg-secondary-background h-screen flex-col md:flex-row relative overflow-hidden">
                   <AppSideBar />
                   <div className="flex-1 w-full h-full overflow-hidden">
                     {children}

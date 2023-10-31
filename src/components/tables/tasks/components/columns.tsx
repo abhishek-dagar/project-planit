@@ -37,9 +37,17 @@ declare module "@tanstack/react-table" {
 }
 
 export const columns: ColumnDef<Task>[] = [
+  // id
   {
     accessorKey: "id",
+    enableHiding: false,
   },
+  // newTaskSide
+  {
+    accessorKey: "newTaskSide",
+    enableHiding: false,
+  },
+  // check box
   {
     id: "select",
     header: ({ table }) => (
@@ -54,9 +62,9 @@ export const columns: ColumnDef<Task>[] = [
           checked={table.getIsAllPageRowsSelected()}
           onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
           aria-label="Select all"
-          className="translate-y-[2px] checkbox border-2 bg-secondary-background"
+          className="translate-y-[2px] checkbox border-2 bg-secondary-background mx-2"
         />
-        <span className="heading">#</span>
+        <span className="heading w-1 mx-4">#</span>
       </div>
     ),
     size: 35,
@@ -73,9 +81,9 @@ export const columns: ColumnDef<Task>[] = [
             checked={row.getIsSelected()}
             onCheckedChange={(value) => row.toggleSelected(!!value)}
             aria-label="Select row"
-            className="translate-y-[2px] checkbox border-2 bg-secondary-background"
+            className="translate-y-[2px] checkbox border-2 bg-secondary-background mx-2"
           />
-          <span className="serial-number w-1">{row.index + 1}</span>
+          <span className="serial-number w-1 mx-4">{row.index + 1}</span>
         </div>
       );
     },

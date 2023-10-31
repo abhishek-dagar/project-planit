@@ -59,7 +59,7 @@ const AppSideBar = () => {
   }, []);
 
   return (
-    <div className="hidden md:block w-[60px] h-screen border-r-[1px]">
+    <div className="hidden md:block bg-background w-[60px] h-screen border-r-[1px]">
       <div className="flex flex-col py-5 gap-6 h-full">
         <div className="flex items-center justify-center">
           <Icons.logo

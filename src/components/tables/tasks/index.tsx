@@ -39,12 +39,12 @@ export default function TaskPage({
       <Dialog>
         <Tabs defaultValue="table" style={{ marginTop: 0 }}>
           <div className="flex flex-col gap-4 px-4 md:px-8 pt-0 md:pt-0">
-            <div className="flex md:justify-between md:items-end border-b-2 flex-col-reverse md:flex-row border-y-2">
+            <div className="flex md:justify-between md:items-end border-b-2 border-background flex-col-reverse md:flex-row border-y-2">
               <div className="">
-                <TabsList className="grid w-full grid-cols-2 bg-background">
+                <TabsList className="grid w-full grid-cols-2 bg-secondary-background">
                   <TabsTrigger
                     value="table"
-                    className="data-[state=active]:bg-background data-[state=active]:text-white rounded-none border-b-2 data-[state=active]:border-primary"
+                    className="data-[state=active]:text-white rounded-none border-b-2 data-[state=active]:border-primary"
                   >
                     <Table size={18} className="mr-2" />
                     Table
@@ -59,7 +59,7 @@ export default function TaskPage({
                   ) : (
                     <TabsTrigger
                       value="board"
-                      className="data-[state=active]:bg-background data-[state=active]:text-white rounded-none border-b-2 data-[state=active]:border-primary"
+                      className="data-[state=active]:text-white rounded-none border-b-2 data-[state=active]:border-primary"
                     >
                       <KanbanSquare size={18} className="mr-2" />
                       Board

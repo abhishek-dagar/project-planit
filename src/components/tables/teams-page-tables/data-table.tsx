@@ -73,11 +73,11 @@ export function DataTable<
   return (
     <Tabs value={currentTab} onValueChange={handleTabToggle}>
       <Table className="border-separate border-spacing-y-3">
-        <TableHeader className="shadow-md">
+        <TableHeader className="shadow-md rounded-lg">
           {table.getHeaderGroups().map((headerGroup) => (
             <TableRow
               key={headerGroup.id}
-              className="border-0 bg-secondary-background"
+              className="border-0 bg-background rounded-lg"
             >
               {currentTab === "list view" ? (
                 headerGroup.headers.map((header, index) => {
@@ -108,11 +108,17 @@ export function DataTable<
                 </TableHead>
               )}
               <TableHead className="w-[90px]">
-                <TabsList className="bg-background">
-                  <TabsTrigger value="box view">
+                <TabsList className="bg-secondary-background">
+                  <TabsTrigger
+                    value="box view"
+                    className="data-[state=active]:bg-background"
+                  >
                     <LayoutGrid size={18} />
                   </TabsTrigger>
-                  <TabsTrigger value="list view">
+                  <TabsTrigger
+                    value="list view"
+                    className="data-[state=active]:bg-background"
+                  >
                     <List size={18} />
                   </TabsTrigger>
                 </TabsList>
@@ -128,12 +134,12 @@ export function DataTable<
               return (
                 <div
                   key={row.id}
-                  className="relative scale-[0.97] transition-all hover:scale-100 focus:scale-100"
+                  className="relative scale-[0.99] transition-all hover:scale-100 focus:scale-100"
                 >
                   <Link
                     href={`/app/teams/${row.original.link}`}
                     data-state={row.getIsSelected() && "selected"}
-                    className=" relative w-full flex gap-2 bg-secondary-background rounded-md border-[1px] hover:border-primary cursor-pointer shadow-sm hover:shadow-md py-3 px-5"
+                    className=" relative w-full flex gap-2 bg-background rounded-lg border-[1px] hover:border-primary cursor-pointer shadow-sm hover:shadow-md py-3 px-5"
                   >
                     {row.getVisibleCells().map((cell, index) => (
                       <div
@@ -182,12 +188,12 @@ export function DataTable<
               return (
                 <div
                   key={row.id}
-                  className="relative scale-[0.95] transition-all hover:scale-100 focus:scale-100 w-[100%] xs:w-auto"
+                  className="relative scale-[0.98] transition-all hover:scale-100 focus:scale-100 w-[100%] xs:w-auto"
                 >
                   <Link
                     href={`/app/teams/${row.original.link}`}
                     data-state={row.getIsSelected() && "selected"}
-                    className="md:h-[180px] border-[1px] hover:border-primary bg-secondary-background flex flex-col items-start rounded-md shadow-md"
+                    className="md:h-[180px] border-[1px] hover:border-primary bg-background flex flex-col items-start rounded-xl shadow-md"
                   >
                     {row.getVisibleCells().map((cell, index) => {
                       return (

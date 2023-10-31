@@ -37,6 +37,8 @@ import { useToast } from "@/components/ui/use-toast";
 import { MoveIcon } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import useUser from "@/components/custom-hooks/user";
+import { Button } from "@/components/ui/button";
+import NewTaskRow from "./new-task-row";
 
 declare module "@tanstack/react-table" {
   interface TableMeta<TData extends RowData> {
@@ -64,10 +66,12 @@ export function DataTable<TData, TValue>({
       createdAt: false,
       id: false,
       startDate: false,
+      newTaskSide: false,
     });
   const [columnFilters, setColumnFilters] = React.useState<ColumnFiltersState>(
     []
   );
+  const [newTaskOpen, setNewTaskOpen] = React.useState<boolean>(false);
   const [user] = useUser({});
 
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -173,10 +177,10 @@ export function DataTable<TData, TValue>({
         delete newData["id"];
         newData["projectId"] = projectId;
 
-        const response: any = await addNewTask(newData);
-        if (response?.success) {
-          toast({ description: "Copy of Task updated successfully" });
-        }
+        // const response: any = await addNewTask(newData);
+        // if (response?.success) {
+        toast({ description: "Copy of Task updated successfully" });
+        // }
       },
     },
   });
@@ -193,22 +197,22 @@ export function DataTable<TData, TValue>({
       ) : (
         <div className="w-full flex justify-between gap-2">
           <div className="flex gap-2">
-            <Skeleton className="h-8 w-[200px]" />
-            <Skeleton className="h-8 w-[70px]" />
-            <Skeleton className="h-8 w-[70px]" />
-            <Skeleton className="h-8 w-[70px]" />
+            <Skeleton className="h-8 w-[200px] bg-background" />
+            <Skeleton className="h-8 w-[70px] bg-background" />
+            <Skeleton className="h-8 w-[70px] bg-background" />
+            <Skeleton className="h-8 w-[70px] bg-background" />
           </div>
-          <Skeleton className="h-8 w-[70px]" />
+          <Skeleton className="h-8 w-[70px] bg-background" />
         </div>
       )}
-      <div className="">
+      <div className="rounded-2xl pb-2 bg-background overflow-hidden">
         {loading ? (
           <div className="w-full flex flex-col gap-2">
-            <Skeleton className="h-10 w-full" />
-            <Skeleton className="h-8 w-full" />
-            <Skeleton className="h-8 w-full" />
-            <Skeleton className="h-8 w-full" />
-            <Skeleton className="h-8 w-full" />
+            <Skeleton className="h-10 w-full bg-background" />
+            <Skeleton className="h-8 w-full bg-background" />
+            <Skeleton className="h-8 w-full bg-background" />
+            <Skeleton className="h-8 w-full bg-background" />
+            <Skeleton className="h-8 w-full bg-background" />
           </div>
         ) : (
           <Table>
@@ -216,7 +220,7 @@ export function DataTable<TData, TValue>({
               {table.getHeaderGroups().map((headerGroup) => (
                 <TableRow
                   key={headerGroup.id}
-                  className="border-none bg-secondary-background"
+                  className="border-none bg-background border-separate"
                 >
                   {headerGroup.headers.map((header, index) => {
                     return (
@@ -263,11 +267,41 @@ export function DataTable<TData, TValue>({
             </TableHeader>
             <TableBody>
               {table?.getRowModel().rows?.length ? (
-                table
-                  .getRowModel()
-                  .rows.map((row) => (
+                <>
+                  {table.getRowModel().rows.map((row) => (
                     <DataRow key={row.id} row={row} id={row.id} />
-                  ))
+                  ))}
+                  <TableRow
+                    className={`data-[state=selected]:bg-transparent [&_.grip-icon]:invisible [&:hover_.grip-icon]:visible h-[40px] overflow-visible border-background [&:hover_.checkbox]:block [&:hover_.serial-number]:hidden [&:hover_.maximize]:visible py-0 bg-background`}
+                  >
+                    <TableCell
+                      className={`p-0 border-x-2 ${newTaskOpen ? "" : "px-8"}`}
+                      colSpan={columns.length + 1}
+                    >
+                      {newTaskOpen ? (
+                        <div
+                          className={`w-full h-full pl-3 ${
+                            newTaskOpen ? "border-2 border-primary" : ""
+                          }`}
+                        >
+                          <NewTaskRow
+                            setNewTaskOpen={setNewTaskOpen}
+                            table={table}
+                          />
+                        </div>
+                      ) : (
+                        <Button
+                          variant="ghost"
+                          size="sm"
+                          className="-ml-3 h-8 data-[state=open]:bg-accent flex gap-2"
+                          onClick={() => setNewTaskOpen(true)}
+                        >
+                          + New Task
+                        </Button>
+                      )}
+                    </TableCell>
+                  </TableRow>
+                </>
               ) : (
                 <TableRow>
                   <TableCell

@@ -9,6 +9,7 @@ import {
   CommandShortcut,
 } from "@/components/ui/command";
 import { searchMenu } from "@/lib/config/search.config";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 interface Props {
@@ -17,6 +18,7 @@ interface Props {
 }
 
 const SearchModal = ({ open, setOpen }: Props) => {
+  const router = useRouter();
   return (
     <CommandDialog open={open} onOpenChange={setOpen} className="top-[28%]">
       <CommandInput placeholder="Type a command or search..." />
@@ -28,7 +30,10 @@ const SearchModal = ({ open, setOpen }: Props) => {
             {group.group.map((menu) => (
               <CommandItem
                 key={menu.name}
-                onSelect={(value) => console.log("")}
+                onSelect={() => {
+                  setOpen(false);
+                  router.push(menu.link);
+                }}
                 value={menu.name}
               >
                 <menu.icon className="mr-2 h-4 w-4" />

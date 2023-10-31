@@ -26,8 +26,8 @@ export function DataRow({ row, id }: DataTableRowProps) {
               : "bg-[#2a2e34] "
             : "px-0"
         } ${index === 1 ? "cursor-pointer" : ""} ${
-              index === 0 ? "bg-secondary-background w-[20px]" : ""
-            } ${row.getIsGrouped() ? "bg-secondary-background border-none" : ""}
+              index === 0 ? "bg-background w-[20px]" : ""
+            } ${row.getIsGrouped() ? "bg-background border-x-0" : ""}
         `}
           >
             {cell.getIsGrouped() ? (

@@ -94,7 +94,7 @@ const Teams = () => {
           <Input
             value={searchQuery}
             onChange={handleSearchQuery}
-            className={"py-0 focus-visible:ring-1 bg-secondary-background"}
+            className={"py-0 focus-visible:ring-1 bg-background"}
             frontIcon={<Search size={16} />}
             placeholder="search"
           />

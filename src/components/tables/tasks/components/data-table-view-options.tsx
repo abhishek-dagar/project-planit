@@ -27,7 +27,7 @@ export function DataTableViewOptions<TData>({
         <Button
           variant="outline"
           size="sm"
-          className="h-8 flex bg-secondary-background md:bg-background"
+          className="h-8 flex bg-background md:bg-background"
         >
           <MixerHorizontalIcon className="mr-2 h-4 w-4" />
           View
@@ -58,16 +58,6 @@ export function DataTableViewOptions<TData>({
                   />
                 </div>
               </DropdownMenuItem>
-              // <DropdownMenuCheckboxItem
-              //   key={column.id}
-              //   className="capitalize cursor-pointer hover:bg-background"
-              //   checked={column.getIsVisible()}
-              //   onCheckedChange={(value) =>
-              //     index > 0 && column.toggleVisibility(!!value)
-              //   }
-              // >
-              //   {column.id}
-              // </DropdownMenuCheckboxItem>
             );
           })}
       </DropdownMenuContent>

@@ -118,20 +118,20 @@ const SingleTeamProjects = ({ params }: { params: { teamId: string } }) => {
   return (
     <div className="w-full h-full">
       <Tabs defaultValue="projects" className="flex flex-col h-full">
-        <div className="flex flex-col gap-4 px-5 pt-5">
+        <div className="flex flex-col gap-4 px-5 pt-5 bg-background">
           <div className="flex md:justify-between md:items-end border-b-2 flex-col-reverse md:flex-row">
             <div className="">
               <TabsList className="grid w-full grid-cols-2 bg-background">
                 <TabsTrigger
                   value="projects"
-                  className="data-[state=active]:bg-background data-[state=active]:text-white rounded-none border-b-2 data-[state=active]:border-primary"
+                  className="data-[state=active]:bg-secondary-background data-[state=active]:text-white rounded-t-md data-[state=active]:border-primary"
                 >
                   <Presentation size={16} className="mr-2" />
                   Projects
                 </TabsTrigger>
                 <TabsTrigger
                   value="settings"
-                  className="data-[state=active]:bg-background data-[state=active]:text-white rounded-none border-b-2 data-[state=active]:border-primary"
+                  className="data-[state=active]:bg-secondary-background data-[state=active]:text-white rounded-t-md data-[state=active]:border-primary"
                 >
                   <Settings size={16} className="mr-2" />
                   Team Setting
@@ -145,7 +145,7 @@ const SingleTeamProjects = ({ params }: { params: { teamId: string } }) => {
             if (!tempTeam.projects) return <div key={index} />;
             return (
               <div key={index} className="w-full h-full my-4">
-                <div className="sticky top-0 z-20 bg-background flex items-center justify-between">
+                <div className="sticky top-0 z-20 flex items-center justify-between">
                   <p className="uppercase truncate text-slate-400">
                     <Link href={"/app/teams"} className="hover:underline">
                       Teams
@@ -155,7 +155,7 @@ const SingleTeamProjects = ({ params }: { params: { teamId: string } }) => {
                   <Dialog open={open} onOpenChange={setOpen}>
                     <DialogTrigger asChild>
                       <Button
-                        variant={"outline"}
+                        // variant={"outline"}
                         className="border-[1px] border-border hover:border-primary p-2 scale-[0.97] hover:scale-100 transition-all"
                       >
                         <Plus className="md:mr-1" size={18} />
@@ -175,9 +175,7 @@ const SingleTeamProjects = ({ params }: { params: { teamId: string } }) => {
                       <Input
                         value={searchQuery}
                         onChange={handleSearchQuery}
-                        className={
-                          "py-0 focus-visible:ring-1 bg-secondary-background"
-                        }
+                        className={"py-0 focus-visible:ring-1 bg-background"}
                         clName={"ml-1 h-8 md:w-80 w-auto"}
                         frontIcon={<Search size={16} />}
                         placeholder="search"

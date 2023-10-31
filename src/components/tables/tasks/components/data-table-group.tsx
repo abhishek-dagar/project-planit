@@ -63,7 +63,7 @@ export function DataTableGroup<TData, TValue>({
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0" align="start">
-        <Command>
+        <Command className="bg-background">
           <CommandInput placeholder={title} />
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
@@ -76,7 +76,9 @@ export function DataTableGroup<TData, TValue>({
                     onSelect={() => {
                       groupRows(option.value);
                     }}
-                    className={`${isSelected ? "bg-selected" : ""}`}
+                    className={`className="data-[selected]:bg-secondary-background" ${
+                      isSelected ? "bg-selected" : ""
+                    }`}
                   >
                     <div
                       className={`flex w-full h-full items-center capitalize ${

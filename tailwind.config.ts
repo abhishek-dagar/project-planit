@@ -8,6 +8,14 @@ module.exports = {
     "./src/**/*.{ts,tsx}",
   ],
   theme: {
+    screens: {
+      xs: "390px",
+      sm: "640px",
+      md: "768px",
+      lg: "1024px",
+      xl: "1280px",
+      "2xl": "1536px",
+    },
     fontSize: {
       "title-lg": "48px",
       "title-md": "30px",
@@ -33,6 +41,7 @@ module.exports = {
         background: "var(--background)",
         "secondary-background": "var(--secondary-background)",
         foreground: "var(--foreground)",
+        selected: "var(--selected) !important",
         primary: {
           DEFAULT: "var(--primary)",
           foreground: "var(--primary-foreground)",

@@ -18,20 +18,20 @@ const Projects = async ({
   return (
     <div className="flex-1 w-full relative">
       <Tabs defaultValue="tasks" className="flex flex-col h-full w-full">
-        <div className="flex flex-col gap-4 px-5 pt-5 sticky top-0 z-40 bg-secondary-background">
+        <div className="flex flex-col gap-4 px-5 pt-5 sticky top-0 z-40 md:bg-background">
           <div className="flex md:justify-between md:items-end md:border-b-2 flex-col-reverse md:flex-row">
             <div className="">
-              <TabsList className="grid w-full grid-cols-2 bg-secondary-background">
+              <TabsList className="grid w-full grid-cols-2 bg-background">
                 <TabsTrigger
                   value="tasks"
-                  className="data-[state=active]:bg-background data-[state=active]:text-white rounded-none border-b-2 data-[state=active]:border-background rounded-t-lg"
+                  className="data-[state=active]:bg-secondary-background  data-[state=active]:text-foreground rounded-none border-b-0 data-[state=active]:border-background rounded-t-lg"
                 >
                   <ListTodo size={16} className="mr-2" />
                   Tasks
                 </TabsTrigger>
                 <TabsTrigger
                   value="settings"
-                  className="data-[state=active]:bg-background data-[state=active]:text-white rounded-none border-b-2 data-[state=active]:border-background rounded-t-lg"
+                  className="data-[state=active]:bg-secondary-background data-[state=active]:text-foreground rounded-none border-b-0 data-[state=active]:border-background rounded-t-lg"
                 >
                   <Settings size={16} className="mr-2" />
                   Project Setting
@@ -40,7 +40,7 @@ const Projects = async ({
             </div>
           </div>
         </div>
-        <div className="sticky top-0 z-20 bg-background flex items-center justify-between px-8 py-4">
+        <div className="sticky top-0 z-20 flex items-center justify-between px-8 py-4">
           <p className="uppercase truncate text-slate-400">
             <Link href={"/app/teams"} className="hover:underline">
               Teams

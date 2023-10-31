@@ -85,7 +85,7 @@ export function DataTableFacetedFilter<TData, TValue>({
         </Button>
       </PopoverTrigger>
       <PopoverContent className="w-[200px] p-0" align="start">
-        <Command>
+        <Command className="bg-background">
           <CommandInput placeholder={title} />
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
@@ -97,6 +97,7 @@ export function DataTableFacetedFilter<TData, TValue>({
                 return (
                   <CommandItem
                     key={option.value.toUpperCase()}
+                    className="data-[selected]:bg-secondary-background"
                     onSelect={() => {
                       if (isSelected) {
                         selectedValues.delete(option.value.toUpperCase());

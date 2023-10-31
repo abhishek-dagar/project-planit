@@ -228,7 +228,7 @@ function EditTask({ task, table, row }: Props) {
               </Suspense>
             </div>
             <div className="w-1/2 flex flex-col justify-between border-l-2 bg-secondary-background">
-              <div className="max-h-[450px] overflow-auto flex flex-col-reverse gap-4 px-4 py-6">
+              <div className="max-h-[390px] overflow-auto flex flex-col-reverse gap-4 px-4 py-6">
                 {comments.map((comment: any, index: number) => (
                   <Comment key={index} comment={comment} />
                 ))}
