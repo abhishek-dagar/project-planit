@@ -27,6 +27,9 @@ import AssigneeDropdown from "@/components/shared/dropdowns/assignee-dropdown";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 // import EditTask from "@/components/modals/editTask-modal";
 import dynamic from "next/dynamic";
+import CustomInput from "@/components/shared/contorled-input";
+import { useCallback } from "react";
+import debounce from "lodash.debounce";
 
 const EditTask = dynamic(
   () => import("@/components/modals/edit-task-modal/editTask-modal")
@@ -104,16 +107,28 @@ export const columns: ColumnDef<Task>[] = [
         />
       );
     },
-    cell: ({ row, table }) => {
+    cell: ({ row, table, column }) => {
       const label = labels.find((label) => label.value === row.original.label);
+      const request = debounce(async (value: string) => {
+        table.options.meta?.updateData(row.index, column.id, value);
+      }, 1000);
+
+      const debounceRequest = useCallback(
+        (value: string) => request(value),
+        []
+      );
 
       return (
         <div className="flex space-x-2 w-full justify-between items-center h-full">
           <div className="flex space-x-2 w-full">
             {label && <Badge variant="outline">{label.label}</Badge>}
-            <span className="truncate font-medium cursor-pointer text-[14px] pl-2">
+            <CustomInput
+              value={row.getValue("title")}
+              handleUpdate={debounceRequest}
+            />
+            {/* <span className="truncate font-medium cursor-pointer text-[14px] pl-2">
               {row.getValue("title")}
-            </span>
+            </span> */}
           </div>
           <Dialog>
             <DialogTrigger asChild>

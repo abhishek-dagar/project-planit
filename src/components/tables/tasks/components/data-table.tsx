@@ -131,13 +131,6 @@ export function DataTable<TData, TValue>({
         if (columnId === "dueDate") {
           newComment = {
             comment: "Changed Due Date",
-            from: newData[rowIndex][columnId],
-            to: value,
-          };
-        }
-        if (columnId === "dueDate") {
-          newComment = {
-            comment: "Changed Due Date",
             to: value,
           };
         }
@@ -147,10 +140,16 @@ export function DataTable<TData, TValue>({
             to: value?.username,
           };
         }
-        const comments = [
-          ...newData[rowIndex].comments,
-          { ...newComment, changedBy: user },
-        ];
+        // const comments = [
+        //   ...newData[rowIndex].comments,
+        //   { ...newComment, changedBy: user },
+        // ];
+        let comments = newData[rowIndex].comments;
+        if (comments) {
+          comments.push({ ...newComment, changedBy: user });
+        } else {
+          comments = [{ ...newComment, changedBy: user }];
+        }
         newData[rowIndex] = {
           ...newData[rowIndex],
           [columnId]: value,

@@ -19,14 +19,24 @@ export const GET = async (req: NextRequest) => {
       .populate({
         path: "teams",
         model: Team,
-        populate: {
-          path: "projects",
-          model: Project,
-          populate: {
-            path: "tasks",
-            model: Task,
+        populate: [
+          {
+            path: "projects",
+            model: Project,
+            populate: {
+              path: "tasks",
+              model: Task,
+            },
           },
-        },
+          {
+            path: "members",
+            model: User,
+          },
+        ],
+      })
+      .populate({
+        path: "members",
+        model: User,
       });
     return NextResponse.json({
       message: "User found",

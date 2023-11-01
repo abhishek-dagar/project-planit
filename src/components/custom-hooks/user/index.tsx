@@ -2,6 +2,7 @@
 
 import { fetchUser } from "@/lib/actions/user.actions";
 import { Team } from "@/lib/interfacesOrEnum/teams-group";
+import { setMembers } from "@/redux/features/memberSlice";
 import { setProjects } from "@/redux/features/projectSlice";
 import { setTeams } from "@/redux/features/teamsSlice";
 import { setUser } from "@/redux/features/userSlice";
@@ -43,6 +44,8 @@ const useUser = ({ configs = { isFetch: false } }: Props) => {
         );
 
         dispatch(setProjects(projects));
+
+        dispatch(setMembers(response.members));
       });
       // }, 3000);
     }

@@ -27,6 +27,21 @@ export const POST = async (req: NextRequest) => {
     }
 
     const newUser = new User({ ...reqBody, currentPlan });
+    if (reqBody.managerId) {
+      const manager: any = User.findById(reqBody.managerId);
+      if (!manager) {
+        return NextResponse.json(
+          { message: "Manager not found" },
+          { status: 500 }
+        );
+      }
+      if (manager.members) {
+        manager.members = [newUser];
+      } else {
+        manager.members.push(newUser);
+      }
+      await User.findByIdAndUpdate(manager._id, manager);
+    }
 
     // create hash password
     await newUser.setPassword(password);

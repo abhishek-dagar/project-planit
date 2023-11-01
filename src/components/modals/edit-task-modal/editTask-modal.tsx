@@ -299,7 +299,7 @@ const Comment = ({ comment }: CommentProps) => {
       </div>
       <span className="text-[12px]">
         {moment(comment.createdAt).format("MMM DD")} at{" "}
-        {moment(comment.createdAt).format("hh:MM a")}
+        {moment(comment.createdAt).format("hh:mm a")}
       </span>
     </div>
   );

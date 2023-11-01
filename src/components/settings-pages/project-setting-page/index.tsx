@@ -85,10 +85,7 @@ const ProjectSettingsPage = ({ project, teamId }: Props) => {
         </div>
       </div>
       <div className="flex flex-col gap-4 py-4">
-        <p className="text-[24px]">Members</p>
-      </div>
-      <div className="flex flex-col gap-4 py-4">
-        <p className="text-[24px]">Danger Zone</p>
+        <p className="text-[24px] capitalize text-red-500">Danger Zone</p>
         <div className="border border-red-500 rounded-md p-4 bg-secondary-background">
           <div className="flex flex-col gap-2 md:flex-row justify-between">
             <div>

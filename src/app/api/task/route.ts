@@ -75,7 +75,7 @@ export const PUT = async (req: NextRequest) => {
 
     const comments: Comment[] = [];
     Object.keys(task?._doc).map((key) => {
-      if (task[key] !== reqBody[key]) {
+      if (task?._doc[key] !== reqBody[key]) {
         let newComment: any | undefined = undefined;
         if (key === "status") {
           newComment = {
@@ -91,20 +91,16 @@ export const PUT = async (req: NextRequest) => {
             to: reqBody[key],
           };
         }
-        if (key === "dueDate") {
-          newComment = {
-            comment: "Changed Due Date",
-            from: task[key],
-            to: reqBody[key],
-          };
-        }
-        if (key === "dueDate") {
+        if (key === "dueDate" && task[key].dueDate !== reqBody[key].dueDate) {
           newComment = {
             comment: "Changed Due Date",
             to: reqBody[key],
           };
         }
-        if (key === "assignedTo") {
+        if (
+          key === "assignedTo" &&
+          task?._doc[key].toString() !== reqBody[key].id
+        ) {
           newComment = {
             comment: "Task Assigned",
             to: reqBody[key]?.username,

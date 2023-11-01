@@ -1,4 +1,4 @@
-import { priorities, statuses } from "@/components/tables/tasks/data/data";
+import useMembers from "@/components/custom-hooks/members";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -15,7 +15,6 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
-import { fetchMembers } from "@/lib/actions/user.actions";
 import { Plus, User, XIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
 
@@ -34,22 +33,11 @@ const AssigneeDropdown = ({
 }: Props) => {
   const [assignee, setAssignee] = useState<any>();
 
-  const [members, setMembers] = useState([]);
-
-  const getMembers = async () => {
-    const members = await fetchMembers();
-    if (members.response) {
-      setMembers(members.response);
-    }
-  };
+  const [members] = useMembers({});
 
   useEffect(() => {
     setAssignee(assignedTo);
   }, [assignedTo]);
-
-  useEffect(() => {
-    getMembers();
-  }, []);
 
   return (
     <Popover>

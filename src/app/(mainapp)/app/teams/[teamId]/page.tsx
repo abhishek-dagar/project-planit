@@ -4,6 +4,7 @@ import useProjects from "@/components/custom-hooks/projects";
 import useTeams from "@/components/custom-hooks/teams";
 import CreateProjectModal from "@/components/modals/create-project-modal";
 import TeamSettingsPage from "@/components/settings-pages/team-setting-page";
+import MembersTable from "@/components/tables/members-table";
 import { DataTable } from "@/components/tables/teams-page-tables/data-table";
 import {
   Project,
@@ -121,13 +122,20 @@ const SingleTeamProjects = ({ params }: { params: { teamId: string } }) => {
         <div className="flex flex-col gap-4 px-5 pt-5 bg-background">
           <div className="flex md:justify-between md:items-end border-b-2 flex-col-reverse md:flex-row">
             <div className="">
-              <TabsList className="grid w-full grid-cols-2 bg-background">
+              <TabsList className="grid w-full grid-cols-3 bg-background">
                 <TabsTrigger
                   value="projects"
                   className="data-[state=active]:bg-secondary-background data-[state=active]:text-white rounded-t-md data-[state=active]:border-primary"
                 >
                   <Presentation size={16} className="mr-2" />
                   Projects
+                </TabsTrigger>
+                <TabsTrigger
+                  value="members"
+                  className="data-[state=active]:bg-secondary-background data-[state=active]:text-white rounded-t-md data-[state=active]:border-primary"
+                >
+                  <Presentation size={16} className="mr-2" />
+                  Members
                 </TabsTrigger>
                 <TabsTrigger
                   value="settings"
@@ -183,6 +191,9 @@ const SingleTeamProjects = ({ params }: { params: { teamId: string } }) => {
                       <DataTable columns={columns} data={tempTeam.projects} />
                     </>
                   )}
+                </TabsContent>
+                <TabsContent value="members">
+                  <MembersTable team={team} />
                 </TabsContent>
                 <TabsContent value="settings">
                   <TeamSettingsPage team={team} />

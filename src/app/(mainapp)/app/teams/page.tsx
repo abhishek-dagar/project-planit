@@ -9,7 +9,7 @@ import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import moment from "moment";
 import React, { useEffect, useState } from "react";
-import { CalendarDays, Group, Plus, Search } from "lucide-react";
+import { CalendarDays, Group, Plus, Search, Users2Icon } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogTrigger } from "@/components/ui/dialog";
 import CreateTeamModal from "@/components/modals/create-team-modal";
@@ -88,7 +88,7 @@ const Teams = () => {
       <div className="flex flex-col h-full">
         <div className="flex flex-col gap-4  px-5 pt-5">
           <p className="text-[20px] md:text-[36px] font-bold flex items-center gap-2 uppercase">
-            <CalendarDays />
+            <Users2Icon size={26}/>
             Teams
           </p>
           <Input
