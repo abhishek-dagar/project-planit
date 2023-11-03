@@ -12,10 +12,13 @@ const UpgradeCard = ({ reason }: { reason: string }) => {
         <span className="text-muted-foreground">{reason}</span>
       </div>
       <DialogFooter className="flex-col sm:flex-col justify-end">
-        <Button className="w-full" asChild>
-          <Link href={"/pricing"}>
+        <Button className="w-full" asChild disabled>
+          <Link
+            href={"/pricing"}
+            className="pointer-events-none cursor-not-allowed opacity-50"
+          >
             <RocketIcon className="mr-2" />
-            Upgrade
+            Upgrade {"(coming soon...)"}
           </Link>
         </Button>
       </DialogFooter>

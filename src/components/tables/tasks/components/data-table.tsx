@@ -32,9 +32,8 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { DataRow } from "./data-row";
-import { addNewTask, updateTask } from "@/lib/actions/task.action";
+import { updateTask } from "@/lib/actions/task.action";
 import { useToast } from "@/components/ui/use-toast";
-import { MoveIcon } from "lucide-react";
 import { Skeleton } from "@/components/ui/skeleton";
 import useUser from "@/components/custom-hooks/user";
 import { Button } from "@/components/ui/button";
@@ -305,9 +304,31 @@ export function DataTable<TData, TValue>({
                 <TableRow>
                   <TableCell
                     colSpan={columns.length + 1}
-                    className="h-24 text-center"
+                    className={`p-0 pt-2 border-x-2 ${
+                      newTaskOpen ? "" : "px-8"
+                    }`}
                   >
-                    No results.
+                    {newTaskOpen ? (
+                      <div
+                        className={`w-full h-full pl-3 ${
+                          newTaskOpen ? "border-2 border-primary" : ""
+                        }`}
+                      >
+                        <NewTaskRow
+                          setNewTaskOpen={setNewTaskOpen}
+                          table={table}
+                        />
+                      </div>
+                    ) : (
+                      <Button
+                        variant="ghost"
+                        size="sm"
+                        className="-ml-3 h-8 data-[state=open]:bg-accent flex gap-2"
+                        onClick={() => setNewTaskOpen(true)}
+                      >
+                        + New Task
+                      </Button>
+                    )}
                   </TableCell>
                 </TableRow>
               )}

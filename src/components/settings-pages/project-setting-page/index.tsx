@@ -64,14 +64,14 @@ const ProjectSettingsPage = ({ project, teamId }: Props) => {
         <div className="flex gap-2 items-center">
           <Input
             name="name"
-            className={"py-0 focus-visible:ring-1 bg-secondary-background"}
+            className={"py-0 focus-visible:ring-1 bg-background"}
             clName={"h-7 w-60"}
             value={updatedProject.name}
             onChange={handleUpdatedProject}
           />
           <Button
             variant={"secondary"}
-            className="hover:ring-2 border hover:ring-primary h-7"
+            className="hover:ring-2 bg-background border hover:ring-primary h-7"
             onClick={updateCurrentTeam}
             disabled={loading.rename}
           >
@@ -89,16 +89,16 @@ const ProjectSettingsPage = ({ project, teamId }: Props) => {
         <div className="border border-red-500 rounded-md p-4 bg-secondary-background">
           <div className="flex flex-col gap-2 md:flex-row justify-between">
             <div>
-              <p className="text-[18px] font-bold">Delete this Team</p>
+              <p className="text-[18px] font-bold">Delete this Project</p>
               <p className="text-[12px] font-medium">
                 Once you delete a project, there is no going back, loose all
-                projects & tasks, Please be certain.
+                tasks, Please be certain.
               </p>
             </div>
             <Dialog>
               <DialogTrigger asChild>
                 <Button className="bg-secondary-background border border-red-500 text-red-500 transition-all hover:bg-red-500 hover:text-white">
-                  Delete this Team
+                  Delete this Project
                 </Button>
               </DialogTrigger>
               <DeleteTeamModal deleteContent={project} />

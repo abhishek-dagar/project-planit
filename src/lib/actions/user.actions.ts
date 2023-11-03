@@ -10,6 +10,7 @@ const userEndpoints = {
   fetchUser: url + "/userDetails",
   fetchMembers: url + "/members",
   fetchMember: url + "/member",
+  updateMember: url + "/member",
 };
 
 export async function loginAction({
@@ -77,6 +78,16 @@ export async function fetchMember(memberId: string) {
     const response = await axios.post(userEndpoints.fetchMember, {
       id: memberId,
     });
+
+    return { response: response.data.data };
+  } catch (err) {
+    return { err };
+  }
+}
+
+export async function updateMember(member: any) {
+  try {
+    const response = await axios.put(userEndpoints.updateMember, member);
 
     return { response: response.data.data };
   } catch (err) {
