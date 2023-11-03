@@ -9,13 +9,14 @@ const axiosClient = axios.create({
     encode: (params) => queryString.stringify(params),
   },
 });
-
+//@ts-ignore
 axiosClient.interceptors.request.use(async (config) => {
   return {
     ...config,
-    // headers: {
-    //   "Content-Type": "application/json",
-    // },
+    headers: {
+      //@ts-ignore
+      Cookie: `token=${config.cookie}`,
+    },
   };
 });
 

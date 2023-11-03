@@ -53,12 +53,22 @@ export async function userRegisterAction(data: {
     return { err };
   }
 }
-export async function fetchUser() {
+export async function fetchUser(cookie: string | undefined) {
   try {
-    const response = await axios.get(userEndpoints.fetchUser);
+    if (cookie) {
+      const response = await axiosClient.get("/user/userDetails", {
+        //@ts-ignore
+        cookie: cookie,
+      });
 
-    return { response: response.data.data };
+      if (response) {
+        return { user: response.data };
+      }
+    }
+    throw Error("User not found");
   } catch (err) {
+    console.log(err);
+
     return { err };
   }
 }

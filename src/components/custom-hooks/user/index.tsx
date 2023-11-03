@@ -23,6 +23,15 @@ const useUser = ({ configs = { isFetch: false } }: Props) => {
     dispatch(setUser(updatedUser));
   };
 
+  const setCurrentUser = (user: any) => {
+    dispatch(setUser(user));
+    dispatch(setTeams(user.teams));
+    const projects: any = {};
+    user.teams.map((team: Team) => (projects[`${team.id}`] = team.projects));
+    dispatch(setProjects(projects));
+    dispatch(setMembers(user.members));
+  };
+
   useEffect(() => {
     if (user) {
       const tempUser = JSON.parse(JSON.stringify(user));
@@ -34,23 +43,22 @@ const useUser = ({ configs = { isFetch: false } }: Props) => {
   useEffect(() => {
     if (configs.isFetch) {
       // setTimeout(() => {
-      fetchUser().then(({ response }) => {
-        dispatch(setUser(response));
-
-        dispatch(setTeams(response.teams));
-        const projects: any = {};
-        response.teams.map(
-          (team: Team) => (projects[`${team.id}`] = team.projects)
-        );
-
-        dispatch(setProjects(projects));
-
-        dispatch(setMembers(response.members));
-      });
+      // fetchUser().then(({ response }) => {
+      //   if (response) {
+      //     dispatch(setUser(response));
+      //     dispatch(setTeams(response.teams));
+      //     const projects: any = {};
+      //     response.teams.map(
+      //       (team: Team) => (projects[`${team.id}`] = team.projects)
+      //     );
+      //     dispatch(setProjects(projects));
+      //     dispatch(setMembers(response.members));
+      //   }
+      // });
       // }, 3000);
     }
   }, []);
-  return [user, { setUpdatedUser }];
+  return [user, { setUpdatedUser, setCurrentUser }];
 };
 
 export default useUser;

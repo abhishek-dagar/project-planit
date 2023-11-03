@@ -6,6 +6,7 @@ import { Poppins } from "next/font/google";
 import { ThemeProvider } from "@/components/provider/theme-provider";
 import HomeFooter from "@/components/navigation-bars/home-footer-bar";
 import ProgressbarProviders from "@/components/provider/progress-bar-provider";
+import ReduxProvider from "@/components/provider/redux-provider";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -28,15 +29,17 @@ export default function RootLayout({
         <link rel="shortcut icon" href="/logo.svg" />
       </head>
       <body className={poppins.className}>
-        <ThemeProvider attribute="class" forcedTheme="theme-blue">
-          <ProgressbarProviders>
-            <div className="h-screen overflow-auto relative">
-              <HomeNavigation />
-              {children}
-              <HomeFooter />
-            </div>
-          </ProgressbarProviders>
-        </ThemeProvider>
+        <ReduxProvider>
+          <ThemeProvider attribute="class" forcedTheme="theme-blue">
+            <ProgressbarProviders>
+              <div className="h-screen overflow-auto relative">
+                <HomeNavigation />
+                {children}
+                <HomeFooter />
+              </div>
+            </ProgressbarProviders>
+          </ThemeProvider>
+        </ReduxProvider>
       </body>
     </html>
   );
