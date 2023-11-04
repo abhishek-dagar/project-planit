@@ -10,7 +10,11 @@ const useMembers = ({ configs = {} }: Props) => {
   const { members } = useSelector((state: any) => state.members);
   const dispatch = useDispatch();
 
-  return [members];
+  const fetchMembers = (memberIds: any) => {
+    return members.filter((member: any) => memberIds.includes(member.id));
+  };
+
+  return [members, { fetchMembers }];
 };
 
 export default useMembers;

@@ -18,9 +18,11 @@ export const metadata: Metadata = {
 export default function TaskPage({
   tasks,
   project,
+  team,
 }: {
   tasks: any;
   project: any;
+  team: any;
 }) {
   const [user] = useUser({});
   return (
@@ -77,6 +79,7 @@ export default function TaskPage({
                 data={tasks}
                 columns={columns}
                 projectId={project.id}
+                team={team}
               />
             </TabsContent>
             <TabsContent value="board">

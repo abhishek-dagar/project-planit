@@ -43,6 +43,7 @@ const userSchema = new mongoose.Schema(
     isActive: { type: Boolean, default: false },
     managerId: { type: mongoose.Schema.ObjectId, ref: "User" },
     members: [{ type: mongoose.Schema.ObjectId, ref: "User" }],
+    teamId: { type: mongoose.Schema.ObjectId, ref: "Team" },
   },
   modelOptions
 );

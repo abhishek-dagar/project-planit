@@ -1,4 +1,5 @@
 import useMembers from "@/components/custom-hooks/members";
+import useTeams from "@/components/custom-hooks/teams";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import {
@@ -23,17 +24,21 @@ interface Props {
   isAvatar?: boolean;
   className?: string;
   updateAssignee: (value: any) => void;
+  team?: any;
 }
 
 const AssigneeDropdown = ({
   assignedTo,
   updateAssignee,
   isAvatar = false,
+  team,
   className = "",
 }: Props) => {
   const [assignee, setAssignee] = useState<any>();
 
-  const [members] = useMembers({});
+  const [_, { fetchMembers }] = useMembers({});
+
+  const members = fetchMembers(team?.members);
 
   useEffect(() => {
     setAssignee(assignedTo);
@@ -82,25 +87,26 @@ const AssigneeDropdown = ({
           <CommandList>
             <CommandEmpty>No results found.</CommandEmpty>
             <CommandGroup className="py-2 px-4 font-normal">
-              {members.map((member: any) => {
-                return (
-                  <CommandItem
-                    key={member.id}
-                    className="flex gap-2"
-                    onSelect={() => {
-                      setAssignee(member);
-                      updateAssignee(member);
-                    }}
-                  >
-                    <Avatar>
-                      <AvatarFallback className="capitalize">
-                        {member?.username[0]}
-                      </AvatarFallback>
-                    </Avatar>
-                    <span>{member.username}</span>
-                  </CommandItem>
-                );
-              })}
+              {members &&
+                members.map((member: any) => {
+                  return (
+                    <CommandItem
+                      key={member.id}
+                      className="flex gap-2"
+                      onSelect={() => {
+                        setAssignee(member);
+                        updateAssignee(member);
+                      }}
+                    >
+                      <Avatar>
+                        <AvatarFallback className="capitalize">
+                          {member?.username[0]}
+                        </AvatarFallback>
+                      </Avatar>
+                      <span>{member.username}</span>
+                    </CommandItem>
+                  );
+                })}
               {assignee && (
                 <>
                   <CommandSeparator />

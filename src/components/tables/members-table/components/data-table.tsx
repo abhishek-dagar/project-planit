@@ -1,4 +1,6 @@
+import AddMemberToTeamModal from "@/components/modals/add-member-to-team";
 import { Button } from "@/components/ui/button";
+import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
 import { updateMember } from "@/lib/actions/user.actions";
 import {
@@ -78,59 +80,75 @@ export function MemberTable<TData, TValue>({
   });
   return (
     <div className="flex flex-col gap-4">
-      {table.getHeaderGroups().map((headerGroup) => (
-        <div
-          key={headerGroup.id}
-          className="flex justify-between px-8 py-3 rounded-lg bg-background"
-        >
-          {headerGroup.headers.map((header, index) => {
-            return (
-              <div key={header.id}>
-                {header.isPlaceholder
-                  ? null
-                  : flexRender(
-                      header.column.columnDef.header,
-                      header.getContext()
-                    )}
-              </div>
-            );
-          })}
-        </div>
-      ))}
-      <div className="flex flex-col gap-3">
-        {table?.getRowModel().rows?.length ? (
-          <>
-            {table.getRowModel().rows.map((row) => (
-              <div
-                key={row.id}
-                className="flex justify-between px-8 border-b-2 border-background items-center pb-2"
-              >
-                {row.getVisibleCells().map((cell: any, index: number) => {
-                  return (
-                    <div key={cell.id}>
-                      {flexRender(cell.column.columnDef.cell, {
-                        ...cell.getContext(),
-                      })}
-                    </div>
-                  );
-                })}
-              </div>
-            ))}
-            <div className="flex justify-between px-8 border-b-2 border-background items-center pb-1">
-              <Button
-                variant={"ghost"}
-                className="px-2 py-0 hover:bg-background"
-              >
-                + New Member
-              </Button>
-            </div>
-          </>
-        ) : (
-          <div>
-            <div className="h-24 w-full text-center">No Members</div>
+      <Dialog>
+        {table.getHeaderGroups().map((headerGroup) => (
+          <div
+            key={headerGroup.id}
+            className="flex justify-between px-8 py-3 rounded-lg bg-background"
+          >
+            {headerGroup.headers.map((header, index) => {
+              return (
+                <div key={header.id}>
+                  {header.isPlaceholder
+                    ? null
+                    : flexRender(
+                        header.column.columnDef.header,
+                        header.getContext()
+                      )}
+                </div>
+              );
+            })}
           </div>
-        )}
-      </div>
+        ))}
+        <div className="flex flex-col gap-3">
+          {table?.getRowModel().rows?.length ? (
+            <>
+              {table.getRowModel().rows.map((row) => (
+                <div
+                  key={row.id}
+                  className="flex justify-between px-8 border-b-2 border-background items-center pb-2"
+                >
+                  {row.getVisibleCells().map((cell: any, index: number) => {
+                    return (
+                      <div key={cell.id}>
+                        {flexRender(cell.column.columnDef.cell, {
+                          ...cell.getContext(),
+                        })}
+                      </div>
+                    );
+                  })}
+                </div>
+              ))}
+              <div className="flex justify-between px-8 border-b-2 border-background items-center pb-1">
+                <DialogTrigger>
+                  <Button
+                    variant={"ghost"}
+                    className="px-2 py-0 hover:bg-background"
+                  >
+                    + New Member
+                  </Button>
+                </DialogTrigger>
+              </div>
+            </>
+          ) : (
+            <div>
+              <div className="flex justify-between px-8 border-b-2 border-background items-center pb-1">
+                <DialogTrigger>
+                  <Button
+                    variant={"ghost"}
+                    className="px-2 py-0 hover:bg-background"
+                  >
+                    + New Member
+                  </Button>
+                </DialogTrigger>
+              </div>
+            </div>
+          )}
+        </div>
+        <DialogContent>
+          <AddMemberToTeamModal />
+        </DialogContent>
+      </Dialog>
     </div>
   );
 }

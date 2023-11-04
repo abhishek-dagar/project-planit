@@ -50,12 +50,14 @@ interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
   projectId: string;
+  team: any;
 }
 
 export function DataTable<TData, TValue>({
   columns,
   data,
   projectId,
+  team,
 }: DataTableProps<TData, TValue>) {
   const [loading, setLoading] = React.useState<boolean>(true);
   const [currentData, setCurrentData] = React.useState<TData[]>([]);
@@ -267,7 +269,7 @@ export function DataTable<TData, TValue>({
               {table?.getRowModel().rows?.length ? (
                 <>
                   {table.getRowModel().rows.map((row) => (
-                    <DataRow key={row.id} row={row} id={row.id} />
+                    <DataRow key={row.id} row={row} team={team} />
                   ))}
                   <TableRow
                     className={`data-[state=selected]:bg-transparent [&_.grip-icon]:invisible [&:hover_.grip-icon]:visible h-[40px] overflow-visible border-background [&:hover_.checkbox]:block [&:hover_.serial-number]:hidden [&:hover_.maximize]:visible py-0 bg-background`}

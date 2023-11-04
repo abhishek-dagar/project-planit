@@ -55,7 +55,7 @@ const Projects = async ({
           </p>
         </div>
         <TabsContent value="tasks" className="relative">
-          <TaskPage tasks={project?.tasks} project={project} />
+          <TaskPage tasks={project?.tasks} project={project} team={team} />
         </TabsContent>
         <TabsContent value="settings">
           <ProjectSettingsPage project={project} teamId={params.teamId} />

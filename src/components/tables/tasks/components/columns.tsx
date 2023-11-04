@@ -36,7 +36,9 @@ const EditTask = dynamic(
 );
 
 declare module "@tanstack/react-table" {
-  interface CellContext<TData extends RowData, TValue> {}
+  interface CellContext<TData extends RowData, TValue> {
+    team: any;
+  }
 }
 
 export const columns: ColumnDef<Task>[] = [
@@ -222,7 +224,7 @@ export const columns: ColumnDef<Task>[] = [
       />
     ),
     size: 50,
-    cell: ({ row, table, column }) => {
+    cell: ({ row, table, column, team }) => {
       const updateAssignee = (value: any) => {
         table.options.meta?.updateData(row.index, column.id, value);
       };
@@ -230,6 +232,7 @@ export const columns: ColumnDef<Task>[] = [
         <AssigneeDropdown
           assignedTo={row.getValue("assignedTo")}
           updateAssignee={updateAssignee}
+          team={team}
         />
       );
     },

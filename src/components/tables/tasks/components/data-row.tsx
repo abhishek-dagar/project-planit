@@ -5,10 +5,10 @@ import { Button } from "@/components/ui/button";
 
 interface DataTableRowProps {
   row: any;
-  id: string;
+  team: any;
 }
 
-export function DataRow({ row, id }: DataTableRowProps) {
+export function DataRow({ row, team }: DataTableRowProps) {
   return (
     <TableRow
       data-state={row.getIsSelected() && "selected"}
@@ -57,6 +57,7 @@ export function DataRow({ row, id }: DataTableRowProps) {
             ) : (
               flexRender(cell.column.columnDef.cell, {
                 ...cell.getContext(),
+                team,
               })
             )}
           </TableCell>

@@ -28,14 +28,15 @@ export const POST = async (req: NextRequest) => {
 
     const newUser = new User({ ...reqBody, currentPlan });
     if (reqBody.managerId) {
-      const manager: any = User.findById(reqBody.managerId);
+      const manager: any = await User.findById(reqBody.managerId);
       if (!manager) {
         return NextResponse.json(
           { message: "Manager not found" },
           { status: 500 }
         );
       }
-      if (manager.members) {
+
+      if (!manager.members) {
         manager.members = [newUser];
       } else {
         manager.members.push(newUser);
