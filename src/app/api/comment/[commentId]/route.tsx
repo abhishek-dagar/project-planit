@@ -17,6 +17,13 @@ export const GET = async (req: NextRequest, context: { params: "string" }) => {
         },
         { status: 201 }
       );
+    return NextResponse.json(
+      {
+        message: "Comment creation failed",
+        success: true,
+      },
+      { status: 500 }
+    );
   } catch (error: any) {
     return NextResponse.json({ message: error.message }, { status: 500 });
   }
