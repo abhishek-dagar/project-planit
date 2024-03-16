@@ -30,7 +30,7 @@ const Cart = () => {
     fetchPlan(localStorage.getItem("price")).then((pricePlan) => {
       setSelectedPlan(pricePlan);
     });
-    fetchUser().then(({ user }: any) => {
+    fetchUser("").then(({ user }: any) => {
       if (user) {
         setUser(user);
       } else {
