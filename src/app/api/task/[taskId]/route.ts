@@ -12,5 +12,7 @@ export const GET = async (req: NextRequest, context: { params: "string" }) => {
       { message: "project fetched", data: {}, success: true },
       { status: 200 }
     );
-  } catch {}
+  } catch {
+    return NextResponse.json({ message: "project fetched" }, { status: 500 });
+  }
 };
