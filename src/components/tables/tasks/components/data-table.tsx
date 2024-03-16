@@ -32,7 +32,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { DataRow } from "./data-row";
-import { updateTask } from "@/lib/actions/task.action";
+import { addNewTask, updateTask } from "@/lib/actions/task.action";
 import { useToast } from "@/components/ui/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import useUser from "@/components/custom-hooks/user";
@@ -177,10 +177,10 @@ export function DataTable<TData, TValue>({
         delete newData["id"];
         newData["projectId"] = projectId;
 
-        // const response: any = await addNewTask(newData);
-        // if (response?.success) {
-        toast({ description: "Copy of Task updated successfully" });
-        // }
+        const response: any = await addNewTask(newData);
+        if (response?.success) {
+          toast({ description: "Copy of Task updated successfully" });
+        }
       },
     },
   });

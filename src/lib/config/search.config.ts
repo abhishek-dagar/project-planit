@@ -20,7 +20,7 @@ export const searchMenu = [
         name: "Tasks",
         sortCutKey: "alt+t",
         icon: Users,
-        link: "/app/my-tasks",
+        link: "/app/tasks",
       },
       {
         name: "Teams",

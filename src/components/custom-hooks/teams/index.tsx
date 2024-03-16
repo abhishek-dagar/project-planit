@@ -11,6 +11,7 @@ interface Props {
 const useTeams = ({ configs = {} }: Props) => {
   const { teams } = useSelector((state: any) => state.teams);
   const { projects } = useSelector((state: any) => state.projects);
+  const { members } = useSelector((state: any) => state.members);
   const dispatch = useDispatch();
   const setUpdatedTeams = (updatedTeams: any) => {
     dispatch(setTeams(updatedTeams));
@@ -47,7 +48,7 @@ const useTeams = ({ configs = {} }: Props) => {
 
       dispatch(setTeams(tempTeams));
     }
-  }, [projects]);
+  }, [projects, members]);
   return [teams, { setUpdatedTeams, updateTeam, addNewTeam, fetchTeam }];
 };
 

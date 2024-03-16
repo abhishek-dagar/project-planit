@@ -13,7 +13,7 @@ const MembersTable = ({ team }: Props) => {
 
   return (
     <div>
-      <MemberTable data={members} columns={columns} />
+      <MemberTable data={members} columns={columns} team={team} />
     </div>
   );
 };

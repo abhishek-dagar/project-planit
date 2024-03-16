@@ -16,8 +16,8 @@ const homeMenu = [
 const appSideMenu = [
   { title: "Dashboard", link: "/app/dashboard", icon: LayoutDashboard },
   { title: "Search", link: "", icon: Search },
-  { title: "Notification", link: "", icon: BellIcon },
-  { title: "My Tasks", link: "/app/my-tasks", icon: CheckSquare },
+  { title: "Notification", link: "/app/notifications", icon: BellIcon },
+  { title: "Tasks", link: "/app/tasks", icon: CheckSquare },
   { title: "Teams", link: "/app/teams", icon: Group },
 ];
 

@@ -47,7 +47,21 @@ export const PUT = async (req: NextRequest) => {
       );
     }
     const projects = reqBody.projects.map((project: any) => project.id);
-    const members = reqBody.members.map((project: any) => project.id);
+    const members = reqBody.members.map((member: any) => member.id);
+    if (team.members?.length < reqBody.members?.length) {
+      const count = reqBody.members?.length - team.members?.length - 1;
+      reqBody.members.map(async (member: any, index: number) => {
+        if (index >= count) {
+          const user = await User.findByIdAndUpdate(member.id, { ...member });
+          if (!user) {
+            return NextResponse.json(
+              { message: "Failed to add member", success: false },
+              { status: 404 }
+            );
+          }
+        }
+      });
+    }
     const teamLead = reqBody.teamLead?.id;
 
     const updatedTeam = await Team.findByIdAndUpdate(reqBody.id, {

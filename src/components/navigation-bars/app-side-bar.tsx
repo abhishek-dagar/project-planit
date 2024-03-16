@@ -23,6 +23,7 @@ import {
 import AddNewUser from "../modals/add-new-user-modal";
 import { RegisterForm } from "../forms/register-form";
 import useUser from "../custom-hooks/user";
+import { useHotkeys } from "../custom-hooks/hotkeys";
 
 const AppSideBar = () => {
   const pathname = usePathname();
@@ -31,32 +32,37 @@ const AppSideBar = () => {
   const [open, setOpen] = useState(false);
   const [user] = useUser({});
 
-  useEffect(() => {
-    const down = (e: KeyboardEvent) => {
-      if (e.key === "s" && (e.metaKey || e.altKey)) {
-        e.preventDefault();
-        setOpen((open) => !open);
-      }
-      if (e.key === "p" && (e.metaKey || e.altKey)) {
-        e.preventDefault();
-        setOpen(false);
-        router.push("/app/profile");
-      }
-      if (e.key === "t" && (e.metaKey || e.altKey)) {
-        e.preventDefault();
-        setOpen(false);
-        router.push("/app/teams");
-      }
-      if (e.key === "d" && (e.metaKey || e.altKey)) {
-        e.preventDefault();
-        setOpen(false);
-        router.push("/app/dashboard");
-      }
-    };
+  useHotkeys([["alt,s", () => setOpen((prev) => !prev)]]);
+  useHotkeys([["alt,p", () => router.push("/app/profile")]]);
+  useHotkeys([["alt,t", () => router.push("/app/teams")]]);
+  useHotkeys([["alt,d", () => router.push("/app/dashboard")]]);
 
-    document.addEventListener("keydown", down);
-    return () => document.removeEventListener("keydown", down);
-  }, []);
+  // useEffect(() => {
+  //   const down = (e: KeyboardEvent) => {
+  //     if (e.key === "s" && (e.metaKey || e.altKey)) {
+  //       e.preventDefault();
+  //       setOpen((open) => !open);
+  //     }
+  //     if (e.key === "p" && (e.metaKey || e.altKey)) {
+  //       e.preventDefault();
+  //       setOpen(false);
+  //       router.push("/app/profile");
+  //     }
+  //     if (e.key === "t" && (e.metaKey || e.altKey)) {
+  //       e.preventDefault();
+  //       setOpen(false);
+  //       router.push("/app/teams");
+  //     }
+  //     if (e.key === "d" && (e.metaKey || e.altKey)) {
+  //       e.preventDefault();
+  //       setOpen(false);
+  //       router.push("/app/dashboard");
+  //     }
+  //   };
+
+  //   document.addEventListener("keydown", down);
+  //   return () => document.removeEventListener("keydown", down);
+  // }, []);
 
   return (
     <div className="hidden md:block bg-background w-[60px] h-screen border-r-[1px]">
@@ -73,6 +79,9 @@ const AppSideBar = () => {
               const active = pathname.includes(menu.link) && menu.link !== "";
 
               if ((!user || user?.role === "member") && menu.title === "Teams")
+                return;
+
+              if ((!user || user?.role === "manager") && menu.title === "Tasks")
                 return;
 
               return (

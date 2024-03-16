@@ -1,7 +1,9 @@
+import useTeams from "@/components/custom-hooks/teams";
 import AddMemberToTeamModal from "@/components/modals/add-member-to-team";
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogTrigger } from "@/components/ui/dialog";
 import { useToast } from "@/components/ui/use-toast";
+import { updateTeam as dbUpdateTeam } from "@/lib/actions/team.action";
 import { updateMember } from "@/lib/actions/user.actions";
 import {
   ColumnDef,
@@ -24,11 +26,13 @@ declare module "@tanstack/react-table" {
 interface DataTableProps<TData, TValue> {
   columns: ColumnDef<TData, TValue>[];
   data: TData[];
+  team: any;
 }
 
 export function MemberTable<TData, TValue>({
   columns,
   data,
+  team,
 }: DataTableProps<TData, TValue>) {
   const [currentData, setCurrentData] = React.useState<TData[]>(data);
   const [sorting, setSorting] = React.useState<SortingState>([]);
@@ -38,6 +42,7 @@ export function MemberTable<TData, TValue>({
     });
 
   const { toast } = useToast();
+  const [_, { updateTeam }] = useTeams({});
 
   const table = useReactTable({
     data: currentData,
@@ -75,7 +80,25 @@ export function MemberTable<TData, TValue>({
           setCurrentData(copyData);
         }
       },
-      addDate: () => {},
+      addDate: async (newData) => {
+        const addingData = [...currentData, ...newData];
+        setCurrentData(addingData);
+
+        const updatedTeam = JSON.parse(JSON.stringify(team));
+        if (updatedTeam.members) {
+          updatedTeam.members = [...updatedTeam.members, ...newData];
+        } else {
+          updatedTeam.members = [...newData];
+        }
+
+        const te: any = await dbUpdateTeam(updatedTeam);
+        if (te?.success) {
+          updateTeam(updateMember);
+        }
+        // delete newData["_id"];
+        // delete newData["id"];
+        // newData["projectId"] = projectId;
+      },
     },
   });
   return (
@@ -120,7 +143,7 @@ export function MemberTable<TData, TValue>({
                 </div>
               ))}
               <div className="flex justify-between px-8 border-b-2 border-background items-center pb-1">
-                <DialogTrigger>
+                <DialogTrigger asChild>
                   <Button
                     variant={"ghost"}
                     className="px-2 py-0 hover:bg-background"
@@ -133,7 +156,7 @@ export function MemberTable<TData, TValue>({
           ) : (
             <div>
               <div className="flex justify-between px-8 border-b-2 border-background items-center pb-1">
-                <DialogTrigger>
+                <DialogTrigger asChild>
                   <Button
                     variant={"ghost"}
                     className="px-2 py-0 hover:bg-background"
@@ -146,7 +169,7 @@ export function MemberTable<TData, TValue>({
           )}
         </div>
         <DialogContent>
-          <AddMemberToTeamModal />
+          <AddMemberToTeamModal team={team} table={table} />
         </DialogContent>
       </Dialog>
     </div>
