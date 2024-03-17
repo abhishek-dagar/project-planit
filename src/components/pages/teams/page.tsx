@@ -102,10 +102,10 @@ const TeamsPage = () => {
           {menus.map((team: Menus) => {
             if (!team.menu || team.menu?.length <= 0) return <div key={0} />;
             return (
-              <div key={team.title} className="w-full h-full my-4">
+              <div key={team?.title} className="w-full h-full my-4">
                 <div className="flex items-center justify-between">
                   <p className="uppercase truncate text-slate-400">
-                    {team.title}
+                    {team?.title}
                   </p>
                   <Dialog open={open} onOpenChange={setOpen}>
                     <DialogTrigger asChild>

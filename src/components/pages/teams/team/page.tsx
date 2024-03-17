@@ -129,7 +129,7 @@ const TeamPage = ({ teamId }: { teamId: string }) => {
                     <Link href={"/app/teams"} className="hover:underline">
                       Teams
                     </Link>{" "}
-                    {">"} {tempTeam.title}
+                    {">"} {tempTeam?.title}
                   </p>
                   <Dialog open={open} onOpenChange={setOpen}>
                     <DialogTrigger asChild>
