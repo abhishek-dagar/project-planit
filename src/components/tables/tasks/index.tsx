@@ -51,7 +51,7 @@ export default function TaskPage({
                     <Table size={18} className="mr-2" />
                     Table
                   </TabsTrigger>
-                  {!user || user?.currentPlan.title === "free" ? (
+                  {!user || user?.currentPlan?.title === "free" ? (
                     <DialogTrigger>
                       <div className="flex items-center py-1.5 px-3">
                         <KanbanSquare size={18} className="mr-2" />
