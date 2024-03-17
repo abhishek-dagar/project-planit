@@ -46,6 +46,9 @@ export function UserLoginForm({ className, ...props }: UserLoginFormProps) {
     try {
       const response: any = await loginAction(values);
 
+      console.log(response);
+      
+
       if (response.response?.success) {
         toast({
           description: "Login Successful",

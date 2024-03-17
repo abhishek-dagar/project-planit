@@ -21,7 +21,7 @@ const NewTaskRow = ({ setNewTaskOpen, table }: Props) => {
       newTask.status = TaskStatus.TODO;
       newTask.priority = TaskPriority.NONE;
       setNewTask(null);
-      table.options.meta?.addDate(newTask);
+      table.options.meta?.addDate(newTask,true);
       setNewTaskOpen(false);
     }
   };

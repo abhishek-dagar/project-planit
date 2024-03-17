@@ -67,7 +67,7 @@ export async function fetchUser(cookie: string | undefined) {
     }
     throw Error("User not found");
   } catch (err) {
-    console.log(err);
+    // console.log(err);
 
     return { err };
   }

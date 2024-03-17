@@ -124,10 +124,12 @@ function EditTask({ task, table, row }: Props) {
 
   useEffect(() => {
     setTitle(task.title);
-    let tempComments = [...task.comments];
-    tempComments = tempComments.reverse();
+    if (task.comments.length > 0) {
+      let tempComments = [...task.comments];
+      tempComments = tempComments.reverse();
 
-    setComments(tempComments);
+      setComments(tempComments);
+    }
 
     type TaskStatusColorStrings = keyof typeof TaskStatusColor;
     const currStatus: TaskStatusColorStrings = task.status;

@@ -38,6 +38,14 @@ export const GET = async (req: NextRequest) => {
         path: "members",
         model: User,
       });
+    if (!user) {
+      const response = NextResponse.json(
+        { message: "User not found" },
+        { status: 500 }
+      );
+      response.cookies.delete("token");
+      return response;
+    }
     return NextResponse.json({
       message: "User found",
       data: user,

@@ -115,6 +115,13 @@ export function DataTable<TData, TValue>({
       updateData: async (rowIndex, columnId, value) => {
         const newData: any = [...data];
         let newComment: any = { comment: "", from: null, to: null };
+        if (columnId === "title") {
+          newComment = {
+            comment: "Title Changed",
+            from: newData[rowIndex][columnId],
+            to: value,
+          };
+        }
         if (columnId === "status") {
           newComment = {
             comment: "Changed Status",
@@ -168,7 +175,7 @@ export function DataTable<TData, TValue>({
           toast({ description: "Task updated successfully" });
         }
       },
-      addDate: async (newData) => {
+      addDate: async (newData, isNew = false) => {
         const addingData = [...currentData];
         addingData.push(newData);
         setCurrentData(addingData);
@@ -179,7 +186,11 @@ export function DataTable<TData, TValue>({
 
         const response: any = await addNewTask(newData);
         if (response?.success) {
-          toast({ description: "Copy of Task updated successfully" });
+          if (!isNew) {
+            toast({ description: "Copy of Task Added successfully" });
+          } else {
+            toast({ description: "New Task Added successfully" });
+          }
         }
       },
     },

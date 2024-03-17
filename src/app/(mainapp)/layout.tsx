@@ -12,6 +12,7 @@ import ReduxProvider from "@/components/provider/redux-provider";
 import { fetchUser } from "@/lib/actions/user.actions";
 import { cookies } from "next/headers";
 import UserProvider from "@/components/provider/user-provider";
+import { redirect } from "next/navigation";
 
 const poppins = Poppins({ subsets: ["latin"], weight: "400" });
 
@@ -21,6 +22,10 @@ export default async function RootLayout({
   children: React.ReactNode;
 }) {
   const { user } = await fetchUser(cookies().get("token")?.value);
+
+  if (!user) {
+    redirect("/login");
+  }
 
   return (
     <html lang="en" suppressHydrationWarning={true}>
