@@ -78,7 +78,7 @@ const PriorityDropdown = ({
                   type TaskPriorityColorStrings =
                     keyof typeof TaskPriorityColor;
                   const currPriority: TaskPriorityColorStrings =
-                    priority.value.toUpperCase();
+                    priority.value.toUpperCase() as TaskPriorityColorStrings;
                   const currColor = TaskPriorityColor[currPriority];
 
                   return (

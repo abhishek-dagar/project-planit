@@ -77,7 +77,7 @@ const StatusDropdown = ({
                 ) => {
                   type TaskStatusColorStrings = keyof typeof TaskStatusColor;
                   const currStatus: TaskStatusColorStrings =
-                    status.value.toUpperCase();
+                    status.value.toUpperCase() as TaskStatusColorStrings;
                   const currColor = TaskStatusColor[currStatus];
 
                   return (
