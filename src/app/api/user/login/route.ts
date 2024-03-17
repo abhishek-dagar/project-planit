@@ -3,10 +3,10 @@ import User from "@/lib/mongoose/models/user.model";
 import { NextRequest, NextResponse } from "next/server";
 import jwt from "jsonwebtoken";
 
-connectToDB();
 
 export const POST = async (req: NextRequest) => {
   try {
+    connectToDB();
     const reqBody = await req.json();
     const { emailOrUsername, password } = reqBody;
 
