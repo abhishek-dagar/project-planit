@@ -77,6 +77,7 @@ const CreateTeamModal = ({
       });
     }
     if (error.isError && !skip) return;
+    
     if (project.name.length < 1 && !skip) {
       setError({
         isError: true,
@@ -164,7 +165,7 @@ const CreateTeamModal = ({
             </Button>
             <Button
               variant={"link"}
-              onClick={() => handleCreateProject(false)}
+              onClick={() => handleCreateProject(true)}
               disabled={isLoading}
             >
               skip
