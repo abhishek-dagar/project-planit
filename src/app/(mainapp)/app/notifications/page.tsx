@@ -17,17 +17,17 @@ const Notifications = () => {
             />
             <path
               fill="url(#c)"
-              fill-opacity=".5"
-              fill-rule="evenodd"
+              fillOpacity=".5"
+              fillRule="evenodd"
               d="M75.046 34.498H44.954a4 4 0 0 0-3.17 1.561L24.83 58.1a4 4 0 0 0-.83 2.44v21.959a4 4 0 0 0 4 4h64a4 4 0 0 0 4-4v-21.96a4 4 0 0 0-.83-2.438L78.216 36.06a4 4 0 0 0-3.17-1.562Zm-30.092-2A6 6 0 0 0 40.2 34.84L23.244 56.88A6 6 0 0 0 22 60.54v21.959a6 6 0 0 0 6 6h64a6 6 0 0 0 6-6v-21.96a6 6 0 0 0-1.244-3.657L79.8 34.84a6 6 0 0 0-4.755-2.342H44.954Z"
-              clip-rule="evenodd"
+              clipRule="evenodd"
             />
             <path
               fill="url(#d)"
-              fill-opacity=".5"
-              fill-rule="evenodd"
+              fillOpacity=".5"
+              fillRule="evenodd"
               d="M75.046 33.498H44.954a5 5 0 0 0-3.963 1.951L24.037 57.49A5 5 0 0 0 23 60.54v21.959a5 5 0 0 0 5 5h64a5 5 0 0 0 5-5v-21.96a5 5 0 0 0-1.037-3.048L79.01 35.45a5 5 0 0 0-3.963-1.952Zm-30.092-1A6 6 0 0 0 40.2 34.84L23.244 56.88A6 6 0 0 0 22 60.54v21.959a6 6 0 0 0 6 6h64a6 6 0 0 0 6-6v-21.96a6 6 0 0 0-1.244-3.657L79.8 34.84a6 6 0 0 0-4.755-2.342H44.954Z"
-              clip-rule="evenodd"
+              clipRule="evenodd"
             />
             <path
               fill="url(#e)"
@@ -43,8 +43,8 @@ const Notifications = () => {
               y2="31.696"
               gradientUnits="userSpaceOnUse"
             >
-              <stop stop-color="#41407C" />
-              <stop offset="1" stop-color="#41407C" stop-opacity="0" />
+              <stop stopColor="#41407C" />
+              <stop offset="1" stopColor="#41407C" stopOpacity="0" />
             </linearGradient>
             <linearGradient
               id="c"
@@ -54,8 +54,8 @@ const Notifications = () => {
               y2="65.998"
               gradientUnits="userSpaceOnUse"
             >
-              <stop stop-color="#7F77F1" />
-              <stop offset="1" stop-color="#7F77F1" stop-opacity="0" />
+              <stop stopColor="#7F77F1" />
+              <stop offset="1" stopColor="#7F77F1" stopOpacity="0" />
             </linearGradient>
             <linearGradient
               id="d"
@@ -65,8 +65,8 @@ const Notifications = () => {
               y2="65.998"
               gradientUnits="userSpaceOnUse"
             >
-              <stop stop-color="#7F77F1" />
-              <stop offset="1" stop-color="#7F77F1" stop-opacity="0" />
+              <stop stopColor="#7F77F1" />
+              <stop offset="1" stopColor="#7F77F1" stopOpacity="0" />
             </linearGradient>
             <linearGradient
               id="e"
@@ -76,9 +76,9 @@ const Notifications = () => {
               y2="74.498"
               gradientUnits="userSpaceOnUse"
             >
-              <stop stop-color="#43418D" />
-              <stop offset="1" stop-color="#4C47AB" />
-              <stop offset="1" stop-color="#615CC0" />
+              <stop stopColor="#43418D" />
+              <stop offset="1" stopColor="#4C47AB" />
+              <stop offset="1" stopColor="#615CC0" />
             </linearGradient>
             <filter
               id="a"
@@ -86,10 +86,10 @@ const Notifications = () => {
               height="152"
               x="-16"
               y="-11.501"
-              color-interpolation-filters="sRGB"
+              colorInterpolationFilters="sRGB"
               filterUnits="userSpaceOnUse"
             >
-              <feFlood flood-opacity="0" result="BackgroundImageFix" />
+              <feFlood floodOpacity="0" result="BackgroundImageFix" />
               <feColorMatrix
                 in="SourceAlpha"
                 result="hardAlpha"

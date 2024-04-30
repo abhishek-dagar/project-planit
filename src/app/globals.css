@@ -83,6 +83,7 @@
 
   [class*="theme-rose-dark"] {
     --background: #0c0a09;
+    --secondary-background: #1f2428;
     --foreground: #f2f2f2;
     --card: #1c1917;
     --card-foreground: #f2f2f2;

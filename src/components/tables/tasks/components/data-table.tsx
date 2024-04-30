@@ -32,7 +32,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import { DataRow } from "./data-row";
-import { addNewTask, updateTask } from "@/lib/actions/task.action";
+import { addNewTask, deleteTask, updateTask } from "@/lib/actions/task.action";
 import { useToast } from "@/components/ui/use-toast";
 import { Skeleton } from "@/components/ui/skeleton";
 import useUser from "@/components/custom-hooks/user";
@@ -43,6 +43,7 @@ declare module "@tanstack/react-table" {
   interface TableMeta<TData extends RowData> {
     updateData: (rowIndex: number, columnId: string, value: any) => void;
     addDate: (data: any) => void;
+    deleteData: (rowIndex: any) => void;
   }
 }
 
@@ -191,6 +192,17 @@ export function DataTable<TData, TValue>({
           } else {
             toast({ description: "New Task Added successfully" });
           }
+        }
+      },
+      deleteData: async (rowIndex) => {
+        const newData = [...currentData];
+        const deleteData: any = newData[rowIndex];
+        newData.splice(rowIndex, 1);
+        setCurrentData(newData);
+
+        const response: any = await deleteTask(deleteData.id);
+        if (response?.success) {
+          toast({ description: "Task deleted successfully" });
         }
       },
     },

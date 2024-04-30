@@ -23,3 +23,12 @@ export async function addNewTask(task: any) {
     return err;
   }
 }
+
+export async function deleteTask(taskId: any) {
+  try {
+    await axios.delete(taskEndpoints.task + `/${taskId}`);
+    return { success: true };
+  } catch (err) {
+    return err;
+  }
+}

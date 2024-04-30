@@ -36,3 +36,14 @@ export async function updateProject(updatedProject: Project) {
     return err;
   }
 }
+
+export async function deleteProject(projectId: any) {
+  try {
+    // console.log(projectId);
+    
+    await axios.delete(`/api/project/${projectId}`);
+    return { success: true };
+  } catch (err) {
+    return err;
+  }
+}

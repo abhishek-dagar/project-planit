@@ -343,8 +343,18 @@ export const columns: ColumnDef<Task>[] = [
         copyTask.title += " copy";
         table.options.meta?.addDate(copyTask);
       };
+      const handleDelete = () => {
+        // console.log('delete');
+        
+        table.options.meta?.deleteData(row.index);
+      };
       return (
-        <DataTableRowActions row={row} handleCopy={handleCopy} table={table} />
+        <DataTableRowActions
+          row={row}
+          handleCopy={handleCopy}
+          handleDelete={handleDelete}
+          table={table}
+        />
       );
     },
   },

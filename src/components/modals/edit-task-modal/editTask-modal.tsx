@@ -124,7 +124,7 @@ function EditTask({ task, table, row }: Props) {
 
   useEffect(() => {
     setTitle(task.title);
-    if (task.comments.length > 0) {
+    if (task.comments &&task.comments.length > 0) {
       let tempComments = [...task.comments];
       tempComments = tempComments.reverse();
 

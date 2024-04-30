@@ -6,7 +6,8 @@ import DeleteTeamModal from "@/components/modals/delete-modal";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { updateProject } from "@/lib/actions/project.action";
+import { toast } from "@/components/ui/use-toast";
+import { deleteProject, updateProject } from "@/lib/actions/project.action";
 import { Project, Status } from "@/lib/interfacesOrEnum/teams-group";
 import { DialogTrigger } from "@radix-ui/react-dialog";
 import { PencilLine } from "lucide-react";
@@ -26,6 +27,7 @@ const ProjectSettingsPage = ({ project, teamId }: Props) => {
   });
   const projectHook = useProjects({});
   const [loading, setLoading] = useState({ rename: false });
+  const projects = useProjects({});
 
   const handleUpdatedProject = (e: any) => {
     setUpdatedProject((prev) => {
@@ -49,6 +51,15 @@ const ProjectSettingsPage = ({ project, teamId }: Props) => {
     } finally {
       setLoading((prev) => ({ ...prev, rename: false }));
     }
+  };
+
+  const handleDeleteTeam = async () => {
+    projects[1].deleteProject(teamId, project.id);
+    const response: any = await deleteProject(project.id);
+    if (response?.success) {
+      toast({ description: "Project deleted successfully" });
+    }
+    return teamId;
   };
 
   useEffect(() => {
@@ -101,7 +112,10 @@ const ProjectSettingsPage = ({ project, teamId }: Props) => {
                   Delete this Project
                 </Button>
               </DialogTrigger>
-              <DeleteTeamModal deleteContent={project} />
+              <DeleteTeamModal
+                deleteContent={project}
+                handleDelete={handleDeleteTeam}
+              />
             </Dialog>
           </div>
         </div>

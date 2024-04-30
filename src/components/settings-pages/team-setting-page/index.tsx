@@ -6,7 +6,8 @@ import DeleteTeamModal from "@/components/modals/delete-modal";
 import { Button } from "@/components/ui/button";
 import { Dialog } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
-import { updateTeam } from "@/lib/actions/team.action";
+import { toast } from "@/components/ui/use-toast";
+import { deleteTeam, updateTeam } from "@/lib/actions/team.action";
 import { Team } from "@/lib/interfacesOrEnum/teams-group";
 import { DialogTrigger } from "@radix-ui/react-dialog";
 import { PencilLine } from "lucide-react";
@@ -46,6 +47,15 @@ const TeamSettingsPage = ({ team }: Props) => {
     setLoading((prev) => ({ ...prev, rename: false }));
   };
 
+  const handleDeleteTeam = async () => {
+    teamHook[1].deleteTeam(team.id);
+    const response: any = await deleteTeam(team.id);
+    if (response?.success) {
+      toast({ description: "Team deleted successfully" });
+    }
+    return ""
+  };
+
   useEffect(() => {
     setUpdatedTeam(team);
   }, [team]);
@@ -61,7 +71,7 @@ const TeamSettingsPage = ({ team }: Props) => {
             name="name"
             className={"py-0 focus-visible:ring-1 bg-secondary-background"}
             clName={"h-7 w-60"}
-            value={updatedTeam.name}
+            value={updatedTeam?.name}
             onChange={handleUpdatedTeam}
           />
           <Button
@@ -96,7 +106,10 @@ const TeamSettingsPage = ({ team }: Props) => {
                   Delete this Team
                 </Button>
               </DialogTrigger>
-              <DeleteTeamModal deleteContent={team} />
+              <DeleteTeamModal
+                deleteContent={team}
+                handleDelete={handleDeleteTeam}
+              />
             </Dialog>
           </div>
         </div>

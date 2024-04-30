@@ -26,11 +26,13 @@ interface DataTableRowActionsProps<TData> {
   row: Row<TData>;
   table?: Table<TData>;
   handleCopy: () => void;
+  handleDelete: () => void;
 }
 
 export function DataTableRowActions<TData>({
   row,
   handleCopy,
+  handleDelete,
   table,
 }: DataTableRowActionsProps<TData>) {
   const [open, setOpen] = useState(false);
@@ -62,7 +64,7 @@ export function DataTableRowActions<TData>({
           <DropdownMenuItem onClick={handleCopy}>Make a copy</DropdownMenuItem>
           {/* <DropdownMenuItem>Favorite</DropdownMenuItem> */}
           <DropdownMenuSeparator />
-          <DropdownMenuItem disabled>
+          <DropdownMenuItem onClick={handleDelete}>
             Delete
             <DropdownMenuShortcut>⌘⌫</DropdownMenuShortcut>
           </DropdownMenuItem>

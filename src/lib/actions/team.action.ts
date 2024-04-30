@@ -42,3 +42,14 @@ export async function createTeam(data: Team) {
     }
   } catch (error) {}
 }
+
+export async function deleteTeam(teamId: any) {
+  try {
+    // console.log(teamId);
+    
+    await axios.delete(`/api/team/${teamId}`);
+    return { success: true };
+  } catch (err) {
+    return err;
+  }
+}

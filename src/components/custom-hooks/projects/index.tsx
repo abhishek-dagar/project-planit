@@ -39,9 +39,23 @@ const useProjects = ({ configs = {} }: Props) => {
     dispatch(setProjects(tempProject));
   };
 
+  const deleteProject = (teamId: string, projectId: string) => {
+    const tempProject = JSON.parse(JSON.stringify(projects));
+    tempProject[`${teamId}`] = tempProject[`${teamId}`].filter(
+      (project: any) => project.id !== projectId
+    );
+    dispatch(setProjects(tempProject));
+  };
+
   return [
     projects,
-    { setUpdatedProjects, addNewProject, getTeamProjects, updateProject },
+    {
+      setUpdatedProjects,
+      addNewProject,
+      getTeamProjects,
+      updateProject,
+      deleteProject,
+    },
   ];
 };
 

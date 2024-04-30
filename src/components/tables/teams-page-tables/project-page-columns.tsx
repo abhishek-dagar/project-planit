@@ -8,6 +8,7 @@ import { ArrowDown, ArrowDownUp, ArrowUp } from "lucide-react";
 // You can use a Zod schema here if you want.
 export type Project = {
   id: string;
+  teamId: string;
   name?: string | undefined;
   projectName: string;
   createdAt: string;

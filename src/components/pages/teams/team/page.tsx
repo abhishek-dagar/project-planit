@@ -77,6 +77,7 @@ const TeamPage = ({ teamId }: { teamId: string }) => {
         const tempProject: Project = {
           id: project.id,
           projectName: project.name,
+          teamId: teamId,
           createdAt: moment(project.createdAt).format("MMMM DD, yyyy"),
           updatedAt: moment(project.updatedAt).format("MMMM DD, yyyy"),
           link: `${team.id}/${project.id}`,

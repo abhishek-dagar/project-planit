@@ -38,6 +38,12 @@ const useTeams = ({ configs = {} }: Props) => {
 
     dispatch(setTeams(tempTeam));
   }
+
+  function deleteTeam(teamId: string) {
+    const tempTeams = teams.filter((team: Team) => team.id !== teamId);
+    dispatch(setTeams(tempTeams));
+  }
+
   useEffect(() => {
     if (teams) {
       let tempTeams = JSON.parse(JSON.stringify(teams));
@@ -49,7 +55,10 @@ const useTeams = ({ configs = {} }: Props) => {
       dispatch(setTeams(tempTeams));
     }
   }, [projects, members]);
-  return [teams, { setUpdatedTeams, updateTeam, addNewTeam, fetchTeam }];
+  return [
+    teams,
+    { setUpdatedTeams, updateTeam, addNewTeam, fetchTeam, deleteTeam },
+  ];
 };
 
 export default useTeams;

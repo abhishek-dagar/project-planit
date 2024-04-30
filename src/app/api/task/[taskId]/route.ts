@@ -13,6 +13,29 @@ export const GET = async (req: NextRequest, context: { params: "string" }) => {
       { status: 200 }
     );
   } catch {
-    return NextResponse.json({ message: "project fetched" }, { status: 500 });
+    return NextResponse.json(
+      { message: "project failed to fetched" },
+      { status: 500 }
+    );
+  }
+};
+
+export const DELETE = async (
+  req: NextRequest,
+  context: { params: "string" }
+) => {
+  try {
+    const { taskId }: any = context.params;
+    console.log(taskId);
+    await Task.deleteOne({ _id: taskId });
+    return NextResponse.json(
+      { message: "project deleted successfully", data: {}, success: true },
+      { status: 200 }
+    );
+  } catch {
+    return NextResponse.json(
+      { message: "project failed to delete" },
+      { status: 500 }
+    );
   }
 };
