@@ -99,6 +99,7 @@ export function MemberTable<TData, TValue>({
         // delete newData["id"];
         // newData["projectId"] = projectId;
       },
+      deleteData: async (rowIndex) => {},
     },
   });
   return (
