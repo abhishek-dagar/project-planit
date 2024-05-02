@@ -1,3 +1,4 @@
+import Comment from "@/lib/mongoose/models/comment.model";
 import Task from "@/lib/mongoose/models/task.model";
 import { connectToDB } from "@/lib/mongoose/mongoose";
 import { NextRequest, NextResponse } from "next/server";
@@ -26,7 +27,10 @@ export const DELETE = async (
 ) => {
   try {
     const { taskId }: any = context.params;
-    console.log(taskId);
+    const task = await Task.findById(taskId);
+    task.comments.forEach(async (comment: any) => {
+      await Comment.deleteOne({ _id: comment });
+    });
     await Task.deleteOne({ _id: taskId });
     return NextResponse.json(
       { message: "project deleted successfully", data: {}, success: true },

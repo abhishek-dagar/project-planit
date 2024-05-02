@@ -15,7 +15,7 @@ import {
   getSortedRowModel,
   useReactTable,
 } from "@tanstack/react-table";
-import React from "react";
+import React, { useEffect } from "react";
 
 declare module "@tanstack/react-table" {
   interface TableMeta<TData extends RowData> {
@@ -99,9 +99,25 @@ export function MemberTable<TData, TValue>({
         // delete newData["id"];
         // newData["projectId"] = projectId;
       },
-      deleteData: async (rowIndex) => {},
+      deleteData: async (rowIndex) => {
+        const newData = [...currentData];
+        const deleteData: any = newData[rowIndex];
+        newData.splice(rowIndex, 1);
+        setCurrentData(newData);
+        const updatedTeam = JSON.parse(JSON.stringify(team));
+        if (updatedTeam.members) {
+          updatedTeam.members = updatedTeam.members.filter(
+            (member: any) => member.id !== deleteData.id
+          );
+        }
+        const te: any = await dbUpdateTeam(updatedTeam);
+        if (te?.success) {
+          updateTeam(updateMember);
+        }
+      },
     },
   });
+
   return (
     <div className="flex flex-col gap-4">
       <Dialog>

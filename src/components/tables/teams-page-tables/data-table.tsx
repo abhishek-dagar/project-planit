@@ -38,8 +38,6 @@ export function DataTable<
   const teams = useTeams({});
   const [currentTab, setCurrentTab] = useState("box view");
 
-  const dispatch = useDispatch();
-
   const handleTabToggle = (value: string) => {
     setCurrentTab(value);
   };

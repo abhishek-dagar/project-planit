@@ -4,13 +4,14 @@ import {
   CardFooter,
   CardTitle,
 } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { LucideIcon } from "lucide-react";
 import React from "react";
 
-interface Props {
+export interface TaskCountCardProps {
   Icon: LucideIcon;
   title: string;
-  count: string;
+  count: number;
   iconColor: string;
   iconBgColor: string;
 }
@@ -21,7 +22,7 @@ const TaskCountCard = ({
   count,
   iconColor,
   iconBgColor,
-}: Props) => {
+}: TaskCountCardProps) => {
   return (
     <Card className="bg-background p-4 px-6 rounded-xl">
       <CardTitle>
@@ -42,6 +43,21 @@ const TaskCountCard = ({
         <span className="text-foreground capitalize font-medium">
           {count} tasks
         </span>
+      </CardFooter>
+    </Card>
+  );
+};
+export const TaskCountCardSkeleton = () => {
+  return (
+    <Card className="bg-background p-4 px-6 rounded-xl">
+      <CardTitle>
+        <Skeleton className="bg-secondary-background w-[50px] h-[50px] rounded-lg" />
+      </CardTitle>
+      <div className="mt-4">
+        <Skeleton className="bg-secondary-background w-full h-[20px]" />
+      </div>
+      <CardFooter className="pl-1 py-1">
+        <Skeleton className="bg-secondary-background w-[75px] h-[20px]" />
       </CardFooter>
     </Card>
   );

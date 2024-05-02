@@ -1,10 +1,11 @@
 import { Card, CardContent } from "@/components/ui/card";
+import { Skeleton } from "@/components/ui/skeleton";
 import { Project, StatusColor } from "@/lib/interfacesOrEnum/teams-group";
 import React from "react";
 
 const ProjectDescCard = ({ project }: { project: Project }) => {
   return (
-    <Card className="mb-1 bg-secondary-background">
+    <Card className="mb-1 bg-secondary-background scale-x-[.98] hover:scale-x-100 border hover:border-primary transition-all">
       <CardContent className="py-2 flex justify-between">
         <span className="uppercase font-bold">{project.name}</span>
         <span
@@ -16,6 +17,9 @@ const ProjectDescCard = ({ project }: { project: Project }) => {
       </CardContent>
     </Card>
   );
+};
+export const ProjectDescCardSkeleton = () => {
+  return <Skeleton className="h-[50px] w-full" />;
 };
 
 export default ProjectDescCard;

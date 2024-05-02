@@ -6,6 +6,7 @@ import Pricing from "@/lib/mongoose/models/pricing.model";
 import Team from "@/lib/mongoose/models/team.model";
 import Project from "@/lib/mongoose/models/project.model";
 import Task from "@/lib/mongoose/models/task.model";
+import Comment from "@/lib/mongoose/models/comment.model";
 
 connectToDB();
 
@@ -26,6 +27,14 @@ export const GET = async (req: NextRequest) => {
             populate: {
               path: "tasks",
               model: Task,
+              populate: {
+                path: "comments",
+                model: Comment,
+                populate: {
+                  path: "changedBy",
+                  model: User,
+                },
+              },
             },
           },
           {

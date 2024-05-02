@@ -26,6 +26,7 @@ export const POST = async (req: NextRequest) => {
 
     const comment = new Comment({
       comment: "Task Created At",
+      changedBy: userId,
     });
 
     const newTask = new Task({
