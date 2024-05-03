@@ -1,3 +1,4 @@
+import { Icons } from "@/components/icons";
 import {
   BellIcon,
   CheckSquare,
@@ -21,4 +22,9 @@ const appSideMenu = [
   { title: "Teams", link: "/app/teams", icon: Group },
 ];
 
-export { homeMenu, appSideMenu };
+const settingsMenu = [
+  { title: "Profile", link: "/app/settings/profile", Icon: Icons.userRound },
+  { title: "Members", link: "/app/settings/members", Icon: Icons.usersRound },
+];
+
+export { homeMenu, appSideMenu, settingsMenu };

@@ -24,3 +24,20 @@ export const UserLoginValidation = z.object({
     .max(30),
   password: z.string(),
 });
+
+export const UserUpdatePasswordValidation = z
+  .object({
+    oldPassword: z.string().min(8).max(1000),
+    newPassword: z.string().min(8).max(1000),
+    confirmPassword: z.string().min(8).max(1000),
+  })
+  .superRefine(({ confirmPassword, newPassword }, ctx) => {
+      
+      if (confirmPassword !== newPassword) {
+      ctx.addIssue({
+        code: "custom",
+        message: "The passwords did not match with new password",
+        path:["confirmPassword"],
+      });
+    }
+  });

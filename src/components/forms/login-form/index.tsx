@@ -44,10 +44,7 @@ export function UserLoginForm({ className, ...props }: UserLoginFormProps) {
   async function onSubmit(values: z.infer<typeof UserLoginValidation>) {
     setIsLoading(true);
     try {
-      const response: any = await loginAction(values);
-
-      console.log(response);
-      
+      const response: any = await loginAction(values);      
 
       if (response.response?.success) {
         toast({

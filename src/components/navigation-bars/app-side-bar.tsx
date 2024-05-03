@@ -11,7 +11,7 @@ import {
   TooltipContent,
   TooltipTrigger,
 } from "../ui/tooltip";
-import { UserPlus, UserSquare2 } from "lucide-react";
+import { SettingsIcon, UserPlus, UserSquare2 } from "lucide-react";
 import { Icons } from "../icons";
 import SearchModal from "../modals/search-modal";
 import {
@@ -126,12 +126,15 @@ const AppSideBar = () => {
             </div>
             <Button
               className={`${
-                pathname === "/app/profile" ? "bg-primary hover:bg-primary" : ""
+                pathname.includes("/app/settings")
+                  ? "bg-primary hover:bg-primary"
+                  : ""
               } p-1.5 rounded-md`}
               variant={"ghost"}
-              onClick={() => router.push("/app/profile")}
+              onClick={() => router.push("/app/settings")}
             >
-              <UserSquare2 />
+              <SettingsIcon />
+              {/* <UserSquare2 /> */}
               {/* <BsPersonCircle className="text-[24px]" /> */}
             </Button>
           </ul>
