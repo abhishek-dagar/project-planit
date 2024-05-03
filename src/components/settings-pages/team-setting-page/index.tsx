@@ -69,14 +69,14 @@ const TeamSettingsPage = ({ team }: Props) => {
         <div className="flex gap-2 items-center">
           <Input
             name="name"
-            className={"py-0 focus-visible:ring-1 bg-secondary-background"}
+            className={"py-0 focus-visible:ring-1 bg-background"}
             clName={"h-7 w-60"}
             value={updatedTeam?.name}
             onChange={handleUpdatedTeam}
           />
           <Button
             variant={"secondary"}
-            className="hover:ring-2 border hover:ring-primary h-7"
+            className="hover:ring-2 bg-background border hover:ring-primary h-7"
             onClick={updateCurrentTeam}
             disabled={loading.rename}
           >

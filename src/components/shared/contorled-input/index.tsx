@@ -1,5 +1,5 @@
 import debounce from "lodash.debounce";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 interface Props {
   value: string;
@@ -13,6 +13,9 @@ const CustomInput = ({ value, handleUpdate }: Props) => {
     setUpdatedTitle(e.target.value);
     handleUpdate(e.target.value);
   };
+  useEffect(() => {
+    setUpdatedTitle(value);
+  }, [value]);
   return (
     <div>
       <input

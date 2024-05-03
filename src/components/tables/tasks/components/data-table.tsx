@@ -177,20 +177,39 @@ export function DataTable<TData, TValue>({
         }
       },
       addDate: async (newData, isNew = false) => {
+        const oldData = [...currentData];
         const addingData = [...currentData];
         addingData.push(newData);
         setCurrentData(addingData);
 
-        delete newData["_id"];
-        delete newData["id"];
-        newData["projectId"] = projectId;
+        try {
+          delete newData["_id"];
+          delete newData["id"];
+          newData["projectId"] = projectId;
 
-        const response: any = await addNewTask(newData);
-        if (response?.success) {
+          const response: any = await addNewTask(newData);
+          if (response?.success) {
+            addingData.pop();
+            addingData.push(response.task);
+            setCurrentData(addingData);
+            if (!isNew) {
+              toast({ description: "Copy of Task Added successfully" });
+            } else {
+              toast({ description: "New Task Added successfully" });
+            }
+          }
+        } catch {
+          setCurrentData(oldData);
           if (!isNew) {
-            toast({ description: "Copy of Task Added successfully" });
+            toast({
+              description: "Failed to add copy of Task",
+              variant: "destructive",
+            });
           } else {
-            toast({ description: "New Task Added successfully" });
+            toast({
+              description: "Failed to add new Task",
+              variant: "destructive",
+            });
           }
         }
       },
@@ -199,7 +218,6 @@ export function DataTable<TData, TValue>({
         const deleteData: any = newData[rowIndex];
         newData.splice(rowIndex, 1);
         setCurrentData(newData);
-
         const response: any = await deleteTask(deleteData.id);
         if (response?.success) {
           toast({ description: "Task deleted successfully" });

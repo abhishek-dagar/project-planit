@@ -69,9 +69,28 @@ export function MemberTable<TData, TValue>({
           [columnId]: value,
         });
         if (updatedUser.response) {
+          const updatedTeam = JSON.parse(JSON.stringify(team));
+          if (updatedTeam.members) {
+            updatedTeam.members = updatedTeam.members.map((member: any) => {
+              if (member.id === newData[rowIndex].id) {
+                return { ...member, ...newData[rowIndex] };
+              }
+              return member;
+            });
+          }
           toast({
-            description: "Member updated successfully",
+            description: (
+              <div>
+                Member updated <strong className="uppercase">{columnId}</strong>{" "}
+                from{" "}
+                <span className="text-primary">
+                  {copyData[rowIndex][columnId]}
+                </span>{" "}
+                to <span className="text-primary">{value}</span> successfully
+              </div>
+            ),
           });
+          updateTeam(updatedTeam);
         } else {
           toast({
             variant: "destructive",
@@ -93,7 +112,7 @@ export function MemberTable<TData, TValue>({
 
         const te: any = await dbUpdateTeam(updatedTeam);
         if (te?.success) {
-          updateTeam(updateMember);
+          updateTeam(updatedTeam);
         }
         // delete newData["_id"];
         // delete newData["id"];

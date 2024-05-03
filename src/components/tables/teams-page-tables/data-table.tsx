@@ -137,7 +137,7 @@ export function DataTable<
                   <Link
                     href={`/app/teams/${row.original.link}`}
                     data-state={row.getIsSelected() && "selected"}
-                    className=" relative w-full flex gap-2 bg-background rounded-lg border-[1px] hover:border-primary cursor-pointer shadow-sm hover:shadow-md py-3 px-5"
+                    className=" relative w-full flex gap-2 bg-background rounded-lg border-[1px] hover:border-primary cursor-pointer shadow-sm hover:shadow-md py-3 px-5 border-l-4 border-l-primary"
                   >
                     {row.getVisibleCells().map((cell, index) => (
                       <div
@@ -158,13 +158,13 @@ export function DataTable<
                       <PinOff
                         size={20}
                         onClick={() => updatePinned(row.original.id)}
-                        className="absolute cursor-pointer top-3 right-3 h-4 text-slate-400 hover:text-white"
+                        className="absolute cursor-pointer top-4 right-3 h-4 text-slate-400 hover:text-white"
                       />
                     ) : (
                       <Pin
                         size={20}
                         onClick={() => updatePinned(row.original.id)}
-                        className="absolute cursor-pointer top-3 right-3 h-4 text-slate-400 hover:text-white"
+                        className="absolute cursor-pointer top-4 right-3 h-4 text-slate-400 hover:text-white"
                       />
                     )}
                   </div>
@@ -191,7 +191,7 @@ export function DataTable<
                   <Link
                     href={`/app/teams/${row.original.link}`}
                     data-state={row.getIsSelected() && "selected"}
-                    className="md:h-[180px] border-[1px] hover:border-primary bg-background flex flex-col items-start rounded-xl shadow-md"
+                    className="md:h-[180px] border-[1px] hover:border-primary bg-background flex flex-col items-start rounded-xl shadow-md border-t-4 border-t-primary"
                   >
                     {row.getVisibleCells().map((cell, index) => {
                       return (
@@ -231,13 +231,13 @@ export function DataTable<
                     <PinOff
                       size={20}
                       onClick={() => updatePinned(row.original.id)}
-                      className="absolute cursor-pointer top-5 right-1 h-4 text-slate-400 hover:text-primary"
+                      className="absolute cursor-pointer top-5 right-3 h-4 text-slate-400 hover:text-primary"
                     />
                   ) : (
                     <Pin
                       size={20}
                       onClick={() => updatePinned(row.original.id)}
-                      className="absolute cursor-pointer top-5 right-1 h-4 text-slate-400 hover:text-primary"
+                      className="absolute cursor-pointer top-5 right-3 h-4 text-slate-400 hover:text-primary"
                     />
                   )}
                 </div>

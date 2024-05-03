@@ -11,6 +11,8 @@ interface Props {
 const MembersTable = ({ team }: Props) => {
   const [members, setMembers] = useState<any>(team?.members);
 
+  // console.log(team?.members);
+
   return (
     <div>
       <MemberTable data={members} columns={columns} team={team} />

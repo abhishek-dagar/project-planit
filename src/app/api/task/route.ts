@@ -47,7 +47,7 @@ export const POST = async (req: NextRequest) => {
       {
         message: "Task created Successfully",
         success: true,
-        team: { ...newTask._doc, id: newTask._id },
+        task: { ...newTask._doc, id: newTask._id },
       },
       { status: 201 }
     );

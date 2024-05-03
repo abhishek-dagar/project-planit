@@ -97,21 +97,21 @@ const TeamPage = ({ teamId }: { teamId: string }) => {
               <TabsList className="grid w-full grid-cols-3 bg-background">
                 <TabsTrigger
                   value="projects"
-                  className="data-[state=active]:bg-secondary-background data-[state=active]:text-white rounded-t-md data-[state=active]:border-primary"
+                  className="data-[state=active]:bg-secondary-background data-[state=active]:text-white rounded-t-md    data-[state=active]:border-t-2 data-[state=active]:border-primary"
                 >
                   <Presentation size={16} className="mr-2" />
                   Projects
                 </TabsTrigger>
                 <TabsTrigger
                   value="members"
-                  className="data-[state=active]:bg-secondary-background data-[state=active]:text-white rounded-t-md data-[state=active]:border-primary"
+                  className="data-[state=active]:bg-secondary-background data-[state=active]:text-white rounded-t-md data-[state=active]:border-t-2 data-[state=active]:border-primary"
                 >
                   <Presentation size={16} className="mr-2" />
                   Members
                 </TabsTrigger>
                 <TabsTrigger
                   value="settings"
-                  className="data-[state=active]:bg-secondary-background data-[state=active]:text-white rounded-t-md data-[state=active]:border-primary"
+                  className="data-[state=active]:bg-secondary-background data-[state=active]:text-white rounded-t-md data-[state=active]:border-t-2 data-[state=active]:border-primary"
                 >
                   <Settings size={16} className="mr-2" />
                   Team Setting

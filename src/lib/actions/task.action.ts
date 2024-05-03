@@ -17,8 +17,9 @@ export async function updateTask(task: any) {
 
 export async function addNewTask(task: any) {
   try {
-    await axios.post(taskEndpoints.task, task);
-    return { success: true };
+    const newTask = await axios.post(taskEndpoints.task, task);
+    if (newTask.data) return { success: true, task: newTask.data.task };
+    return { success: false };
   } catch (err) {
     return err;
   }
