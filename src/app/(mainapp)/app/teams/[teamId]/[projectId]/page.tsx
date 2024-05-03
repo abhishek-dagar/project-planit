@@ -1,4 +1,5 @@
 import ProjectSettingsPage from "@/components/settings-pages/project-setting-page";
+import Breadcrumb from "@/components/shared/breadcrums";
 import TaskPage from "@/components/tables/tasks";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { fetchProject } from "@/lib/actions/project.action";
@@ -41,18 +42,7 @@ const Projects = async ({
           </div>
         </div>
         <div className="sticky top-0 z-20 flex items-center justify-between px-8 py-4">
-          <p className="uppercase truncate text-slate-400">
-            <Link href={"/app/teams"} className="hover:underline">
-              Teams
-            </Link>
-            {" > "}
-            {team.icon}
-            <Link href={`/app/teams/${team.id}`} className="hover:underline">
-              {team?.name}
-            </Link>
-            {" > "}
-            {project.name}
-          </p>
+          <Breadcrumb team={team} project={project} />
         </div>
         <TabsContent value="tasks" className="relative">
           <TaskPage tasks={project?.tasks} project={project} team={team} />

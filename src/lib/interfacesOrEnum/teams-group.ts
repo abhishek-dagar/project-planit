@@ -31,12 +31,12 @@ export enum Status {
   CANCELED = "CANCELED",
 }
 export enum StatusColor {
-  PLANNING = "#28456c",
-  "IN PROGRESS" = "#89632a",
-  PAUSED = "#492f64",
-  BACKLOG = "#5a5a5a",
-  DONE = "#2b593f",
-  CANCELED = "#6e3630",
+  PLANNING = "#1267d8",
+  "IN PROGRESS" = "#7f77f1",
+  PAUSED = "#791dd9",
+  BACKLOG = "#d8d8d8",
+  DONE = "#6bc950",
+  CANCELED = "#af2d1f",
 }
 
 export enum TaskStatus {

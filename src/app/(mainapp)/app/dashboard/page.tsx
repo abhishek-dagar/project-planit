@@ -10,8 +10,6 @@ import TaskCountCard, {
   TaskCountCardSkeleton,
 } from "@/components/cards/task-count-card";
 import useProjects from "@/components/custom-hooks/projects";
-import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import {

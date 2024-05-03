@@ -47,6 +47,12 @@ const useProjects = ({ configs = {} }: Props) => {
     dispatch(setProjects(tempProject));
   };
 
+  const fetchProject = (teamId: string, projectId: string) => {
+    return projects[`${teamId}`].find(
+      (project: any) => project.id === projectId
+    );
+  };
+
   return [
     projects,
     {
@@ -55,6 +61,7 @@ const useProjects = ({ configs = {} }: Props) => {
       getTeamProjects,
       updateProject,
       deleteProject,
+      fetchProject,
     },
   ];
 };

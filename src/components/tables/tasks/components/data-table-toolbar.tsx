@@ -35,15 +35,15 @@ export function DataTableToolbar<TData>({
   };
 
   return (
-    <div className="flex md:items-center flex-col bg-secondary-background md:flex-row md:justify-between sticky top-0 z-10">
-      <div className="flex flex-1 items-center space-x-2">
+    <div className="flex md:items-center flex-col bg-secondary-background md:flex-row md:justify-between sticky top-0 z-10 gap-2">
+      <div className="flex flex-wrap md:flex-nowrap flex-1 items-center space-x-2">
         <Input
           placeholder="Filter tasks..."
           value={(table.getColumn("title")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("title")?.setFilterValue(event.target.value)
           }
-          className="h-8 w-[150px] lg:w-[250px] bg-background"
+          className="h-8 w-full md:w-[150px] lg:w-[250px] bg-background"
         />
         {table.getColumn("status") && (
           <DataTableFacetedFilter
