@@ -5,7 +5,7 @@ import React from "react";
 
 const ProjectDescCard = ({ project }: { project: Project }) => {
   return (
-    <Card className="mb-1 bg-secondary-background scale-x-[.98] hover:scale-x-100 border hover:border-primary transition-all">
+    <Card className="mb-1 bg-secondary-background border-l-primary scale-x-[.98] hover:scale-x-100 hover:border hover:border-primary transition-all border-l-4">
       <CardContent className="py-2 flex justify-between">
         <span className="uppercase font-bold">{project.name}</span>
         <span

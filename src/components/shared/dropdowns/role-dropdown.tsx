@@ -9,17 +9,13 @@ import {
 import { ChevronDownIcon, ChevronRightIcon } from "lucide-react";
 import React, { useState } from "react";
 
-const roles = [
-  { title: "member", desc: "Can update only task assigned" },
-  { title: "TeamLead", desc: "Can update only this team tasks" },
-];
-
 interface Props {
   role: string;
   handleRole: (value: any) => void;
+  roles: { title: string; desc: string }[];
 }
 
-const RoleDropdown = ({ role, handleRole }: Props) => {
+const RoleDropdown = ({ role, handleRole, roles }: Props) => {
   const [open, setOpen] = useState(false);
   return (
     <div>

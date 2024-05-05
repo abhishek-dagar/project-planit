@@ -24,8 +24,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { z } from "zod";
 import { EyeIcon, EyeOffIcon } from "lucide-react";
+import { updateMember } from "@/lib/actions/user.actions";
+import { toast } from "@/components/ui/use-toast";
 
-const UpdatePasswordModal = () => {
+const UpdatePasswordModal = ({ id }: { id: string }) => {
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState([false, false, false]);
@@ -47,15 +49,26 @@ const UpdatePasswordModal = () => {
       passwordForm.setError("confirmPassword", {
         message: "The passwords did not match with new password",
       });
-      setTimeout(() => {
-        setIsLoading(false);
-      }, 1000);
+      setIsLoading(false);
       return;
     }
-    setTimeout(() => {
-      setIsLoading(false);
+    // console.log({ ...values, id });
+    try {
+      const { response, err } = await updateMember({ id, ...values });
+      if (response.success) {
+        toast({
+          description: "Password updated successfully",
+        });
+      }
       setOpen(false);
-    }, 1000);
+    } catch {
+      toast({
+        description: "Password failed updated",
+        variant: "destructive",
+      });
+    } finally {
+      setIsLoading(false);
+    }
   }
 
   useEffect(() => {
@@ -270,10 +283,12 @@ const UpdatePasswordModal = () => {
             }}
             disabled={isLoading}
           >
-            {isLoading && (
+            {isLoading ? (
               <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+            ) : (
+              <Icons.lockDot size={16} className="mr-2" />
             )}
-            Create
+            Update password
           </Button>
         </DialogFooter>
       </DialogContent>

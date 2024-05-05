@@ -4,6 +4,12 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import RoleDropdown from "@/components/shared/dropdowns/role-dropdown";
 import { DataTableColumnHeader } from "./data-table-column-header";
 import MemberSettingDropdown from "@/components/shared/dropdowns/member-setting-dropdown";
+import {
+  BookTypeIcon,
+  MailIcon,
+  SettingsIcon,
+  UserCogIcon,
+} from "lucide-react";
 
 declare module "@tanstack/react-table" {
   interface CellContext<TData extends RowData, TValue> {}
@@ -18,7 +24,12 @@ export const columns: ColumnDef<Member>[] = [
   {
     accessorKey: "username",
     header: ({ column }) => {
-      return <DataTableColumnHeader column={column} title="Username" />;
+      return (
+        <div className="flex gap-2 items-center">
+          <BookTypeIcon size={18} className="text-muted-foreground" />
+          <DataTableColumnHeader column={column} title="Username" />
+        </div>
+      );
     },
     cell: ({ row }) => {
       const username: string = row.getValue("username");
@@ -38,12 +49,17 @@ export const columns: ColumnDef<Member>[] = [
     accessorKey: "email",
     header: ({ column }) => {
       return (
-        <div className="flex items-center justify-center h-full">Email</div>
+        <div className="flex items-center justify-center h-full gap-2">
+          <MailIcon size={18} className="text-muted-foreground" />
+          Email
+        </div>
       );
     },
     cell: ({ row }) => {
       return (
-        <span className="text-muted-foreground">{row.getValue("email")}</span>
+        <span className="text-muted-foreground w-full">
+          {row.getValue("email")}
+        </span>
       );
     },
   },
@@ -51,15 +67,18 @@ export const columns: ColumnDef<Member>[] = [
     accessorKey: "role",
     header: ({ column }) => {
       return (
-        <div className="flex items-center justify-center h-full">Role</div>
+        <div className="flex items-center justify-center h-full min-w-[125px] gap-2">
+          <UserCogIcon size={18} className="text-muted-foreground" />
+          Role
+        </div>
       );
     },
 
     cell: ({ row, column, table }) => {
       const role: string = row.getValue("role");
       const roles = [
-        { title: "member", desc: "Can update only task assigned" },
-        { title: "TeamLead", desc: "Can update only this team tasks" },
+        { title: "Member", desc: "Can update only task assigned" },
+        { title: "Admin", desc: "Can changes anything" },
       ];
       const updateRole = (value: any) => {
         table.options.meta?.updateData(row.index, column.id, value);
@@ -72,8 +91,8 @@ export const columns: ColumnDef<Member>[] = [
     size: 40,
     header: ({ column }) => {
       return (
-        <div className="flex items-center justify-center h-full w-[20px]">
-          Setting
+        <div className="flex items-center justify-center h-full">
+          <SettingsIcon size={20} />
         </div>
       );
     },
@@ -81,7 +100,7 @@ export const columns: ColumnDef<Member>[] = [
     cell: ({ row, column, table }) => {
       const role: string = row.getValue("role");
       const handleRemoveMember = () => {
-        table.options.meta?.deleteData(row.index);
+        // table.options.meta?.deleteData(row.index);
       };
       return <MemberSettingDropdown handleRemoveMember={handleRemoveMember} />;
     },

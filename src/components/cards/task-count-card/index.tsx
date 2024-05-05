@@ -24,7 +24,7 @@ const TaskCountCard = ({
   iconBgColor,
 }: TaskCountCardProps) => {
   return (
-    <Card className="bg-background p-4 px-6 rounded-xl">
+    <Card className="bg-background p-4 px-6 rounded-xl border-t-4 border-t-primary">
       <CardTitle>
         <div
           className="bg-secondary-background max-w-[50px] max-h-[50px] flex justify-center items-center py-3 rounded-lg"
@@ -49,7 +49,7 @@ const TaskCountCard = ({
 };
 export const TaskCountCardSkeleton = () => {
   return (
-    <Card className="bg-background p-4 px-6 rounded-xl">
+    <Card className="bg-background p-4 px-6 rounded-xl border-t-2">
       <CardTitle>
         <Skeleton className="bg-secondary-background w-[50px] h-[50px] rounded-lg" />
       </CardTitle>

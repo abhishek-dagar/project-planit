@@ -3,7 +3,12 @@ import { RegisterForm } from "@/components/forms/register-form";
 import { Icons } from "@/components/icons";
 import { Button, buttonVariants } from "@/components/ui/button";
 import { Checkbox } from "@/components/ui/checkbox";
-import { DialogHeader } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -18,6 +23,7 @@ import { loginAction, userRegisterAction } from "@/lib/actions/user.actions";
 import { UserRegisterValidation } from "@/lib/form-validators/user-validator";
 import { cn } from "@/lib/utils";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { UserPlus } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
@@ -33,7 +39,7 @@ const AddNewUser = ({ className, ...props }: RegisterFormProps) => {
   const { toast } = useToast();
 
   const router = useRouter();
-  const [user] = useUser({});
+  const [user, { setUpdatedUser }] = useUser({});
 
   const registerForm: any = useForm({
     resolver: zodResolver(UserRegisterValidation),
@@ -67,6 +73,9 @@ const AddNewUser = ({ className, ...props }: RegisterFormProps) => {
     const { response, err }: any = await userRegisterAction(member);
 
     if (response) {
+      const updatedUser = JSON.parse(JSON.stringify(user));
+      updatedUser.members = [...updatedUser.members, response.user];
+      setUpdatedUser(updatedUser);
       toast({
         description: "Member Added Successful",
       });
@@ -79,160 +88,167 @@ const AddNewUser = ({ className, ...props }: RegisterFormProps) => {
     setIsLoading(false);
   }
   return (
-    <>
-      <DialogHeader>Add new Member</DialogHeader>
-      <div className={cn("grid gap-6", className)} {...props}>
-        <Form {...registerForm}>
-          <form onSubmit={registerForm.handleSubmit(onSubmit)}>
-            <div className="grid gap-2">
-              <FormField
-                control={registerForm.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="sr-only">Email</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="name@example.com"
-                        type="text"
-                        autoCapitalize="none"
-                        autoComplete="none"
-                        autoCorrect="off"
-                        disabled={isLoading}
-                        className="bg-secondary-background"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              <FormField
-                control={registerForm.control}
-                name="username"
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel className="sr-only">username</FormLabel>
-                    <FormControl>
-                      <Input
-                        placeholder="username"
-                        type="text"
-                        autoCapitalize="none"
-                        autoComplete="none"
-                        autoCorrect="off"
-                        disabled={isLoading}
-                        className="bg-secondary-background"
-                        {...field}
-                      />
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
-              {!defaultPassword && (
-                <>
-                  <FormField
-                    control={registerForm.control}
-                    name="password"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="sr-only">password</FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="password"
-                            type={showPassword ? "text" : "password"}
-                            autoCapitalize="none"
-                            autoComplete="none"
-                            autoCorrect="off"
-                            disabled={isLoading}
-                            className="bg-secondary-background"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                  <FormField
-                    control={registerForm.control}
-                    name="confirmPassword"
-                    render={({ field }) => (
-                      <FormItem>
-                        <FormLabel className="sr-only">
-                          Confirm Password
-                        </FormLabel>
-                        <FormControl>
-                          <Input
-                            placeholder="confirmPassword"
-                            type={showPassword ? "text" : "password"}
-                            autoCapitalize="none"
-                            autoComplete="none"
-                            autoCorrect="off"
-                            disabled={isLoading}
-                            className="bg-secondary-background"
-                            {...field}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    )}
-                  />
-                </>
-              )}
-              <div className="items-top flex space-x-2 select-none mb-4 mt-2">
-                <Checkbox
-                  id="checkBox"
-                  checked={defaultPassword}
-                  onCheckedChange={handleDefaultPassword}
+    <Dialog>
+      <DialogTrigger asChild>
+        <Button className={`p-1.5 rounded-md`} variant={"ghost"}>
+          <UserPlus />
+        </Button>
+      </DialogTrigger>
+      <DialogContent className="bg-background">
+        <DialogHeader>Add new Member</DialogHeader>
+        <div className={cn("grid gap-6", className)} {...props}>
+          <Form {...registerForm}>
+            <form onSubmit={registerForm.handleSubmit(onSubmit)}>
+              <div className="grid gap-2">
+                <FormField
+                  control={registerForm.control}
+                  name="email"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="sr-only">Email</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="name@example.com"
+                          type="text"
+                          autoCapitalize="none"
+                          autoComplete="none"
+                          autoCorrect="off"
+                          disabled={isLoading}
+                          className="bg-secondary-background"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
-                <div className="grid gap-1.5 leading-none">
-                  <label
-                    htmlFor="checkBox"
-                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    Set default password : username+@12345
-                  </label>
-                </div>
-              </div>
-              {!defaultPassword && (
+                <FormField
+                  control={registerForm.control}
+                  name="username"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel className="sr-only">username</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="username"
+                          type="text"
+                          autoCapitalize="none"
+                          autoComplete="none"
+                          autoCorrect="off"
+                          disabled={isLoading}
+                          className="bg-secondary-background"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                {!defaultPassword && (
+                  <>
+                    <FormField
+                      control={registerForm.control}
+                      name="password"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="sr-only">password</FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="password"
+                              type={showPassword ? "text" : "password"}
+                              autoCapitalize="none"
+                              autoComplete="none"
+                              autoCorrect="off"
+                              disabled={isLoading}
+                              className="bg-secondary-background"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                    <FormField
+                      control={registerForm.control}
+                      name="confirmPassword"
+                      render={({ field }) => (
+                        <FormItem>
+                          <FormLabel className="sr-only">
+                            Confirm Password
+                          </FormLabel>
+                          <FormControl>
+                            <Input
+                              placeholder="confirmPassword"
+                              type={showPassword ? "text" : "password"}
+                              autoCapitalize="none"
+                              autoComplete="none"
+                              autoCorrect="off"
+                              disabled={isLoading}
+                              className="bg-secondary-background"
+                              {...field}
+                            />
+                          </FormControl>
+                          <FormMessage />
+                        </FormItem>
+                      )}
+                    />
+                  </>
+                )}
                 <div className="items-top flex space-x-2 select-none mb-4 mt-2">
                   <Checkbox
                     id="checkBox"
-                    checked={showPassword}
-                    onCheckedChange={handlePassword}
+                    checked={defaultPassword}
+                    onCheckedChange={handleDefaultPassword}
                   />
                   <div className="grid gap-1.5 leading-none">
                     <label
                       htmlFor="checkBox"
                       className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
                     >
-                      Show password
+                      Set default password : username+@12345
                     </label>
                   </div>
                 </div>
-              )}
-              <Button disabled={isLoading}>
-                {isLoading ? (
-                  <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
-                ) : (
-                  <></>
+                {!defaultPassword && (
+                  <div className="items-top flex space-x-2 select-none mb-4 mt-2">
+                    <Checkbox
+                      id="checkBox"
+                      checked={showPassword}
+                      onCheckedChange={handlePassword}
+                    />
+                    <div className="grid gap-1.5 leading-none">
+                      <label
+                        htmlFor="checkBox"
+                        className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
+                      >
+                        Show password
+                      </label>
+                    </div>
+                  </div>
                 )}
-                Register with Email
-              </Button>
-              <Link
-                href={"/login"}
-                className={cn(
-                  buttonVariants({ variant: "secondary" }),
-                  "lg:hidden"
-                )}
-              >
-                Login
-              </Link>
-            </div>
-          </form>
-        </Form>
-      </div>
-    </>
+                <Button disabled={isLoading}>
+                  {isLoading ? (
+                    <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+                  ) : (
+                    <></>
+                  )}
+                  Register with Email
+                </Button>
+                <Link
+                  href={"/login"}
+                  className={cn(
+                    buttonVariants({ variant: "secondary" }),
+                    "lg:hidden"
+                  )}
+                >
+                  Login
+                </Link>
+              </div>
+            </form>
+          </Form>
+        </div>
+      </DialogContent>
+    </Dialog>
   );
 };
 

@@ -46,7 +46,6 @@ export async function userRegisterAction(data: {
 }) {
   try {
     const response = await axios.post(userEndpoints.register, data);
-    console.log(response);
 
     return { response: response.data };
   } catch (err) {
@@ -99,7 +98,7 @@ export async function updateMember(member: any) {
   try {
     const response = await axios.put(userEndpoints.updateMember, member);
 
-    return { response: response.data.data };
+    return { response: response.data.data, success: response.data.success };
   } catch (err) {
     return { err };
   }

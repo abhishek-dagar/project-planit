@@ -44,6 +44,11 @@ export function MemberTable<TData, TValue>({
   const { toast } = useToast();
   const [_, { updateTeam }] = useTeams({});
 
+  console.log(data);
+  useEffect(() => {
+    setCurrentData(data);
+  }, [data]);
+
   const table = useReactTable({
     data: currentData,
     columns,

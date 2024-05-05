@@ -150,7 +150,7 @@ export function UserDetailsForm({ className, ...props }: RegisterFormProps) {
                 </FormItem>
               )}
             />
-            <UpdatePasswordModal />
+            <UpdatePasswordModal id={user?.id} />
             <Button
               onClick={() => onSubmit(registerForm.getValues())}
               disabled={isLoading}

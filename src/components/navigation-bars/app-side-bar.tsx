@@ -33,7 +33,7 @@ const AppSideBar = () => {
   const [user] = useUser({});
 
   useHotkeys([["alt,s", () => setOpen((prev) => !prev)]]);
-  useHotkeys([["alt,p", () => router.push("/app/profile")]]);
+  useHotkeys([["alt,p", () => router.push("/app/settings/profile")]]);
   useHotkeys([["alt,t", () => router.push("/app/teams")]]);
   useHotkeys([["alt,d", () => router.push("/app/dashboard")]]);
 
@@ -131,7 +131,7 @@ const AppSideBar = () => {
                   : ""
               } p-1.5 rounded-md`}
               variant={"ghost"}
-              onClick={() => router.push("/app/settings")}
+              onClick={() => router.push("/app/settings/profile")}
             >
               <SettingsIcon />
               {/* <UserSquare2 /> */}
