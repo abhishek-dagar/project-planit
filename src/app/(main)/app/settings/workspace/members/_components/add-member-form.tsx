@@ -259,7 +259,7 @@ export function AddMemberForm({
                 </label>
                 {isDefaultPassword && (
                   <p className="text-xs text-muted-foreground">
-                    password will be email before @ + '@12345'
+                    {"password will be email before @ + '@12345'"}
                   </p>
                 )}
               </div>
