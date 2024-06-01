@@ -1,0 +1,173 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id                           String         @id @default(uuid())
+  email                        String         @unique
+  password                     String
+  name                         String?
+  role                         Role?          @relation(fields: [roleId], references: [id])
+  roleId                       String?
+  isVerified                   Boolean        @default(false)
+  forgotPasswordToken          String?
+  forgotPasswordTokenExpiresAt DateTime?
+  verifyToken                  String?
+  verifyTokenExpiresAt         DateTime?
+  members                      User[]         @relation("Member")
+  createdAt                    DateTime       @default(now())
+  updatedAt                    DateTime       @updatedAt
+  tier                         Tier           @relation(fields: [tierId], references: [id])
+  User                         User?          @relation("Member", fields: [userId], references: [id])
+  userId                       String?
+  tierId                       String
+  teamsLead                    Team?
+  tasks                        Task[]
+  workspaceMembers             workspace[]    @relation("Member")
+  workspaces                   workspace[]
+  team                         Team?          @relation("members", fields: [teamId], references: [id])
+  teamId                       String?
+  NotificationReciver          Notification[] @relation("reciver")
+  NotificationSender           Notification[] @relation("sender")
+}
+
+model Tier {
+  id          String   @id @default(uuid())
+  name        String
+  price       Int
+  description String
+  features    String[]
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  user        User[]
+}
+
+model workspace {
+  id          String    @id @default(uuid())
+  name        String
+  description String
+  createdAt   DateTime  @default(now())
+  updatedAt   DateTime  @updatedAt
+  teams       Team[]
+  projects    Project[]
+  tasks       Task[]
+  selected    Boolean   @default(false)
+  users       User[]    @relation("Member")
+  owner       User?     @relation(fields: [ownerId], references: [id])
+  ownerId     String?
+}
+
+model Team {
+  id          String     @id @default(uuid())
+  name        String
+  description String
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  teamLead    User?      @relation(fields: [teamLeadId], references: [id])
+  teamLeadId  String?    @unique
+  members     User[]     @relation("members")
+  project     Project[]
+  workspace   workspace? @relation(fields: [workspaceId], references: [id])
+  workspaceId String?
+}
+
+model Project {
+  id          String        @id @default(uuid())
+  name        String
+  description String
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  team        Team?         @relation(fields: [teamId], references: [id])
+  teamId      String?
+  tasks       Task[]
+  workspace   workspace?    @relation(fields: [workspaceId], references: [id])
+  workspaceId String?
+  selected    Boolean       @default(false)
+  favorite    Boolean       @default(false)
+  status      ProjectStatus @default(TODO)
+}
+
+model Task {
+  id          String     @id @default(uuid())
+  title       String
+  description String
+  status      Status     @default(TODO)
+  priority    Priority   @default(NONE)
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+  project     Project    @relation(fields: [projectId], references: [id])
+  projectId   String
+  dueDate     DateTime?
+  assignee    User?      @relation(fields: [assigneeId], references: [id])
+  assigneeId  String?
+  workspace   workspace? @relation(fields: [workspaceId], references: [id])
+  workspaceId String?
+}
+
+model Role {
+  id           String        @id @default(uuid())
+  name         String
+  description  String
+  isPredefined Boolean       @default(false)
+  createdAt    DateTime      @default(now())
+  updatedAt    DateTime      @updatedAt
+  permissions  Permissions[] @default([READ, CREATE, UPDATE, DELETE])
+  assignedUser User[]
+}
+
+model Notification {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  read        Boolean  @default(false)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  to          User?    @relation("reciver", fields: [toId], references: [id])
+  toId        String?
+  from        User?    @relation("sender", fields: [fromId], references: [id])
+  fromId      String?
+}
+
+enum ProjectStatus {
+  BACKLOG
+  TODO
+  IN_PROGRESS
+  PAUSED
+  COMPLETED
+  CLOSED
+  CANCELLED
+}
+
+enum Status {
+  BACKLOG
+  TODO
+  IN_PROGRESS
+  COMPLETED
+  CANCELLED
+}
+
+enum Priority {
+  LOW
+  MEDIUM
+  HIGH
+  URGENT
+  NONE
+}
+
+enum Permissions {
+  READ
+  CREATE
+  UPDATE
+  DELETE
+}
