@@ -88,7 +88,7 @@ export function Btn({ workspaces, user }: any) {
             </Avatar>
             <p className="max-w-[80px] truncate">{selectedWorkspace?.name}</p>
           </div>
-          {user.role.name !== "member" && (
+          {user?.role?.name !== "member" && (
             <DropdownMenuItem>
               <Link
                 href={"/app/settings/workspace/general"}

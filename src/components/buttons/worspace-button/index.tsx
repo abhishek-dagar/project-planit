@@ -20,7 +20,7 @@ const WorkspaceButton = async (props: Props) => {
   const user: any = await currentUser();
   if (!user) redirect("/signin");
   const workspaces = user?.workspaces;
-  if (user.role.name === "manager" && user.workspaces.length < 1)
+  if (user?.role?.name === "manager" && user.workspaces.length < 1)
     redirect("/workspace");
 
   return <Btn workspaces={workspaces} user={user} />;

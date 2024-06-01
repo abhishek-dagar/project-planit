@@ -107,7 +107,7 @@ const Sidebar = ({ user }: Props) => {
       <div className="flex items-center justify-center flex-col gap-8">
         <Link
           href={
-            user.role.name === "member"
+            user?.role?.name === "member"
               ? "/app/settings/my-account/profile"
               : "/app/settings/workspace/general"
           }

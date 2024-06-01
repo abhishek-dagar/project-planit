@@ -28,7 +28,7 @@ const SubSidebar = ({ user }: SubSidebarProps) => {
       <div className="h-full w-full px-3 py-6 flex flex-col gap-4">
         <p className="text-2xl">Settings</p>
         <div className="h-full flex flex-col gap-1 text-md">
-          {user.role.name !== "member" && (
+          {user?.role?.name !== "member" && (
             <>
               <p className="flex gap-2 items-center text-muted-foreground">
                 <BuildingIcon size={16} />

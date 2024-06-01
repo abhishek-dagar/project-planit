@@ -10,7 +10,7 @@ const ExportCsvButton = ({ user }: Props) => {
   const downloadCsv = async () => {
     const userDetails =
       "ID,Name,Email,role,Create At, Last updated\n" +
-      `${user.id},${user.name},${user.email},${user.role.name},${user.createdAt},${user.updatedAt}`;
+      `${user.id},${user.name},${user.email},${user?.role?.name},${user.createdAt},${user.updatedAt}`;
     const workspaces =
       "Name,Description,Created At, Last updated\n" +
       user.workspaces.map((workspace: any) => {
