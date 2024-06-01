@@ -19,11 +19,11 @@ const RightSection = () => {
       </Card>
       <Card className="h-[calc(100vh)] overflow-auto relative">
         <CardHeader className="bg-black/10 backdrop-blur-lg sticky top-0 left-0 border-b pb-3">
-          Today's Activity
+          {"Today's Activity"}
         </CardHeader>
         <CardContent className="pt-3 flex flex-col gap-2 justify-center">
           {Array.from({ length: 1000 }, (_, index) => (
-            <ActivityCard key={index}/>
+            <ActivityCard key={index} />
           ))}
         </CardContent>
       </Card>

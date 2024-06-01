@@ -89,7 +89,7 @@ const AssigneeDropdown = ({ taskId, assignee, team, isIcon }: Props) => {
   }, [searchParams.get("projectId")]);
   useEffect(() => {
     setValue(assignee);
-  }, [assignee]);
+  }, [assignee, team?.members]);
 
   return (
     <Popover open={open} onOpenChange={setOpen}>

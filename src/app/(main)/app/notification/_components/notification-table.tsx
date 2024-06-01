@@ -43,7 +43,7 @@ const NotificationTable = ({ read }: { read?: boolean }) => {
     <div className="flex flex-col items-center py-4 gap-4 relative">
       <div className="w-3/4 bg-muted rounded-md">
         {notifications.map((notification) => (
-          <NotificationRow notification={notification} />
+          <NotificationRow notification={notification} key={notification.id}/>
         ))}
       </div>
     </div>

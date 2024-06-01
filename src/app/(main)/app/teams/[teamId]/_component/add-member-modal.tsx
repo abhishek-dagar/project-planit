@@ -128,7 +128,7 @@ const MemberSelector = ({ members, team, setOpen }: any) => {
           </div>
           <div className="flex gap-2 flex-wrap">
             {selectedMembers.map((member: any) => (
-              <Badge variant={"secondary"} className="flex gap-2">
+              <Badge variant={"secondary"} className="flex gap-2" key={member.id}>
                 {member.name}
                 <Button
                   variant={"ghost"}
