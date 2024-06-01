@@ -3,7 +3,7 @@
 import { db } from "../db";
 import bycryptjs from "bcryptjs";
 
-export const updateUser = async (user: any, workspaceIds: string[]) => {
+export const updateUser = async (user: any, workspaceIds?: string[]) => {
   "use server";
   try {
     const role = await db.role.findFirst({
@@ -25,7 +25,7 @@ export const updateUser = async (user: any, workspaceIds: string[]) => {
     });
     if (updatedUser) {
       if (roleName === "member") {
-        workspaceIds.forEach(async (workspaceId: string) => {
+        workspaceIds?.forEach(async (workspaceId: string) => {
           await db.workspace.update({
             where: {
               id: workspaceId,
@@ -41,7 +41,7 @@ export const updateUser = async (user: any, workspaceIds: string[]) => {
           });
         });
       } else {
-        workspaceIds.forEach(async (workspaceId: string) => {
+        workspaceIds?.forEach(async (workspaceId: string) => {
           await db.workspace.update({
             where: {
               id: workspaceId,
