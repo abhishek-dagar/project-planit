@@ -6,9 +6,10 @@ import moment from "moment";
 
 interface Props {
   tasks: any;
+  user: any;
 }
 
-const TasksList = ({ tasks }: Props) => {
+const TasksList = ({ tasks, user }: Props) => {
   const dueTasks = tasks.filter((task: any) =>
     moment(task.dueDate).isBefore(moment().add(7, "days"))
   );
@@ -18,7 +19,7 @@ const TasksList = ({ tasks }: Props) => {
         <CardTitle>Task Due this week or Overdue</CardTitle>
       </CardHeader>
       <CardContent>
-        <ListPage tasks={dueTasks} />
+        <ListPage tasks={dueTasks} user={user}/>
       </CardContent>
     </Card>
   );

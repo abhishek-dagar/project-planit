@@ -6,8 +6,9 @@ import TasksList from "./tasks-list";
 
 interface Props {
   tasks: any;
+  user: any;
 }
-const LeftSection = ({ tasks }: Props) => {
+const LeftSection = ({ tasks, user }: Props) => {
   const groupTasks: any = {
     Total: tasks?.length,
     "TO DO": 0,
@@ -47,7 +48,7 @@ const LeftSection = ({ tasks }: Props) => {
             .map((key) => ({ name: key, count: groupTasks[key] }))}
         />
       </div>
-      <TasksList tasks={tasks} />
+      <TasksList tasks={tasks} user={user} />
     </div>
   );
 };
