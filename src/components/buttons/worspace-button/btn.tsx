@@ -73,7 +73,10 @@ export function Btn({ workspaces, user }: any) {
             <ChevronsUpDownIcon size={16} />
           </Button>
         </DropdownMenuTrigger>
-        <DropdownMenuContent className="min-w-[200px] md:w-[300px]" align="end">
+        <DropdownMenuContent
+          className="min-w-[200px] md:w-[300px] max-h-[300px] overflow-auto"
+          align="end"
+        >
           <div className="flex items-center gap-4 px-2 py-1.5">
             <Avatar className="h-6 w-6 bg-primary rounded-sm">
               <AvatarFallback className="bg-primary capitalize rounded-sm">
@@ -83,15 +86,23 @@ export function Btn({ workspaces, user }: any) {
             <p className="max-w-[80px] truncate">{selectedWorkspace?.name}</p>
           </div>
           {user?.role?.name !== "member" && (
-            <DropdownMenuItem>
-              <Link
-                href={"/app/settings/workspace/general"}
-                className="flex items-center gap-2"
-              >
-                <SettingsIcon size={16} />
-                <p>Manage Workspace</p>
-              </Link>
-            </DropdownMenuItem>
+            <>
+              <DropdownMenuItem>
+                <Link
+                  href={"/app/settings/workspace/general"}
+                  className="flex items-center gap-2"
+                >
+                  <SettingsIcon size={16} />
+                  <p>Manage Workspace</p>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link href={"/workspace"} className="flex items-center gap-2">
+                  <SettingsIcon size={16} />
+                  <p>Create new Workspace</p>
+                </Link>
+              </DropdownMenuItem>
+            </>
           )}
           <DropdownMenuSeparator />
           <div>

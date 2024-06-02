@@ -20,7 +20,11 @@ const Dashboard = async () => {
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-[4.2fr_2fr] gap-6 lg:gap-0">
         <LeftSection
-          tasks={tasks?.filter((task: any) => task?.assignee?.id === user?.id)}
+          tasks={
+            user?.role?.name !== "member"
+              ? tasks
+              : tasks?.filter((task: any) => task?.assignee?.id === user?.id)
+          }
           user={user}
         />
         <RightSection />

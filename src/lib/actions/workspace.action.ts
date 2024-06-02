@@ -11,11 +11,15 @@ export const createWorkspace = async (workspace: any) => {
     const user: any = await currentUser();
 
     if (!user) return { err: "Failed to create workspace" };
+    const selectedWorkspaceData =
+      user.workspaces.length === 0
+        ? { selected: { connect: { id: user.id } } }
+        : {};
     const newWorkspace = await db.workspace.create({
       data: {
         ...workspace,
         ownerId: user?.id,
-        selected: user.workspaces.length === 0 ? true : false,
+        ...selectedWorkspaceData,
       },
     });
 
