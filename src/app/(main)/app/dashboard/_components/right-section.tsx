@@ -22,7 +22,7 @@ const RightSection = () => {
           {"Today's Activity"}
         </CardHeader>
         <CardContent className="pt-3 flex flex-col gap-2 justify-center">
-          {Array.from({ length: 1000 }, (_, index) => (
+          {Array.from({ length: 100 }, (_, index) => (
             <ActivityCard key={index} />
           ))}
         </CardContent>

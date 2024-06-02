@@ -19,7 +19,7 @@ import {
   CommandSeparator,
   CommandShortcut,
 } from "@/components/ui/command";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Popover,
   PopoverContent,
@@ -41,6 +41,7 @@ interface Props {
   taskId: string;
   status: string;
   isIcon?: boolean;
+  disabled?: boolean;
 }
 
 const statuses = Object.keys(TaskStatus)
@@ -50,12 +51,22 @@ const statuses = Object.keys(TaskStatus)
     label: key,
   }));
 
-const StatusDropdown = ({ taskId, status, isIcon }: Props) => {
+const StatusDropdown = ({ taskId, status, isIcon, disabled }: Props) => {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState(status);
   const Icon: LucideIcon = TaskStatusIcon[status];
   const router = useRouter();
   const searchParams = useSearchParams();
+
+  const handleOpen = (value: boolean) => {
+    if (disabled) {
+      toast.error("You are not authorized to perform this action", {
+        description: "Only the team lead or manager can change the status",
+      });
+      return;
+    }
+    setOpen(value);
+  };
 
   const handleUpdateStatus = async (status: string) => {
     try {
@@ -78,8 +89,12 @@ const StatusDropdown = ({ taskId, status, isIcon }: Props) => {
     }
   };
 
+  useEffect(() => {
+    setValue(status);
+  }, [status]);
+
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover open={open} onOpenChange={handleOpen}>
       <PopoverTrigger asChild>
         <Button
           variant="ghost"

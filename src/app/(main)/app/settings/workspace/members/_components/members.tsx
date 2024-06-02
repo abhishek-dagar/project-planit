@@ -25,6 +25,8 @@ import {
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { removeMember, updateUser } from "@/lib/actions/user-update.action";
+import { updateWorkspace } from "@/lib/actions/workspace.action";
+import AddMemberFromAnotherWorkspaceModal from "./add-member-from-another-workspace-modal";
 
 type Props = {
   user: any;
@@ -33,8 +35,8 @@ type Props = {
 const MembersTable = ({ user }: Props) => {
   const [search, setSearch] = useState("");
   const workspaces = user?.workspaces;
-  const selectedWorkspace = workspaces.find(
-    (workspace: any) => workspace.selected
+  const selectedWorkspace = workspaces.find((workspace: any) =>
+    workspace.selected.find((select: any) => select.id === user.id)
   );
 
   return (
@@ -51,7 +53,13 @@ const MembersTable = ({ user }: Props) => {
             className="bg-muted"
           />
         </div>
-        <AddMemberModal user={user} />
+        <div className="flex gap-2">
+          <AddMemberFromAnotherWorkspaceModal
+            workspaces={workspaces}
+            selectedWorkspace={selectedWorkspace}
+          />
+          <AddMemberModal user={user} />
+        </div>
       </div>
       <ScrollArea className="h-[400px] relative">
         <div className="flex flex-col sticky top-0 left-0">
@@ -73,6 +81,7 @@ const MembersTable = ({ user }: Props) => {
                   id={member.id}
                   index={index}
                   user={user}
+                  workspaceId={selectedWorkspace?.id}
                 />
               ))}
           {/* <Row /> */}
@@ -103,7 +112,7 @@ const Header = ({}) => {
     </div>
   );
 };
-const Row = ({ id, name, email, role, index, user }: any) => {
+const Row = ({ id, name, email, role, index, user, workspaceId }: any) => {
   const router = useRouter();
 
   const roles: { name: string; label: string; description: string }[] = [
@@ -118,17 +127,33 @@ const Row = ({ id, name, email, role, index, user }: any) => {
       description: "Can do anything in all workspaces",
     },
   ];
-  const handleRemoveMember = async () => {
+  const handleDeleteMember = async () => {
     try {
       const { removed, err }: any = await removeMember({ id });
       if (removed) {
-        toast.success("Member removed successfully");
+        toast.success("Member Deleted successfully");
         router.refresh();
       } else {
         toast.error(err);
       }
     } catch (err) {
-      toast.error("Failed to remove member");
+      toast.error("Failed to Deleted member");
+    }
+  };
+  const handleRemoveMember = async () => {
+    try {
+      const { workspace, err }: any = await updateWorkspace(
+        { id: workspaceId, users: id },
+        false
+      );
+      if (workspace) {
+        toast.success("Member removed successfully from workspace");
+        router.refresh();
+      } else {
+        toast.error(err);
+      }
+    } catch (err) {
+      toast.error("Failed to remove member from workspace");
     }
   };
 
@@ -203,7 +228,14 @@ const Row = ({ id, name, email, role, index, user }: any) => {
                 className="flex gap-2"
               >
                 <Trash2Icon size={14} className="text-destructive" />
-                Remove member
+                Remove member from workspace
+              </DropdownMenuItem>
+              <DropdownMenuItem
+                onClick={handleDeleteMember}
+                className="flex gap-2"
+              >
+                <Trash2Icon size={14} className="text-destructive" />
+                Delete member
               </DropdownMenuItem>
             </DropdownMenuContent>
           </DropdownMenu>

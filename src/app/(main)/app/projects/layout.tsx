@@ -28,11 +28,14 @@ export default async function projectLayout({
             Projects
           </h1>
         </div>
-        <CreateNewProjectModal />
+        {user?.role?.name !== "member" && <CreateNewProjectModal />}
       </div>
       <ResizablePanelGroup direction="horizontal" className="h-full">
         <ResizablePanel maxSize={20} defaultSize={20}>
-          <SubSidebar projects={projects} />
+          <SubSidebar
+            projects={projects}
+            disabled={user?.role?.name === "member"}
+          />
         </ResizablePanel>
         <ResizableHandle withHandle className="hover:bg-primary" />
         <ResizablePanel defaultSize={80}>{children}</ResizablePanel>

@@ -11,8 +11,8 @@ const General = async () => {
   const workspaces = user?.workspaces;
   if (user.role?.name === "manager" && user.workspaces.length < 1)
     redirect("/workspace");
-  const selectedWorkspace = workspaces.find(
-    (workspace: any) => workspace.selected
+  const selectedWorkspace = workspaces.find((workspace: any) =>
+    workspace.selected.find((select: any) => select.id === user.id)
   );
   return (
     <div className="flex flex-col items-center py-4 gap-4 relative">

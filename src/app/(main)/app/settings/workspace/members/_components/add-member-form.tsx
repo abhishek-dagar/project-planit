@@ -78,7 +78,7 @@ export function AddMemberForm({
       const workspaceIds: string[] = [];
       if (values.role === "member") {
         const selectedWorkspace = user.workspaces.find(
-          (workspace: any) => workspace.selected
+          (workspace: any) => workspace.selected.find((select: any) => select.id === user.id)
         );
         workspaceIds.push(selectedWorkspace.id);
       } else {

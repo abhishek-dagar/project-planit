@@ -64,7 +64,6 @@ const ChangeName = ({ project }: Props) => {
     setName(project.name);
     setDescription(project.description);
     setTeam(project.team);
-    console.log(project);
   }, [project]);
   useEffect(() => {
     const fetchTes = async () => {

@@ -42,47 +42,51 @@ const Sidebar = ({ user }: Props) => {
         <Logo isSmall />
         <TooltipProvider>
           <ul className="flex items-center justify-center flex-col gap-3">
-            {menuOptions.map((menuItem) => (
-              <Tooltip delayDuration={0} key={menuItem.name}>
-                <TooltipTrigger>
-                  <li>
-                    <Link
-                      href={menuItem.href}
-                      className={clsx(
-                        "group h-8 w-8 flex items-center justify-center  scale-[1] rounded-lg p-[3px] cursor-pointer",
-                        {
-                          "dark:bg-[#2F006B] bg-[#EEE0FF] ":
-                            pathName === menuItem.href,
-                        }
-                      )}
-                    >
-                      {menuItem.name === "Notification" &&
-                        notifications?.length > 0 && (
-                          <span
-                            className={cn(
-                              "absolute top-[-6px] right-[-6px] flex h-3 w-3",
-                              pathName !== menuItem.href && "top-0 right-0"
-                            )}
-                          >
-                            <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
-                            <span className="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
-                          </span>
+            {menuOptions.map((menuItem) => {
+              if (user?.role?.name === "member" && menuItem.name === "Teams")
+                return null;
+              return (
+                <Tooltip delayDuration={0} key={menuItem.name}>
+                  <TooltipTrigger>
+                    <li>
+                      <Link
+                        href={menuItem.href}
+                        className={clsx(
+                          "group h-8 w-8 flex items-center justify-center  scale-[1] rounded-lg p-[3px] cursor-pointer",
+                          {
+                            "dark:bg-[#2F006B] bg-[#EEE0FF] ":
+                              pathName === menuItem.href,
+                          }
                         )}
-                      <menuItem.Component
-                        selected={pathName === menuItem.href}
-                      />
-                    </Link>
-                  </li>
-                </TooltipTrigger>
-                <TooltipContent
-                  side="right"
-                  className="bg-black/10 backdrop-blur-xl"
-                >
-                  <p>{menuItem.name}</p>
-                  {/* <TooltipArrow /> */}
-                </TooltipContent>
-              </Tooltip>
-            ))}
+                      >
+                        {menuItem.name === "Notification" &&
+                          notifications?.length > 0 && (
+                            <span
+                              className={cn(
+                                "absolute top-[-6px] right-[-6px] flex h-3 w-3",
+                                pathName !== menuItem.href && "top-0 right-0"
+                              )}
+                            >
+                              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-sky-400 opacity-75"></span>
+                              <span className="relative inline-flex rounded-full h-3 w-3 bg-primary"></span>
+                            </span>
+                          )}
+                        <menuItem.Component
+                          selected={pathName === menuItem.href}
+                        />
+                      </Link>
+                    </li>
+                  </TooltipTrigger>
+                  <TooltipContent
+                    side="right"
+                    className="bg-black/10 backdrop-blur-xl"
+                  >
+                    <p>{menuItem.name}</p>
+                    {/* <TooltipArrow /> */}
+                  </TooltipContent>
+                </Tooltip>
+              );
+            })}
           </ul>
         </TooltipProvider>
         <Separator />
@@ -120,7 +124,6 @@ const Sidebar = ({ user }: Props) => {
         >
           <Settings selected={pathName === "/settings"} />
         </Link>
-        {/* <ThemeModeDropdown /> */}
       </div>
     </nav>
   );

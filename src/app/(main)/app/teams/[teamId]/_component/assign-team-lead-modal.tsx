@@ -13,8 +13,7 @@ import {
 } from "@/components/ui/dialog";
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 import { Input } from "@/components/ui/input";
-import { addNewMemberToTeam, updateTeam } from "@/lib/actions/team.action";
-import { XIcon } from "lucide-react";
+import { updateTeam } from "@/lib/actions/team.action";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { toast } from "sonner";
@@ -51,11 +50,15 @@ const AssignTeamLeadModal = ({ team }: AssignTeamLeadModalProps) => {
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button variant={"outline"}>Create Team</Button>
+        <Button variant={"outline"}>Assign Team Lead</Button>
       </DrawerTrigger>
       <DrawerContent>
         <div className="border-t p-4">
-          {/* <TeamForm setOpen={setOpen} /> */}
+          <MemberSelector
+            members={team?.members}
+            team={team}
+            setOpen={setOpen}
+          />
         </div>
       </DrawerContent>
     </Drawer>
@@ -96,18 +99,20 @@ const MemberSelector = ({ members, team, setOpen }: any) => {
         onChange={(e) => setSearch(e.target.value)}
       />
       <Card>
-        <CardContent className="flex flex-col gap-2 py-2 px-2">
-          <p className="text-lg">Members</p>
-          <p className="text-sm text-muted-foreground">
-            Only three members are visible in suggestion but you can search
-          </p>
+        <CardContent className="flex flex-col gap-2 pb-2 px-2 max-h-[300px] overflow-auto">
+          <div className="px-2 pt-2 sticky top-0 bg-black/10 backdrop-blur-lg">
+            <p className="text-lg px-2 truncate">Members</p>
+            <p className="text-sm text-muted-foreground">
+              Only three members are visible in suggestion but you can search
+            </p>
+          </div>
           {members
             ?.filter(
               (member: any) =>
                 member.name.includes(search) || member.email.includes(search)
             )
             .map((member: any, index: number) => {
-              if (index > 2) return null;
+              // if (index > 2) return null;
               return (
                 <div
                   key={member.id}

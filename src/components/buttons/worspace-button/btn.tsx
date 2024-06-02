@@ -3,20 +3,7 @@
 import * as React from "react";
 
 import { Button } from "@/components/ui/button";
-import {
-  Command,
-  CommandEmpty,
-  CommandGroup,
-  CommandInput,
-  CommandItem,
-  CommandList,
-} from "@/components/ui/command";
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { useMediaQuery } from "@/components/custom-hooks/media-query";
 import {
   DropdownMenu,
@@ -39,19 +26,26 @@ export function Btn({ workspaces, user }: any) {
   const [search, setSearch] = React.useState("");
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const [selectedWorkspace, setSelectedWorkspace] = React.useState<any>(
-    workspaces.find((workspace: any) => workspace.selected)
+    workspaces.find((workspace: any) =>
+      workspace.selected.find((select: any) => select.id === user.id)
+    )
   );
+
   const router = useRouter();
   const pathname = usePathname();
 
   const handleWorkspaceClick = async (workspace: any) => {
     try {
-      setSelectedWorkspace({ ...workspace, selected: true });
-      await updateWorkspace({ id: selectedWorkspace.id, selected: false });
-      await updateWorkspace({ id: workspace.id, selected: true });
-      if (pathname.split("/").length > 3) {
-        router.push("/app/dashboard");
-      }
+      setSelectedWorkspace({
+        ...workspace,
+        selected: [...workspace.selected, user],
+      });
+      await updateWorkspace(
+        { id: selectedWorkspace.id, selected: user.id },
+        false
+      );
+      await updateWorkspace({ id: workspace.id, selected: user.id }, true);
+      router.push(pathname.split("?")[0]);
       router.refresh();
     } catch (err) {
       toast.error("Failed to change workspace");

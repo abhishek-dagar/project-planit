@@ -29,11 +29,14 @@ import {
   Droppable,
   DroppableProvided,
 } from "react-beautiful-dnd";
+import { currentUser } from "@/lib/helpers/getTokenData";
+import { toast } from "sonner";
 
 type Props = {
   tasks: any;
   project?: any;
   searchQuery?: string;
+  user: any;
 };
 
 const statuses = Object.keys(TaskStatus)
@@ -43,9 +46,10 @@ const priorities = Object.keys(TaskPriority)
   .filter((key) => isNaN(Number(key)))
   .map((key) => key);
 
-const ListPage = ({ tasks, project, searchQuery = "" }: Props) => {
+const ListPage = ({ tasks, project, user, searchQuery = "" }: Props) => {
   const searchParams = useSearchParams();
   const [group, setGroup] = useState<any>();
+
   useEffect(() => {
     if (searchParams.get("groupBy") === "status") {
       setGroup(statuses);
@@ -53,6 +57,7 @@ const ListPage = ({ tasks, project, searchQuery = "" }: Props) => {
       setGroup(priorities);
     }
   }, [searchParams.get("groupBy")]);
+
   return (
     <div
       className={cn(
@@ -67,7 +72,13 @@ const ListPage = ({ tasks, project, searchQuery = "" }: Props) => {
               task.title.toLowerCase().includes(searchQuery.toLowerCase())
             )
             .map((task: any) => (
-              <Row key={task.id} task={task} project={project} border />
+              <Row
+                key={task.id}
+                task={task}
+                project={project}
+                border
+                user={user}
+              />
             ))}
         </div>
       ) : tasks["TODO"] ||
@@ -93,6 +104,7 @@ const ListPage = ({ tasks, project, searchQuery = "" }: Props) => {
                     project={project}
                     snapshot={snapshot}
                     provided={provided}
+                    user={user}
                   />
                 );
               }}
@@ -108,7 +120,15 @@ const ListPage = ({ tasks, project, searchQuery = "" }: Props) => {
   );
 };
 
-const Column = ({ tasks, stat, Icon, project, provided, snapshot }: any) => {
+const Column = ({
+  tasks,
+  stat,
+  Icon,
+  project,
+  provided,
+  snapshot,
+  user,
+}: any) => {
   const searchParams = useSearchParams();
   return (
     <div ref={provided?.innerRef} {...provided?.droppableProps}>
@@ -136,6 +156,7 @@ const Column = ({ tasks, stat, Icon, project, provided, snapshot }: any) => {
                   border
                   snapshot={snapshot}
                   provided={provided}
+                  user={user}
                 />
               )}
             </Draggable>
@@ -151,9 +172,14 @@ const Column = ({ tasks, stat, Icon, project, provided, snapshot }: any) => {
   );
 };
 
-const Row = ({ task, project, border, provided, snapshot }: any) => {
+const Row = ({ task, project, border, provided, snapshot, user }: any) => {
   const [open, setOpen] = useState(false);
   const [checked, setChecked] = useState<boolean>(false);
+  const [disabled, setDisabled] = useState<boolean>(
+    user?.role?.name === "member" &&
+      task?.assignee?.id !== user?.id &&
+      project?.team?.teamLead?.id !== user?.id
+  );
   const getItemStyle = (draggableStyle: any) => {
     const transform = draggableStyle.transform;
     return {
@@ -167,8 +193,23 @@ const Row = ({ task, project, border, provided, snapshot }: any) => {
     };
   };
 
+  const handleOpen = (value: boolean) => {
+    if (
+      user?.role?.name === "member" &&
+      task?.assignee?.id !== user?.id &&
+      project?.team?.teamLead?.id !== user?.id
+    ) {
+      toast.error("You are not authorized to perform this action", {
+        description:
+          "Only the assignee, team lead or manager can edit this task",
+      });
+      return;
+    }
+    setOpen(value);
+  };
+
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={handleOpen}>
       <DialogTrigger asChild>
         <div
           className={cn(
@@ -211,10 +252,16 @@ const Row = ({ task, project, border, provided, snapshot }: any) => {
               taskId={task.id}
               priority={task.priority}
               isIcon
+              disabled={disabled}
             />
           </p>
           <p onClick={(e) => e.stopPropagation()}>
-            <StatusDropdown taskId={task.id} status={task.status} isIcon />
+            <StatusDropdown
+              taskId={task.id}
+              status={task.status}
+              isIcon
+              disabled={disabled}
+            />
           </p>
           <div className="flex-1">
             <p className="max-w-[450px] truncate">{task.title}</p>
@@ -227,6 +274,10 @@ const Row = ({ task, project, border, provided, snapshot }: any) => {
               taskId={task.id}
               dueDate={task.dueDate}
               createdAt={task.createdAt}
+              disabled={
+                user?.role?.name === "member" &&
+                project?.team?.teamLead?.id !== user?.id
+              }
             />
           </div>
           <div onClick={(e) => e.stopPropagation()}>
@@ -235,6 +286,10 @@ const Row = ({ task, project, border, provided, snapshot }: any) => {
               assignee={task.assignee}
               team={task.project ? task.project?.team : project.team}
               isIcon
+              disabled={
+                user?.role?.name === "member" &&
+                project?.team?.teamLead?.id !== user?.id
+              }
             />
           </div>
         </div>

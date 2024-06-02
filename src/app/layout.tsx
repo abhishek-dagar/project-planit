@@ -34,7 +34,7 @@ export default function RootLayout({
           >
             <ProgressBar />
             <Suspense>{children}</Suspense>
-            <Toaster />
+            <Toaster closeButton />
           </ThemeProvider>
         </ReduxProvider>
       </body>

@@ -35,11 +35,12 @@ model User {
   teamsLead                    Team?
   tasks                        Task[]
   workspaceMembers             workspace[]    @relation("Member")
-  workspaces                   workspace[]
+  workspaces                   workspace[]    @relation("Workspaces")
   team                         Team?          @relation("members", fields: [teamId], references: [id])
   teamId                       String?
   NotificationReciver          Notification[] @relation("reciver")
   NotificationSender           Notification[] @relation("sender")
+  OpenedWorkspace              workspace[]    @relation("OpenedWorkspace")
 }
 
 model Tier {
@@ -62,9 +63,9 @@ model workspace {
   teams       Team[]
   projects    Project[]
   tasks       Task[]
-  selected    Boolean   @default(false)
+  selected    User[]    @relation("OpenedWorkspace")
   users       User[]    @relation("Member")
-  owner       User?     @relation(fields: [ownerId], references: [id])
+  owner       User?     @relation("Workspaces", fields: [ownerId], references: [id])
   ownerId     String?
 }
 

@@ -14,35 +14,42 @@ import {
 import { Drawer, DrawerContent, DrawerTrigger } from "@/components/ui/drawer";
 import { Input } from "@/components/ui/input";
 import { addNewMemberToTeam } from "@/lib/actions/team.action";
+import { updateWorkspace } from "@/lib/actions/workspace.action";
 import { XIcon } from "lucide-react";
 import { useRouter } from "next/navigation";
 import React, { useState } from "react";
 import { toast } from "sonner";
 
-interface AddMemberModalProps {
-  user: any;
-  team: any;
-  workspace: any;
+interface AddMemberFromAnotherWorkspaceModalProps {
+  workspaces: any;
+  selectedWorkspace: any;
 }
-const AddMemberModal = ({ user, team, workspace }: AddMemberModalProps) => {
+const AddMemberFromAnotherWorkspaceModal = ({
+  workspaces,
+  selectedWorkspace,
+}: AddMemberFromAnotherWorkspaceModalProps) => {
   const [open, setOpen] = React.useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
+  const members = workspaces
+    ?.filter((workspace: any) => workspace.id !== selectedWorkspace.id)
+    .map((workspace: any) => workspace.users)
+    .flat();
 
   if (isDesktop) {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button variant={"outline"}>Add member</Button>
+          <Button variant={"outline"}>Add member from another workspace</Button>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
-            <DialogTitle>Add member toTeam</DialogTitle>
-            <DialogDescription>Add member to the team</DialogDescription>
+            <DialogTitle>Add member from another workspace</DialogTitle>
+            <DialogDescription>Add member to this workspace</DialogDescription>
           </DialogHeader>
           {/* <TeamForm setOpen={setOpen} /> */}
           <MemberSelector
-            members={workspace?.users}
-            team={team}
+            members={members}
+            workspace={selectedWorkspace}
             setOpen={setOpen}
           />
         </DialogContent>
@@ -53,13 +60,13 @@ const AddMemberModal = ({ user, team, workspace }: AddMemberModalProps) => {
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button variant={"outline"}>Add member</Button>
+        <Button variant={"outline"}>Add member from another workspace</Button>
       </DrawerTrigger>
       <DrawerContent>
         <div className="border-t p-4">
           <MemberSelector
-            members={workspace?.users}
-            team={team}
+            members={[]}
+            workspace={selectedWorkspace}
             setOpen={setOpen}
           />
         </div>
@@ -68,10 +75,11 @@ const AddMemberModal = ({ user, team, workspace }: AddMemberModalProps) => {
   );
 };
 
-const MemberSelector = ({ members, team, setOpen }: any) => {
+const MemberSelector = ({ members, workspace, setOpen }: any) => {
   const [search, setSearch] = useState("");
   const [selectedMembers, setSelectedMembers] = useState<any>([]);
   const router = useRouter();
+
   const handleSelect = (value: any) => {
     setSelectedMembers((prev: any) => {
       const mem = prev?.find((member: any) => member.id === value.id);
@@ -86,15 +94,22 @@ const MemberSelector = ({ members, team, setOpen }: any) => {
     });
   };
 
+  const checkIsMembers = (value: any) => {
+    return workspace.users.find((member: any) => member.id === value.id);
+  };
+
   const addMembers = async () => {
     try {
       let flag: boolean = true;
       selectedMembers.map(async (member: any) => {
-        const { addedMember } = await addNewMemberToTeam({
-          id: team?.id,
-          member,
-        });
-        if (!addedMember) flag = false;
+        const { workspace: updatedWorkspace } = await updateWorkspace(
+          {
+            id: workspace?.id,
+            users: member?.id,
+          },
+          true
+        );
+        if (!updatedWorkspace) flag = false;
       });
       if (flag) {
         toast.success("Members added successfully");
@@ -155,11 +170,14 @@ const MemberSelector = ({ members, team, setOpen }: any) => {
       <Card>
         <CardContent className="flex flex-col gap-2 pb-2 px-2 max-h-[300px] overflow-auto">
           <div className="px-2 pt-2 sticky top-0 bg-black/10 backdrop-blur-lg">
-            <p className="text-lg px-2 truncate">Members this workspace</p>
+            <p className="text-lg px-2 truncate">
+              Members this selected workspace
+            </p>
             <p className="text-sm text-muted-foreground px-2 truncate">
               Only three members are visible in suggestion but you can search
             </p>
           </div>
+
           {members?.filter(
             (member: any) =>
               member.name.includes(search) || member.email.includes(search)
@@ -170,12 +188,12 @@ const MemberSelector = ({ members, team, setOpen }: any) => {
                   member.name.includes(search) || member.email.includes(search)
               )
               .map((member: any, index: number) => {
-                if (member.role.name === "co manager") return null;
+                if (member.role.name === "co manager" || checkIsMembers(member))
+                  return null;
                 return (
                   <Button
                     variant={"ghost"}
                     key={member.id}
-                    disabled={member.teamId}
                     className={`justify-start gap-2 ${
                       checkSelected(member)
                         ? "bg-muted text-muted-foreground"
@@ -186,11 +204,9 @@ const MemberSelector = ({ members, team, setOpen }: any) => {
                     <UserRoundIcon selected size={16} />
                     <p>{member.name}</p>
                     <p className="text-muted-foreground">{member.email}</p>
-                    {member.teamId && (
-                      <p className="text-muted-foreground truncate">
-                        Already in a team
-                      </p>
-                    )}
+                    <p className="text-muted-foreground">
+                      {member.workspaceName}
+                    </p>
                   </Button>
                 );
               })
@@ -205,4 +221,4 @@ const MemberSelector = ({ members, team, setOpen }: any) => {
   );
 };
 
-export default AddMemberModal;
+export default AddMemberFromAnotherWorkspaceModal;

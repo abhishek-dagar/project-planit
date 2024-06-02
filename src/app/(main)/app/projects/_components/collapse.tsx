@@ -21,9 +21,10 @@ import React from "react";
 type Props = {
   project: any;
   selected: any;
+  disabled?: boolean;
 };
 
-const Collapse = ({ project, selected }: Props) => {
+const Collapse = ({ project, selected, disabled }: Props) => {
   const [isOpen, setIsOpen] = React.useState(false);
 
   const searchParams = useSearchParams();
@@ -75,7 +76,8 @@ const Collapse = ({ project, selected }: Props) => {
             className={cn(
               "flex items-center gap-2",
               selected.project &&
-                searchParams.get("view") === "list" &&
+                (!searchParams.get("view") ||
+                  searchParams.get("view") === "list") &&
                 "text-foreground"
             )}
           >
@@ -83,7 +85,8 @@ const Collapse = ({ project, selected }: Props) => {
               size={14}
               className={cn(
                 selected.project &&
-                  searchParams.get("view") === "list" &&
+                  (!searchParams.get("view") ||
+                    searchParams.get("view") === "list") &&
                   "text-primary"
               )}
             />
@@ -114,21 +117,25 @@ const Collapse = ({ project, selected }: Props) => {
             Board
           </Link>
         </div>
-        <Link
-          href={`/app/projects?projectId=${project.id}&tab=settings`}
-          className="rounded-md flex items-center gap-2 border px-2 text-sm"
-        >
-          <Button
-            variant="ghost"
-            size="sm"
-            className={`py-0 pl-5 hover:bg-background text-muted-foreground hover:text-foreground group bg-opacity-40 w-full justify-start ${
-              selected.tab === "settings" ? "bg-background text-foreground" : ""
-            }`}
+        {disabled !== true && (
+          <Link
+            href={`/app/projects?projectId=${project.id}&tab=settings`}
+            className="rounded-md flex items-center gap-2 border px-2 text-sm"
           >
-            <Settings selected={false} size={30} className="p-[5px]" />
-            <p>settings</p>
-          </Button>
-        </Link>
+            <Button
+              variant="ghost"
+              size="sm"
+              className={`py-0 pl-5 hover:bg-background text-muted-foreground hover:text-foreground group bg-opacity-40 w-full justify-start ${
+                selected.tab === "settings"
+                  ? "bg-background text-foreground"
+                  : ""
+              }`}
+            >
+              <Settings selected={false} size={30} className="p-[5px]" />
+              <p>settings</p>
+            </Button>
+          </Link>
+        )}
       </CollapsibleContent>
     </Collapsible>
   );

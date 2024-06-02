@@ -41,19 +41,38 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { fetchProject } from "@/lib/actions/project.action";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { getRefresh } from "@/lib/helpers/getRefersh";
+import { currentUser } from "@/lib/helpers/getTokenData";
 
 interface Props {
   taskId: string;
   assignee: any;
   team?: any;
   isIcon?: boolean;
+  disabled?: boolean;
 }
-const AssigneeDropdown = ({ taskId, assignee, team, isIcon }: Props) => {
+const AssigneeDropdown = ({
+  taskId,
+  assignee,
+  team,
+  isIcon,
+  disabled,
+}: Props) => {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState<any>();
   const [members, setMembers] = useState<any>();
   const router = useRouter();
   const searchParams = useSearchParams();
+
+  const handleOpen = (value: boolean) => {
+    if (disabled) {
+      toast.error("You are not authorized to perform this action", {
+        description:
+          "Only the team lead or manager can assign task",
+      });
+      return;
+    }
+    setOpen(value);
+  };
 
   const handleUpdateAssignee = async (
     assigneeId: string | null,
@@ -92,7 +111,7 @@ const AssigneeDropdown = ({ taskId, assignee, team, isIcon }: Props) => {
   }, [assignee, team?.members]);
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover open={open} onOpenChange={handleOpen}>
       <PopoverTrigger asChild>
         <Button
           variant="ghost"

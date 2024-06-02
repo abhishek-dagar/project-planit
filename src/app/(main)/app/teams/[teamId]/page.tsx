@@ -16,6 +16,12 @@ const Team = async ({ params }: any) => {
   if (!user) redirect("/app/signin");
   const { team }: any = await fetchTeam(teamId);
   if (!team) redirect("/app/teams");
+  const workspaces = user?.workspaces;
+  if (user.role?.name === "manager" && user.workspaces.length < 1)
+    redirect("/workspace");
+  const selectedWorkspace = workspaces.find((workspace: any) =>
+    workspace.selected.find((select: any) => select.id === user.id)
+  );
 
   const handleDeleteTeam = async () => {
     "use server";
@@ -52,7 +58,7 @@ const Team = async ({ params }: any) => {
       </div>
       <div className="w-3/4">
         <h1 className="text-xl">Team Members</h1>
-        <TeamMembers team={team} user={user} />
+        <TeamMembers team={team} user={user} workspace={selectedWorkspace} />
         <Separator className="mt-2" />
       </div>
       <div className="w-3/4 flex flex-col gap-3 items-start">

@@ -7,6 +7,8 @@ export default async function WorkspaceLayout({
   children: React.ReactNode;
 }>) {
   const user: any = await currentUser();
+  if (user?.role?.name === "member") redirect("/app/dashboard");
+
   if (user?.role?.name === "manager" && user.workspaces.length < 1)
     redirect("/workspace");
   return <>{children}</>;

@@ -8,9 +8,10 @@ import { useSearchParams } from "next/navigation";
 
 interface Props {
   projects: any;
+  disabled?: boolean;
 }
 
-const SubSidebar = ({ projects }: Props) => {
+const SubSidebar = ({ projects, disabled }: Props) => {
   const [search, setSearch] = useState("");
   const searchParams = useSearchParams();
   return (
@@ -37,6 +38,7 @@ const SubSidebar = ({ projects }: Props) => {
               <Collapse
                 key={project.id}
                 project={project}
+                disabled={disabled}
                 selected={{
                   project: searchParams.get("projectId") === project.id,
                   tab:

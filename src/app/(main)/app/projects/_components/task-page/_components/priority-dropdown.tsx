@@ -19,7 +19,7 @@ import {
   CommandSeparator,
   CommandShortcut,
 } from "@/components/ui/command";
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Popover,
   PopoverContent,
@@ -43,6 +43,7 @@ interface Props {
   taskId: string;
   priority: string;
   isIcon?: boolean;
+  disabled?: boolean;
 }
 
 const priorities = Object.keys(TaskPriority)
@@ -52,12 +53,22 @@ const priorities = Object.keys(TaskPriority)
     label: key,
   }));
 
-const PriorityDropdown = ({ taskId, priority, isIcon }: Props) => {
+const PriorityDropdown = ({ taskId, priority, isIcon, disabled }: Props) => {
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState(priority);
   const Icon: LucideIcon = TaskPriorityIcon[priority];
   const router = useRouter();
   const searchParams = useSearchParams();
+
+  const handleOpen = (value: boolean) => {
+    if (disabled) {
+      toast.error("You are not authorized to perform this action", {
+        description: "Only the team lead or manager can change the priority",
+      });
+      return;
+    }
+    setOpen(value);
+  };
 
   const handleUpdatePriority = async (priority: string) => {
     try {
@@ -80,8 +91,12 @@ const PriorityDropdown = ({ taskId, priority, isIcon }: Props) => {
     }
   };
 
+  useEffect(() => {
+    setValue(priority);
+  }, [priority]);
+
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover open={open} onOpenChange={handleOpen}>
       <PopoverTrigger asChild>
         <Button
           variant="ghost"

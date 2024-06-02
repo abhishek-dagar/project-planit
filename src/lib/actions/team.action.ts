@@ -10,7 +10,11 @@ export const createTeam = async (team: any) => {
     const currentWorkspace = await db.workspace.findFirst({
       where: {
         ownerId: user?.id,
-        selected: true,
+        selected: {
+          some: {
+            id: user?.id,
+          },
+        },
       },
       select: {
         id: true,
@@ -33,7 +37,11 @@ export const fetchTeams = async () => {
     const currentWorkspace = await db.workspace.findFirst({
       where: {
         ownerId: user?.id,
-        selected: true,
+        selected: {
+          some: {
+            id: user?.id,
+          },
+        },
       },
       select: {
         id: true,

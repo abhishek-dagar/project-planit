@@ -12,6 +12,7 @@ import { TaskPriority, TaskStatus } from "@/lib/types/task.type";
 import GroupByDropdown from "./_components/groupby-dropdown";
 import { DragDropContext, DropResult } from "react-beautiful-dnd";
 import { toast } from "sonner";
+import { currentUser } from "@/lib/helpers/getTokenData";
 
 type Props = {
   project: any;
@@ -35,9 +36,19 @@ const TaskPage = ({ project }: Props) => {
     assignee: [],
     dueDate: null,
   });
+  const [user, setUser] = useState<any>();
   const searchParams = useSearchParams();
+
+  useEffect(() => {
+    const getUser = async () => {
+      const fetUser = await currentUser();
+      if (fetUser) setUser(fetUser);
+    };
+    getUser();
+  }, []);
   const getTasks = async () => {
     let groupBy = searchParams.get("groupBy") || "";
+    if (searchParams.get("view") === "board" && groupBy=="") groupBy = "status";
     if (groupBy !== "status" && groupBy !== "priority") groupBy = "";
     const { tasks } = await fetchTasks(
       project.id,
@@ -50,9 +61,22 @@ const TaskPage = ({ project }: Props) => {
     setTasks(tasks);
   };
 
-  const handleDragEnd = async(result: DropResult) => {
+  const handleDragEnd = async (result: DropResult) => {
     const { destination, source } = result;
-    let groupBy:string|null = searchParams.get("groupBy");
+    let groupBy: string | null = searchParams.get("groupBy");
+
+    const ta = tasks[source.droppableId][source.index];
+    if (
+      user?.role?.name === "member" &&
+      project?.team?.teamLead?.id !== user?.id &&
+      user?.id !== ta?.assignee?.id
+    ) {
+      toast.error("You are not authorized to perform this action", {
+        description:
+          "Only the assignee, team lead or manager can edit this task",
+      });
+      return;
+    }
     if (!destination) return;
     if (destination.droppableId === source.droppableId) {
       // same list movement
@@ -62,9 +86,9 @@ const TaskPage = ({ project }: Props) => {
         tempTask[destination.droppableId].splice(destination.index, 0, removed);
         return tempTask;
       });
-    } else if(groupBy){
+    } else if (groupBy) {
       // different list movement
-      let removed:any;
+      let removed: any;
       setTasks((task: any) => {
         const tempTask = JSON.parse(JSON.stringify(task));
         [removed] = tempTask[source.droppableId].splice(source.index, 1);
@@ -83,9 +107,11 @@ const TaskPage = ({ project }: Props) => {
         }
         return tempTask;
       });
-      if(removed){
-        const {updatedTask} = await updateTask(removed?.id, {[groupBy]:removed[groupBy]});
-        if(updatedTask){
+      if (removed) {
+        const { updatedTask } = await updateTask(removed?.id, {
+          [groupBy]: removed[groupBy],
+        });
+        if (updatedTask) {
           toast.success("Task moved successfully");
         }
       }
@@ -127,13 +153,24 @@ const TaskPage = ({ project }: Props) => {
           <Filter filter={filter} handleFilter={handleFilter} />
           <GroupByDropdown />
         </div>
-        <CreateTaskModal />
+        {(user?.role?.name !== "member" ||
+          project?.team?.teamLead?.id === user?.id) && <CreateTaskModal />}
       </div>
       <DragDropContext onDragEnd={handleDragEnd}>
         {searchParams.get("view") === "board" ? (
-          <BoardPage tasks={tasks} project={project} searchQuery={search} />
+          <BoardPage
+            tasks={tasks}
+            project={project}
+            searchQuery={search}
+            user={user}
+          />
         ) : (
-          <ListPage tasks={tasks} project={project} searchQuery={search} />
+          <ListPage
+            tasks={tasks}
+            project={project}
+            searchQuery={search}
+            user={user}
+          />
         )}
       </DragDropContext>
     </div>

@@ -290,7 +290,6 @@ const MultipleSelector = React.forwardRef<
             setInputValue("");
             const newOptions = [...selected, { value, label: value }];
             setSelected(newOptions);
-            console.log(newOptions);
 
             onChange?.(newOptions);
           }}

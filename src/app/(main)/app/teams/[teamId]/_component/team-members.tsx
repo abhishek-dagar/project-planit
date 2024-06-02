@@ -1,5 +1,4 @@
 "use client";
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ScrollArea } from "@/components/ui/scroll-area";
 import { Separator } from "@/components/ui/separator";
@@ -12,9 +11,8 @@ import {
   Trash2Icon,
   WholeWordIcon,
 } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import { useState } from "react";
 import AddMemberModal from "./add-member-modal";
-import { Checkbox } from "@/components/ui/checkbox";
 import AssignTeamLeadModal from "./assign-team-lead-modal";
 import {
   DropdownMenu,
@@ -29,9 +27,10 @@ import { toast } from "sonner";
 type Props = {
   team: any;
   user: any;
+  workspace: any;
 };
 
-const TeamMembers = ({ team, user }: Props) => {
+const TeamMembers = ({ team, user, workspace }: Props) => {
   const [search, setSearch] = useState("");
 
   return (
@@ -50,7 +49,7 @@ const TeamMembers = ({ team, user }: Props) => {
         </div>
         <div className="flex gap-4">
           <AssignTeamLeadModal team={team} />
-          <AddMemberModal user={user} team={team} />
+          <AddMemberModal user={user} team={team} workspace={workspace} />
         </div>
       </div>
       <ScrollArea className="h-[400px] relative">

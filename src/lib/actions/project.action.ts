@@ -10,7 +10,11 @@ export const createProject = async (project: any) => {
     const currentWorkspace = await db.workspace.findFirst({
       where: {
         ownerId: user?.id,
-        selected: true,
+        selected: {
+          some: {
+            id: user?.id,
+          },
+        },
       },
       select: {
         id: true,
@@ -31,17 +35,35 @@ export const fetchProjects = async () => {
     const user: any = await currentUser();
     const currentWorkspace = await db.workspace.findFirst({
       where: {
-        ownerId: user?.id,
-        selected: true,
+        ownerId: user?.managerId ? user?.managerId : user?.id,
+        selected: {
+          some: {
+            id: user?.id,
+          },
+        },
       },
       select: {
         id: true,
       },
     });
     if (!currentWorkspace) return { projects: [] };
+    const teamFilter =
+      user?.role?.name === "member"
+        ? {
+            team: {
+              members: {
+                some: {
+                  id: user?.id,
+                },
+              },
+            },
+          }
+        : {};
+
     const projects = await db.project.findMany({
       where: {
         workspaceId: currentWorkspace?.id,
+        ...teamFilter,
       },
       orderBy: {
         createdAt: "desc",

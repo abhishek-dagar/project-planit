@@ -1,4 +1,5 @@
 // import { NextRequest } from "next/server";
+"use server";
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { db } from "../db";
@@ -101,6 +102,19 @@ export const currentUser = async () => {
     });
     if (user?.role?.name === "member") {
       user.workspaces = user.workspaceMembers;
+      const manager = await db.user.findFirst({
+        where: {
+          members: {
+            some: {
+              id: user?.id,
+            },
+          },
+        },
+        select: {
+          id: true,
+        },
+      });
+      return { ...user, managerId: manager?.id };
     }
     return user;
   } catch (error) {

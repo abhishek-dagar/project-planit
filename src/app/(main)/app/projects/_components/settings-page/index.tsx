@@ -1,9 +1,10 @@
 import { Separator } from "@/components/ui/separator";
-import React from "react";
+import { useEffect } from "react";
 import ChangeName from "./change-name";
 import DeleteConfirmModal from "@/components/common/delete-confirm-modal";
 import { deleteProject } from "@/lib/actions/project.action";
-import { redirect, useRouter } from "next/navigation";
+import { useRouter } from "next/navigation";
+import { currentUser } from "@/lib/helpers/getTokenData";
 
 type Props = {
   project: any;
@@ -22,8 +23,19 @@ const Settings = ({ project }: Props) => {
       return { err: "failed to delete" };
     }
   };
+
+  useEffect(() => {
+    const getUser = async () => {
+      const user = await currentUser();
+      if (user?.role?.name === "member") {
+        router.push("/app/projects");
+      }
+    };
+    getUser();
+  }, []);
+
   return (
-    <div className="flex flex-col items-center pb-8 gap-4 relative overflow-auto">
+    <div className="flex flex-col items-center pt-4 pb-8 gap-4 relative overflow-auto">
       <div className="w-3/4">
         <h1 className="text-xl">General Settings</h1>
         <ChangeName project={project} />

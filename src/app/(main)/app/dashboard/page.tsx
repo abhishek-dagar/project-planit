@@ -4,8 +4,10 @@ import RightSection from "./_components/right-section";
 import LeftSection from "./_components/left-section";
 import { fetchProjects } from "@/lib/actions/project.action";
 import { fetchAllTasks, fetchTasks } from "@/lib/actions/task.action";
+import { currentUser } from "@/lib/helpers/getTokenData";
 
 const Dashboard = async () => {
+  const user = await currentUser();
   const { projects } = await fetchProjects();
   const { tasks } = await fetchAllTasks(projects?.map((project) => project.id));
   return (
@@ -17,7 +19,9 @@ const Dashboard = async () => {
         </h1>
       </div>
       <div className="grid grid-cols-1 lg:grid-cols-[4.2fr_2fr] gap-6 lg:gap-0">
-        <LeftSection tasks={tasks} />
+        <LeftSection
+          tasks={tasks?.filter((task: any) => task?.assignee?.id === user?.id)}
+        />
         <RightSection />
       </div>
     </div>

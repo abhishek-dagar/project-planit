@@ -22,6 +22,7 @@ interface Props {
   taskId: string;
   dueDate: Date;
   createdAt: Date;
+  disabled?: boolean;
 }
 
 const customButtons = [
@@ -47,11 +48,21 @@ const customButtons = [
   },
 ];
 
-export function CalendarForm({ taskId, createdAt, dueDate }: Props) {
+export function CalendarForm({ taskId, createdAt, dueDate, disabled }: Props) {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(dueDate);
   const [open, setOpen] = useState<boolean>(false);
   const searchParams = useSearchParams();
   const router = useRouter();
+
+  const handleOpen = (value: boolean) => {
+    if (disabled) {
+      toast.error("You are not authorized to perform this action", {
+        description: "Only the team lead or manager can change the due date",
+      });
+      return;
+    }
+    setOpen(value);
+  };
 
   const addDays = (day: number) => {
     const d: Date = moment().add(day, "days").toDate();
@@ -82,7 +93,7 @@ export function CalendarForm({ taskId, createdAt, dueDate }: Props) {
   };
 
   return (
-    <Popover open={open} onOpenChange={setOpen}>
+    <Popover open={open} onOpenChange={handleOpen}>
       <PopoverTrigger asChild>
         <Button
           variant={"ghost"}

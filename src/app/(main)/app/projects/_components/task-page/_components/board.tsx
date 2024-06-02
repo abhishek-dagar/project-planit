@@ -28,11 +28,13 @@ import {
   Droppable,
   DroppableProvided,
 } from "react-beautiful-dnd";
+import { toast } from "sonner";
 
 type Props = {
   tasks: any;
   project: any;
   searchQuery?: string;
+  user: any;
 };
 
 const statuses = Object.keys(TaskStatus)
@@ -41,7 +43,7 @@ const statuses = Object.keys(TaskStatus)
 const priorities = Object.keys(TaskPriority)
   .filter((key) => isNaN(Number(key)))
   .map((key) => key);
-const BoardPage = ({ tasks, project, searchQuery = "" }: Props) => {
+const BoardPage = ({ tasks, project, user, searchQuery = "" }: Props) => {
   const searchParams = useSearchParams();
   const [group, setGroup] = useState<any>();
   useEffect(() => {
@@ -65,7 +67,11 @@ const BoardPage = ({ tasks, project, searchQuery = "" }: Props) => {
         </div>
       ) : (
         <div className="flex gap-8 mb-5">
-          {tasks &&
+          {(tasks["TODO"] ||
+            tasks["IN_PROGRESS"] ||
+            tasks["COMPLETED"] ||
+            tasks["CANCELLED"] ||
+            tasks["BACKLOG"]) &&
             group &&
             group?.map((key: any) => {
               const Icon: LucideIcon =
@@ -86,6 +92,7 @@ const BoardPage = ({ tasks, project, searchQuery = "" }: Props) => {
                         project={project}
                         snapshot={snapshot}
                         provided={provided}
+                        user={user}
                       />
                     );
                   }}
@@ -105,6 +112,7 @@ const BoardColumn = ({
   project,
   provided,
   snapshot,
+  user,
 }: any) => {
   return (
     <div ref={provided.innerRef} {...provided.droppableProps}>
@@ -134,6 +142,7 @@ const BoardColumn = ({
                   project={project}
                   snapshot={snapshot}
                   provided={provided}
+                  user={user}
                 />
               )}
             </Draggable>
@@ -146,9 +155,14 @@ const BoardColumn = ({
   );
 };
 
-const BoardCard = ({ task, project, provided, snapshot }: any) => {
+const BoardCard = ({ task, project, provided, snapshot, user }: any) => {
   // console.log(provided.draggableProps?.style);
   const [open, setOpen] = useState(false);
+  const [disabled, setDisabled] = useState<boolean>(
+    user?.role?.name === "member" &&
+      task?.assignee?.id !== user?.id &&
+      project?.team?.teamLead?.id !== user?.id
+  );
 
   const getItemStyle = (draggableStyle: any) => {
     const transform = draggableStyle.transform;
@@ -162,8 +176,24 @@ const BoardCard = ({ task, project, provided, snapshot }: any) => {
       transform: transform,
     };
   };
+
+  const handleOpen = (value: boolean) => {
+    if (
+      user?.role?.name === "member" &&
+      task?.assignee?.id !== user?.id &&
+      project?.team?.teamLead?.id !== user?.id
+    ) {
+      toast.error("You are not authorized to perform this action", {
+        description:
+          "Only the assignee, team lead or manager can edit this task",
+      });
+      return;
+    }
+    setOpen(value);
+  };
+
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={handleOpen}>
       <DialogTrigger asChild>
         <div
           className={`flex flex-col gap-2 py-3 px-5 cursor-pointer bg-muted rounded-lg`}
@@ -180,7 +210,12 @@ const BoardCard = ({ task, project, provided, snapshot }: any) => {
           </div>
           <div className="flex-1 flex gap-2">
             <p onClick={(e) => e.stopPropagation()}>
-              <StatusDropdown taskId={task.id} status={task.status} isIcon />
+              <StatusDropdown
+                taskId={task.id}
+                status={task.status}
+                isIcon
+                disabled={disabled}
+              />
             </p>
             <p className="max-w-[180px] truncate">{task.title}</p>
           </div>
@@ -190,6 +225,7 @@ const BoardCard = ({ task, project, provided, snapshot }: any) => {
                 taskId={task.id}
                 priority={task.priority}
                 isIcon
+                disabled={disabled}
               />
             </div>
             <div onClick={(e) => e.stopPropagation()}>
@@ -197,6 +233,10 @@ const BoardCard = ({ task, project, provided, snapshot }: any) => {
                 taskId={task.id}
                 dueDate={task.dueDate}
                 createdAt={task.createdAt}
+                disabled={
+                  user?.role?.name === "member" &&
+                  project?.team?.teamLead?.id !== user?.id
+                }
               />
             </div>
             <div onClick={(e) => e.stopPropagation()}>
@@ -205,6 +245,10 @@ const BoardCard = ({ task, project, provided, snapshot }: any) => {
                 assignee={task.assignee}
                 team={project.team}
                 isIcon
+                disabled={
+                  user?.role?.name === "member" &&
+                  project?.team?.teamLead?.id !== user?.id
+                }
               />
             </div>
           </div>

@@ -1,14 +1,15 @@
 "use client";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Popover, PopoverContent, PopoverTrigger } from "../../ui/popover";
 import { Avatar, AvatarFallback, AvatarImage } from "../../ui/avatar";
-import { LogOutIcon } from "lucide-react";
+import { LogOutIcon, SettingsIcon } from "lucide-react";
 import { Separator } from "../../ui/separator";
 import { Button } from "../../ui/button";
 import { userSignOut } from "@/lib/actions/user.action";
 import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Icons } from "../../icons";
+import Link from "next/link";
 
 type Props = {
   user: any;
@@ -16,6 +17,7 @@ type Props = {
 
 const UserButton = ({ user }: Props) => {
   const [isLoading, setIsLoading] = useState(false);
+  const [currentUser, setCurrentUser] = useState(user);
   const router = useRouter();
 
   const handleLogout = async () => {
@@ -34,13 +36,19 @@ const UserButton = ({ user }: Props) => {
       setIsLoading(false);
     }
   };
+
+  useEffect(() => {
+    setCurrentUser(user);
+  }, [user]);
   return (
-    user && (
+    currentUser && (
       <Popover>
         <PopoverTrigger>
           <Avatar>
             {/* <AvatarImage src="https://github.com/shadcn.png" /> */}
-            <AvatarFallback>{user.name?.split("")[0] || "NA"}</AvatarFallback>
+            <AvatarFallback className="text-xl uppercase">
+              {currentUser.name?.split("")[0] || "NA"}
+            </AvatarFallback>
           </Avatar>
         </PopoverTrigger>
         <PopoverContent
@@ -50,15 +58,32 @@ const UserButton = ({ user }: Props) => {
           <div className="flex items-center gap-2">
             <Avatar className="w-16 h-16">
               {/* <AvatarImage src="https://github.com/shadcn.png" /> */}
-              <AvatarFallback>{user.name?.split("")[0] || "NA"}</AvatarFallback>
+              <AvatarFallback className="text-2xl uppercase">
+                {currentUser.name?.split("")[0] || "NA"}
+              </AvatarFallback>
             </Avatar>
             <div>
               <p className="text-lg font-semibold">
-                {user?.name || "Name not updated"}
+                {currentUser?.name || "Name not updated"}
               </p>
-              <p className="text-sm text-muted-foreground">{user?.email}</p>
+              <p className="text-sm text-muted-foreground">
+                {currentUser?.email}
+              </p>
             </div>
           </div>
+          <Button
+            variant={"ghost"}
+            disabled={isLoading}
+            className="w-full justify-start mt-2 p-0"
+          >
+            <Link
+              href={"/app/settings/my-account/profile"}
+              className="flex items-center gap-2 w-full px-4"
+            >
+              <SettingsIcon size={16} />
+              <p>Manage Profile</p>
+            </Link>
+          </Button>
           <Separator className="my-3" />
           <Button
             variant={"ghost"}

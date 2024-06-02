@@ -29,7 +29,6 @@ export const updateUser = async (user: any, workspaceIds?: string[]) => {
           await db.workspace.update({
             where: {
               id: workspaceId,
-              selected: false,
             },
             data: {
               users: {
