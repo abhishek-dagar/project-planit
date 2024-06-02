@@ -36,7 +36,7 @@ const LeftSection = ({ tasks, user }: Props) => {
             <CountCard key={key} title={key} count={parseInt(value)} />
           ))}
       </div>
-      <div className="flex gap-6">
+      <div className="flex flex-col md:flex-row gap-6">
         <CustomPieChart
           data={Object.keys(groupTasks)
             .filter((key) => key !== "Total")

@@ -54,7 +54,7 @@ const BoardPage = ({ tasks, project, user, searchQuery = "" }: Props) => {
     }
   }, [searchParams.get("groupBy")]);
   return (
-    <div className="h-[calc(100vh-222px)] max-w-[calc(100vw-260px)] p-5 pt-0 overflow-auto flex relative">
+    <div className="h-[calc(100vh-222px)] max-w-[calc(100vw-120px)] lg:max-w-[calc(100vw-260px)] p-5 pt-0 overflow-auto flex relative">
       {tasks?.length ? (
         <div className="flex flex-col gap-2">
           {tasks

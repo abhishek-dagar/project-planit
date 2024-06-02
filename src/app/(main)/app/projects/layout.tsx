@@ -20,7 +20,7 @@ export default async function projectLayout({
     redirect("/workspace");
   const { projects } = await fetchProjects();
   return (
-    <div className="h-full relative">
+    <div className="h-full relative overflow-hidden">
       <div className="sticky top-0 z-[10] py-3 px-6 bg-background/50 backdrop-blur-lg flex items-center justify-between border-b">
         <div>
           <h1 className="text-4xl flex items-center">
