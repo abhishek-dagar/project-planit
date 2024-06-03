@@ -5,14 +5,17 @@ import LeftSection from "./_components/left-section";
 import { fetchProjects } from "@/lib/actions/project.action";
 import { fetchAllTasks, fetchTasks } from "@/lib/actions/task.action";
 import { currentUser } from "@/lib/helpers/getTokenData";
+import { fetchActivities } from "@/lib/actions/activity.action";
 
 const Dashboard = async () => {
   const user = await currentUser();
   const { projects } = await fetchProjects();
   const { tasks } = await fetchAllTasks(projects?.map((project) => project.id));
+  const { activities } = await fetchActivities();
+
   return (
     <div className="flex flex-col gap-4 relative">
-      <div className="sticky top-0 z-[10] py-3 px-6 bg-background/50 backdrop-blur-lg border-b">
+      <div className="sticky top-0 z-[20] py-3 px-6 bg-background/50 backdrop-blur-lg border-b">
         <h1 className="text-4xl flex items-center">
           <Home selected={true} size={30} className="mr-2" />
           Dashboard
@@ -27,7 +30,7 @@ const Dashboard = async () => {
           }
           user={user}
         />
-        <RightSection />
+        <RightSection activities={activities} />
       </div>
     </div>
   );

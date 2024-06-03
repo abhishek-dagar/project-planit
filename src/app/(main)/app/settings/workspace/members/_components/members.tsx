@@ -57,6 +57,7 @@ const MembersTable = ({ user }: Props) => {
           <AddMemberFromAnotherWorkspaceModal
             workspaces={workspaces}
             selectedWorkspace={selectedWorkspace}
+            user={user}
           />
           <AddMemberModal user={user} />
         </div>

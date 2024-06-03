@@ -41,6 +41,8 @@ model User {
   NotificationReciver          Notification[] @relation("reciver")
   NotificationSender           Notification[] @relation("sender")
   OpenedWorkspace              workspace[]    @relation("OpenedWorkspace")
+  activityFor                  Activity[]     @relation("Activity")
+  activity                     Activity[]
 }
 
 model Tier {
@@ -97,6 +99,7 @@ model Project {
   selected    Boolean       @default(false)
   favorite    Boolean       @default(false)
   status      ProjectStatus @default(TODO)
+  activity    Activity[]    @relation("projectActivity")
 }
 
 model Task {
@@ -114,6 +117,7 @@ model Task {
   assigneeId  String?
   workspace   workspace? @relation(fields: [workspaceId], references: [id])
   workspaceId String?
+  Activity    Activity[]
 }
 
 model Role {
@@ -138,6 +142,22 @@ model Notification {
   toId        String?
   from        User?    @relation("sender", fields: [fromId], references: [id])
   fromId      String?
+}
+
+model Activity {
+  id          String   @id @default(uuid())
+  title       String
+  description String
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  type        String
+  for         User[]   @relation("Activity")
+  changeBy    User?    @relation(fields: [changeById], references: [id])
+  changeById  String?
+  project     Project? @relation("projectActivity", fields: [projectId], references: [id])
+  projectId   String?
+  task        Task?    @relation(fields: [taskId], references: [id])
+  taskId      String?
 }
 
 enum ProjectStatus {

@@ -116,7 +116,7 @@ export const currentUser = async () => {
       });
       return { ...user, managerId: manager?.id };
     }
-    return user;
+    return { ...user, managerId: null };
   } catch (error) {
     return null;
   }

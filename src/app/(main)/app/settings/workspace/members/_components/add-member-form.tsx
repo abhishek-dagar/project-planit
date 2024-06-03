@@ -76,10 +76,10 @@ export function AddMemberForm({
       values.tierId = user.tierId;
 
       const workspaceIds: string[] = [];
+      const selectedWorkspace = user.workspaces.find(
+        (workspace: any) => workspace.selected.find((select: any) => select.id === user.id)
+      );
       if (values.role === "member") {
-        const selectedWorkspace = user.workspaces.find(
-          (workspace: any) => workspace.selected.find((select: any) => select.id === user.id)
-        );
         workspaceIds.push(selectedWorkspace.id);
       } else {
         user.workspaces.map((workspace: any) =>
@@ -87,7 +87,7 @@ export function AddMemberForm({
         );
       }
 
-      const { newMember, err }: any = await addNewMember(values, workspaceIds);
+      const { newMember, err }: any = await addNewMember(values, workspaceIds, selectedWorkspace.id);
       if (newMember) {
         toast.success("Member Added Successful");
         memberRegisterForm.reset();

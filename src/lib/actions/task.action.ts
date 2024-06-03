@@ -3,11 +3,24 @@
 import { group } from "console";
 import { db } from "../db";
 import { currentUser } from "../helpers/getTokenData";
+import { createActivity } from "./activity.action";
+import moment from "moment";
 
 export const createTask = async (task: any) => {
   "use server";
   try {
     const newTask = await db.task.create({ data: task });
+    if (newTask) {
+      await createActivity(
+        {
+          title: "Task created",
+          description: `Task ${newTask.title} created`,
+          taskId: newTask.id,
+          type: "CREATE",
+        },
+        newTask.projectId
+      );
+    }
     return { newTask };
   } catch (error: any) {
     return { err: error.message };
@@ -143,13 +156,78 @@ export const updateTask = async (
 ) => {
   "use server";
   try {
+    const oldTask = await db.task.findUnique({
+      where: {
+        id: id,
+      },
+      select: {
+        title: true,
+        description: true,
+        status: true,
+        priority: true,
+        projectId: true,
+        dueDate: true,
+        assignee: {
+          select: {
+            name: true,
+          },
+        },
+      },
+    });
     const updatedTask = await db.task.update({
       where: {
         id: id,
       },
       data: task,
     });
+
+    if (updatedTask) {
+      const desc: string[] = [];
+      if (task.status) {
+        desc.push(
+          `Task ${updatedTask.title} moved from ${oldTask?.status} to ${task.status}`
+        );
+      }
+      if (task.priority) {
+        desc.push(
+          `Task ${updatedTask.title} moved from ${oldTask?.priority} to ${task.priority}`
+        );
+      }
+      if (task.dueDate) {
+        const from = oldTask?.dueDate
+          ? ` from ${moment(oldTask?.dueDate).format("MMM DD, YYYY")}`
+          : "";
+        desc.push(
+          `Task ${updatedTask.title} due date update${from} to ${moment(
+            task.dueDate
+          ).format("MMM DD, YYYY")}`
+        );
+      }
+
+      if (assigneeName) {
+        const from = oldTask?.assignee?.name
+          ? ` from ${oldTask?.assignee?.name}`
+          : "";
+        desc.push(
+          `Task ${updatedTask.title} assigned${from} to ${assigneeName}`
+        );
+      }
+
+      desc.map((d) => {
+        createActivity(
+          {
+            title: "Task updated",
+            description: d,
+            taskId: updatedTask.id,
+            type: "UPDATE",
+          },
+          updatedTask.projectId
+        );
+      });
+    }
+
     const user = await currentUser();
+
     const userId: any = user?.id;
     if (task.assigneeId) {
       const assigneeId: any = task.assigneeId;
@@ -202,6 +280,17 @@ export const deleteTask = async (id: string) => {
         id: id,
       },
     });
+    if (deletedTask) {
+      await createActivity(
+        {
+          title: "Task deleted",
+          description: `Task ${deletedTask.title} deleted`,
+          taskId: deletedTask.id,
+          type: "DELETE",
+        },
+        deletedTask.projectId
+      );
+    }
     return { deletedTask };
   } catch (error: any) {
     console.log(error.message);

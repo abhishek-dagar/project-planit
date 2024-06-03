@@ -102,9 +102,14 @@ export const updateUserPassword = async (user: any) => {
   }
 };
 
-export const addNewMember = async (user: any, workspaceIds: string[]) => {
+export const addNewMember = async (
+  user: any,
+  workspaceIds: string[],
+  selectedWorkspaceId: string
+) => {
   "use server";
   try {
+    // Check if member already exists
     const member = await db.user.findFirst({
       where: {
         email: user.email,
@@ -115,6 +120,7 @@ export const addNewMember = async (user: any, workspaceIds: string[]) => {
       return { err: "Member already exists" };
     }
 
+    // Fetch tier and role
     const tier = await db.tier.findFirst({
       where: {
         id: user.tierId,
@@ -135,6 +141,7 @@ export const addNewMember = async (user: any, workspaceIds: string[]) => {
     const salt = await bycryptjs.genSalt(12);
     const hashedPassword = await bycryptjs.hash(user.password, salt);
 
+    // Create new member
     const newMember = await db.user.create({
       data: {
         email: user.email,
@@ -145,6 +152,7 @@ export const addNewMember = async (user: any, workspaceIds: string[]) => {
       },
     });
 
+    // Connect new member to the manager
     await db.user.update({
       where: {
         id: user.managerId,
@@ -157,6 +165,8 @@ export const addNewMember = async (user: any, workspaceIds: string[]) => {
         },
       },
     });
+
+    // Connect new member to the workspaces
     workspaceIds.forEach(async (workspaceId) => {
       await db.workspace.update({
         where: {
@@ -171,6 +181,21 @@ export const addNewMember = async (user: any, workspaceIds: string[]) => {
         },
       });
     });
+
+    // Connect new member to the selected workspace
+    await db.workspace.update({
+      where: {
+        id: selectedWorkspaceId,
+      },
+      data: {
+        selected: {
+          connect: {
+            id: newMember.id,
+          },
+        },
+      },
+    });
+
     return { newMember };
   } catch (error: any) {
     console.log(error.message);

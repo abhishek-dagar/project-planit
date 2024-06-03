@@ -23,17 +23,31 @@ import { toast } from "sonner";
 interface AddMemberFromAnotherWorkspaceModalProps {
   workspaces: any;
   selectedWorkspace: any;
+  user: any;
 }
 const AddMemberFromAnotherWorkspaceModal = ({
   workspaces,
   selectedWorkspace,
+  user,
 }: AddMemberFromAnotherWorkspaceModalProps) => {
   const [open, setOpen] = React.useState(false);
   const isDesktop = useMediaQuery("(min-width: 768px)");
-  const members = workspaces
+  const membersFromOtherWorkspaces = workspaces
     ?.filter((workspace: any) => workspace.id !== selectedWorkspace.id)
     .map((workspace: any) => workspace.users)
     .flat();
+  // removing duplicate members
+  const members = membersFromOtherWorkspaces?.filter(
+    (member: any, index: any, self: any) =>
+      index === self.findIndex((t: any) => t.id === member.id)
+  );
+
+  // members which are not available in any workspace
+  const availableMembers = user?.members?.filter(
+    (mem: any) => !members?.find((member: any) => member.id === mem.id)
+  );
+
+  members.push(...availableMembers);
 
   if (isDesktop) {
     return (
@@ -204,9 +218,9 @@ const MemberSelector = ({ members, workspace, setOpen }: any) => {
                     <UserRoundIcon selected size={16} />
                     <p>{member.name}</p>
                     <p className="text-muted-foreground">{member.email}</p>
-                    <p className="text-muted-foreground">
-                      {member.workspaceName}
-                    </p>
+                    {/* <p className="text-muted-foreground">
+                      {member.workspaceName || "Not in workspace"}
+                    </p> */}
                   </Button>
                 );
               })
