@@ -9,7 +9,7 @@ export default async function WorkspaceLayout({
   const user: any = await currentUser();
   if (user?.role?.name === "member") redirect("/app/dashboard");
 
-  if (user?.role?.name === "manager" && user.workspaces.length < 1)
+  if (user?.role?.name === "manager" && user.workspaces &&user?.workspaces?.length < 1)
     redirect("/workspace");
   return <>{children}</>;
 }
