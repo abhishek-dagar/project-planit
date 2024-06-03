@@ -13,7 +13,7 @@ export default async function SettingsLayout({
   children: React.ReactNode;
 }>) {
   const user = await currentUser();
-  if (user?.role?.name === "manager" && user.workspaces.length < 1)
+  if (user?.role?.name === "manager" && user?.workspaces?.length < 1)
     redirect("/workspace");
   return (
     <div className="h-full relative">
