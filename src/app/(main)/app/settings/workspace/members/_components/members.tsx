@@ -35,7 +35,7 @@ type Props = {
 const MembersTable = ({ user }: Props) => {
   const [search, setSearch] = useState("");
   const workspaces = user?.workspaces;
-  const selectedWorkspace = workspaces.find((workspace: any) =>
+  const selectedWorkspace = workspaces?.find((workspace: any) =>
     workspace.selected.find((select: any) => select.id === user.id)
   );
 

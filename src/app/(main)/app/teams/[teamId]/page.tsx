@@ -19,7 +19,7 @@ const Team = async ({ params }: any) => {
   const workspaces = user?.workspaces;
   if (user.role?.name === "manager" && user.workspaces &&user?.workspaces?.length < 1)
     redirect("/workspace");
-  const selectedWorkspace = workspaces.find((workspace: any) =>
+  const selectedWorkspace = workspaces?.find((workspace: any) =>
     workspace.selected.find((select: any) => select.id === user.id)
   );
 

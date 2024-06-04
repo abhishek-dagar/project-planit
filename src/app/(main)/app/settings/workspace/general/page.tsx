@@ -8,10 +8,10 @@ import { WorkspaceForm } from "./_components/workspace-form";
 const General = async () => {
   const user = await currentUser();
   if (!user) redirect("/signin");
-  const workspaces = user?.workspaces;
   if (user.role?.name === "manager" && user.workspaces &&user?.workspaces?.length < 1)
     redirect("/workspace");
-  const selectedWorkspace = workspaces.find((workspace: any) =>
+  const workspaces = user?.workspaces;
+  const selectedWorkspace = workspaces?.find((workspace: any) =>
     workspace.selected.find((select: any) => select.id === user.id)
   );
   return (

@@ -26,7 +26,7 @@ export function Btn({ workspaces, user }: any) {
   const [search, setSearch] = React.useState("");
   const isDesktop = useMediaQuery("(min-width: 768px)");
   const [selectedWorkspace, setSelectedWorkspace] = React.useState<any>(
-    workspaces.find((workspace: any) =>
+    workspaces?.find((workspace: any) =>
       workspace.selected.find((select: any) => select.id === user.id)
     )
   );

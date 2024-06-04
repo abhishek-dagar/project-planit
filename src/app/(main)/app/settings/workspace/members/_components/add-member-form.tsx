@@ -76,7 +76,7 @@ export function AddMemberForm({
       values.tierId = user.tierId;
 
       const workspaceIds: string[] = [];
-      const selectedWorkspace = user.workspaces.find(
+      const selectedWorkspace = user.workspaces?.find(
         (workspace: any) => workspace.selected.find((select: any) => select.id === user.id)
       );
       if (values.role === "member") {
