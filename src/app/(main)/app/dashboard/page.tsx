@@ -21,7 +21,7 @@ const Dashboard = async () => {
           Dashboard
         </h1>
       </div>
-      <div className="grid grid-cols-1 lg:grid-cols-[4.2fr_2fr] gap-6 lg:gap-0">
+      <div className="grid grid-cols-1 lg:grid-cols-[4.2fr_2fr] gap-6 lg:gap-0 pb-5">
         <LeftSection
           tasks={
             user?.role?.name !== "member"

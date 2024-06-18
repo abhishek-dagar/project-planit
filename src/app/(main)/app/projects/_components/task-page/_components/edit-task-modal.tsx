@@ -106,6 +106,7 @@ const EditTaskModal = ({ task, project, setOpen }: Props) => {
               taskId={task.id}
               dueDate={task.dueDate}
               createdAt={task.createdAt}
+              status={task.status}
             />
             <AssigneeDropdown
               taskId={task.id}

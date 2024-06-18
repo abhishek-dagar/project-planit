@@ -23,6 +23,7 @@ interface Props {
   dueDate: Date;
   createdAt: Date;
   disabled?: boolean;
+  status?: string;
 }
 
 const customButtons = [
@@ -48,7 +49,13 @@ const customButtons = [
   },
 ];
 
-export function CalendarForm({ taskId, createdAt, dueDate, disabled }: Props) {
+export function CalendarForm({
+  taskId,
+  createdAt,
+  dueDate,
+  disabled,
+  status,
+}: Props) {
   const [selectedDate, setSelectedDate] = useState<Date | undefined>(dueDate);
   const [open, setOpen] = useState<boolean>(false);
   const searchParams = useSearchParams();
@@ -104,6 +111,8 @@ export function CalendarForm({ taskId, createdAt, dueDate, disabled }: Props) {
             `${
               !selectedDate
                 ? "text-muted-foreground"
+                : status === "COMPLETED"
+                ? "text-green-500 hover:text-green-300"
                 : moment(selectedDate).isBefore(moment().add(-1, "days"))
                 ? "text-red-500 hover:text-red-300"
                 : moment(selectedDate).isBefore(moment())

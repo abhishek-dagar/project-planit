@@ -233,6 +233,7 @@ const BoardCard = ({ task, project, provided, snapshot, user }: any) => {
                 taskId={task.id}
                 dueDate={task.dueDate}
                 createdAt={task.createdAt}
+                status={task.status}
                 disabled={
                   user?.role?.name === "member" &&
                   project?.team?.teamLead?.id !== user?.id

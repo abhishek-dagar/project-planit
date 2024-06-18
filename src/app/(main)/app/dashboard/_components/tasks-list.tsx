@@ -11,7 +11,7 @@ interface Props {
 
 const TasksList = ({ tasks, user }: Props) => {
   const dueTasks = tasks.filter((task: any) =>
-    moment(task.dueDate).isBefore(moment().add(7, "days"))
+    moment(task.dueDate).isBefore(moment().add(7, "days")) && task.status !== "COMPLETED"
   );
   return (
     <Card>
