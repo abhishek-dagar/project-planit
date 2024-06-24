@@ -150,6 +150,22 @@ export function SignInForm({ className, ...props }: SignInProps) {
               )}
               Login
             </Button>
+            <Button
+              disabled={isLoading}
+              variant={"outline"}
+              onClick={() => {
+                signInForm.setValue("email", "dargarabhishek96@gmail.com");
+                signInForm.setValue("password", "12345678");
+                onSubmit(signInForm.getValues());
+              }}
+            >
+              {isLoading ? (
+                <Icons.spinner className="mr-2 h-4 w-4 animate-spin" />
+              ) : (
+                <></>
+              )}
+              Demo Login
+            </Button>
             <p>
               Already have an account?{" "}
               <Link href={"/signup"} className="text-primary">
