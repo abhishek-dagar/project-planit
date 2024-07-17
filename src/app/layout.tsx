@@ -6,6 +6,7 @@ import ProgressBar from "@/components/common/progressbar";
 import { Toaster } from "@/components/ui/sonner";
 import ReduxProvider from "@/components/providers/redux-provider";
 import { Suspense } from "react";
+import ProgressbarProviders from "../components/providers/progress-bar-povider";
 
 const font = DM_Sans({ subsets: ["latin"] });
 
@@ -32,8 +33,10 @@ export default function RootLayout({
             themes={["light", "dark-violet"]}
             enableSystem
           >
-            <ProgressBar />
-            <Suspense>{children}</Suspense>
+            {/* <ProgressBar /> */}
+            <ProgressbarProviders>
+              <Suspense>{children}</Suspense>
+            </ProgressbarProviders>
             <Toaster closeButton />
           </ThemeProvider>
         </ReduxProvider>

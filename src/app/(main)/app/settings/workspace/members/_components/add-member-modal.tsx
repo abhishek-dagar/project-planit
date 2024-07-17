@@ -45,6 +45,7 @@ const AddMemberModal = ({ user }: AddMemberModalProps) => {
       </DrawerTrigger>
       <DrawerContent>
         <div className="border-t p-4">
+          <AddMemberForm user={user} setOpen={setOpen} />
           {/* <TeamForm setOpen={setOpen} /> */}
         </div>
       </DrawerContent>

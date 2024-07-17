@@ -13,7 +13,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
-import { ChevronsUpDownIcon, SearchIcon, SettingsIcon } from "lucide-react";
+import {
+  ChevronsUpDownIcon,
+  NetworkIcon,
+  SearchIcon,
+  SettingsIcon,
+} from "lucide-react";
 import { Separator } from "@/components/ui/separator";
 import { Input } from "@/components/ui/input";
 import { toast } from "sonner";
@@ -53,10 +58,14 @@ export function Btn({ workspaces, user }: any) {
       setOpen(false);
     }
   };
+  const handleClose = (value: boolean) => {
+    setSearch("");
+    setOpen(value);
+  };
 
   if (isDesktop) {
     return (
-      <DropdownMenu>
+      <DropdownMenu open={open} onOpenChange={handleClose}>
         <DropdownMenuTrigger asChild>
           <Button
             variant={"outline"}
@@ -90,16 +99,28 @@ export function Btn({ workspaces, user }: any) {
               <DropdownMenuItem>
                 <Link
                   href={"/app/settings/workspace/general"}
-                  className="flex items-center gap-2"
+                  className="flex items-center gap-2 w-full"
                 >
                   <SettingsIcon size={16} />
                   <p>Manage Workspace</p>
                 </Link>
               </DropdownMenuItem>
               <DropdownMenuItem>
-                <Link href={"/workspace"} className="flex items-center gap-2">
+                <Link
+                  href={"/workspace"}
+                  className="flex items-center gap-2 w-full"
+                >
                   <SettingsIcon size={16} />
                   <p>Create new Workspace</p>
+                </Link>
+              </DropdownMenuItem>
+              <DropdownMenuItem>
+                <Link
+                  href={"/all-workspaces"}
+                  className="flex items-center gap-2 w-full"
+                >
+                  <NetworkIcon size={16} />
+                  <p>All workspaces</p>
                 </Link>
               </DropdownMenuItem>
             </>
@@ -115,26 +136,28 @@ export function Btn({ workspaces, user }: any) {
               onChange={(e) => setSearch(e.target.value)}
             />
           </div>
-          {workspaces
-            .filter((workspace: any) => workspace.name.includes(search))
-            .map((workspace: any, index: number) => {
-              if (index >= 3) return null;
-              return (
-                <DropdownMenuItem
-                  key={workspace.id}
-                  onClick={() => handleWorkspaceClick(workspace)}
-                >
-                  <div className="flex items-center gap-4">
-                    <Avatar className="h-6 w-6 bg-primary rounded-sm">
-                      <AvatarFallback className="bg-primary capitalize rounded-sm">
-                        {workspace.name?.split("")[0] || "NA"}
-                      </AvatarFallback>
-                    </Avatar>
-                    <p className="max-w-[80px] truncate">{workspace.name}</p>
-                  </div>
-                </DropdownMenuItem>
-              );
-            })}
+          <div className="max-h-28 overflow-auto">
+            {workspaces
+              .filter((workspace: any) => workspace.name.includes(search))
+              .map((workspace: any, index: number) => {
+                // if (search==="" && index >= 3) return null;
+                return (
+                  <DropdownMenuItem
+                    key={workspace.id}
+                    onClick={() => handleWorkspaceClick(workspace)}
+                  >
+                    <div className="flex items-center gap-4">
+                      <Avatar className="h-6 w-6 bg-primary rounded-sm">
+                        <AvatarFallback className="bg-primary capitalize rounded-sm">
+                          {workspace.name?.split("")[0] || "NA"}
+                        </AvatarFallback>
+                      </Avatar>
+                      <p className="max-w-[80px] truncate">{workspace.name}</p>
+                    </div>
+                  </DropdownMenuItem>
+                );
+              })}
+          </div>
           {workspaces.filter((workspace: any) =>
             workspace.name.includes(search)
           ).length < 1 && <p className="px-2 py-1.5">No workspace found</p>}

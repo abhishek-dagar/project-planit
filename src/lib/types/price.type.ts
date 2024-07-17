@@ -4,4 +4,5 @@ export interface PriceDetailType {
   description: string;
   price: number;
   features: string[];
+  period?: number;
 }
