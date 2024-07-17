@@ -153,7 +153,7 @@ function Payment() {
     <>
       <section className="flex flex-col gap-6 mx-5 sm:mx-10 2xl:mx-auto w-[90%] bg-background p-10">
         <h1 className="text-[26px] md:text-[30px] font-extrabold text-primary">
-          You're almost there {user?.name}! Complete your order
+          {"You're"} almost there {user?.name}! Complete your order
         </h1>
         {/* 1st step choose period */}
         <h1 className="text-3xl font-bold">1. choose a period</h1>
