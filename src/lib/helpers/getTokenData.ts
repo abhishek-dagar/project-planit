@@ -64,6 +64,9 @@ export const currentUser = async () => {
             owner: true,
             ownerId: true,
           },
+          orderBy: {
+            createdAt: "desc",
+          },
         },
         workspaceMembers: {
           select: {

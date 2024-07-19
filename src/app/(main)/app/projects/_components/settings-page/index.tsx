@@ -14,10 +14,15 @@ const Settings = ({ project }: Props) => {
   const router = useRouter();
   const handleDelete = async () => {
     try {
-      const { deletedProject } = await deleteProject(project.id);
-      router.push("/app/projects");
+      const { deletedProject, err } = await deleteProject(project.id);
+      console.log(deletedProject);
+
       if (deletedProject) {
+        router.push("/app/projects");
         return { success: "Project deleted Successfully" };
+      }
+      if (err) {
+        return { err: "failed to delete" };
       }
     } catch {
       return { err: "failed to delete" };

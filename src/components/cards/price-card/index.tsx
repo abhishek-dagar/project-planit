@@ -1,19 +1,31 @@
+"use client";
 import { CardBody, CardContainer, CardItem } from "@/components/common/3d-card";
+import { Badge } from "@/components/ui/badge";
+import { Button } from "@/components/ui/button";
 import { PriceDetailType } from "@/lib/types/price.type";
-import { CheckIcon } from "lucide-react";
+import { CheckIcon, IndianRupeeIcon } from "lucide-react";
+import { useRouter } from "next/navigation";
 import React from "react";
 
 interface PriceCardProps {
   info: PriceDetailType;
+  active?: boolean;
 }
 
-const PriceCard = ({ info }: PriceCardProps) => {
+const PriceCard = ({ info, active }: PriceCardProps) => {
+  const router = useRouter();
   return (
-    <CardContainer className="inter-var rounded-lg border bg-card text-card-foreground shadow-sm">
+    <CardContainer className="inter-var rounded-lg border-t-4 border-primary bg-muted backdrop-blur-sm text-card-foreground shadow-sm">
       <CardBody className="relative group/card w-full md:!w-[350px] h-auto rounded-xl p-6 border">
         <CardItem translateZ="50" className="text-xl font-bold">
-          {info.name}
-          <h2 className="text-6xl ">${info.price}</h2>
+          <div className="flex items-center gap-2 capitalize">
+            {info.name}
+            {active && <Badge className="ml-2">Active</Badge>}
+          </div>
+          <h2 className="text-6xl flex">
+            <IndianRupeeIcon size={60} />
+            {info.price}
+          </h2>
         </CardItem>
         <CardItem
           translateZ="60"
@@ -23,27 +35,24 @@ const PriceCard = ({ info }: PriceCardProps) => {
           <ul className="my-4 flex flex-col gap-2">
             {info.features.map((feature) => (
               <li key={feature} className="flex items-center gap-2">
-                <CheckIcon />
+                <CheckIcon className="text-primary" />
                 {feature}
               </li>
             ))}
           </ul>
         </CardItem>
-        <div className="flex justify-between items-center mt-8">
-          <CardItem
-            translateZ={20}
-            as="button"
-            className="px-4 py-2 rounded-xl text-xs font-normal"
-          >
-            Try now →
-          </CardItem>
-          <CardItem
-            translateZ={20}
-            as="button"
-            className="px-4 py-2 rounded-xl bg-black dark:bg-white dark:text-black text-white text-xs font-bold"
-          >
-            Get Started Now
-          </CardItem>
+        <div className="flex justify-end items-center mt-8">
+          {!active || info.name === "Free" && (
+            <Button
+              variant={"link"}
+              onClick={() => {
+                router.push("/payment?plan=" + info.name);
+              }}
+              className="px-4 py-2 rounded-xl bg-black dark:bg-white dark:text-black text-white text-xs font-bold"
+            >
+              Get Started Now
+            </Button>
+          )}
         </div>
       </CardBody>
     </CardContainer>

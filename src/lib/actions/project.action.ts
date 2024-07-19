@@ -141,6 +141,8 @@ export const deleteProject = async (projectId: string) => {
     });
     return { deletedProject };
   } catch (error: any) {
+    console.log(error.message);
+    
     return { err: error.message };
   }
 };

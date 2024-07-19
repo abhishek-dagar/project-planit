@@ -2,36 +2,27 @@ import { PriceDetailType } from "../types/price.type";
 
 export const priceDetails:PriceDetailType[] = [
   {
-    name: "Free",
-    description: "For small projects",
+    name: "free",
+    description: "For personal use",
     price: 0,
     features: [
-      "10 users included",
-      "2 GB of storage",
-      "Help center access",
-      "Email support",
+      "1 Workspace",
+      "Unlimited members",
+      "Basic support",
+      "2 teams",
+      "2 projects per team",
     ],
   },
   {
-    name: "Standard",
-    description: "For medium sized projects",
-    price: 100,
+    name: "standard",
+    description: "For small businesses",
+    price: 500,
     features: [
-      "20 users included",
-      "10 GB of storage",
-      "Help center access",
-      "Priority email support",
-    ],
-  },
-  {
-    name: "Premium",
-    description: "For large projects",
-    price: 200,
-    features: [
-      "30 users included",
-      "15 GB of storage",
-      "Help center access",
-      "Phone and email support",
+      "5 Workspaces",
+      "Unlimited members",
+      "Premium support",
+      "unlimited teams",
+      "unlimited projects per team",
     ],
   },
 ];

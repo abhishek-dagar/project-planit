@@ -12,7 +12,7 @@ export const createWorkspace = async (workspace: any) => {
 
     if (!user) return { err: "Failed to create workspace" };
     const selectedWorkspaceData =
-      user.workspaces &&user?.workspaces?.length === 0
+      user.workspaces && user?.workspaces?.length === 0
         ? { selected: { connect: { id: user.id } } }
         : {};
     const newWorkspace = await db.workspace.create({
@@ -65,6 +65,20 @@ export const updateWorkspace = async (workspace: any, isAdd?: boolean) => {
   } catch (error: any) {
     console.log(error.message);
 
+    return { err: error.message };
+  }
+};
+
+export const deleteWorkspace = async (workspaceId: string) => {
+  "use server";
+  try {
+    const deletedWorkspace = await db.workspace.delete({
+      where: {
+        id: workspaceId,
+      },
+    }); 
+    return { deletedWorkspace: true };
+  } catch (error: any) {
     return { err: error.message };
   }
 };

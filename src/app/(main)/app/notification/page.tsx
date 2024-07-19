@@ -13,19 +13,19 @@ const Notification = () => {
   return (
     <Tabs defaultValue="account" className="relative h-full" value={tab}>
       <div className="flex flex-col gap-4 h-full">
-        <div className="flex gap-4 items-center border-b sticky top-0 z-[10] bg-background/50 backdrop-blur-lg">
+        <div className="flex md:gap-4 flex-col md:flex-row md:items-center border-b sticky top-0 z-[10] bg-background/50 backdrop-blur-lg">
           <h1 className="text-4xl py-3 pl-6 flex items-center">
             <NotificationIcon selected={true} size={30} className="mr-2" />
             Notification
           </h1>
-          <Separator orientation="vertical" className="h-10" />
+          <Separator orientation="vertical" className="h-10 hidden md:block" />
           <TabsList className="bg-transparent">
             <TabsTrigger
               value="unread"
               className="[&_.highlighter]:data-[state=active]:visible relative"
             >
               <Link href={"/app/notification?tab=unread"}>Un Read</Link>
-              <div className="w-full h-1 bg-primary highlighter absolute invisible -bottom-[50%] rounded-full" />
+              <div className="w-full h-1 bg-primary highlighter absolute invisible -bottom-[25%] md:-bottom-[50%] rounded-full" />
             </TabsTrigger>
             <TabsTrigger
               value="read"

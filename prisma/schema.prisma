@@ -14,35 +14,36 @@ datasource db {
 }
 
 model User {
-  id                           String         @id @default(uuid())
-  email                        String         @unique
+  id                           String           @id @default(uuid())
+  email                        String           @unique
   password                     String
   name                         String?
-  role                         Role?          @relation(fields: [roleId], references: [id])
+  role                         Role?            @relation(fields: [roleId], references: [id])
   roleId                       String?
-  isVerified                   Boolean        @default(false)
+  isVerified                   Boolean          @default(false)
   forgotPasswordToken          String?
   forgotPasswordTokenExpiresAt DateTime?
   verifyToken                  String?
   verifyTokenExpiresAt         DateTime?
-  members                      User[]         @relation("Member")
-  createdAt                    DateTime       @default(now())
-  updatedAt                    DateTime       @updatedAt
-  tier                         Tier           @relation(fields: [tierId], references: [id])
-  User                         User?          @relation("Member", fields: [userId], references: [id])
+  members                      User[]           @relation("Member")
+  createdAt                    DateTime         @default(now())
+  updatedAt                    DateTime         @updatedAt
+  tier                         Tier             @relation(fields: [tierId], references: [id])
+  User                         User?            @relation("Member", fields: [userId], references: [id])
   userId                       String?
   tierId                       String
   teamsLead                    Team?
   tasks                        Task[]
-  workspaceMembers             workspace[]    @relation("Member")
-  workspaces                   workspace[]    @relation("Workspaces")
-  team                         Team?          @relation("members", fields: [teamId], references: [id])
+  workspaceMembers             workspace[]      @relation("Member")
+  workspaces                   workspace[]      @relation("Workspaces")
+  team                         Team?            @relation("members", fields: [teamId], references: [id])
   teamId                       String?
-  NotificationReciver          Notification[] @relation("reciver")
-  NotificationSender           Notification[] @relation("sender")
-  OpenedWorkspace              workspace[]    @relation("OpenedWorkspace")
-  activityFor                  Activity[]     @relation("Activity")
+  NotificationReciver          Notification[]   @relation("reciver")
+  NotificationSender           Notification[]   @relation("sender")
+  OpenedWorkspace              workspace[]      @relation("OpenedWorkspace")
+  activityFor                  Activity[]       @relation("Activity")
   activity                     Activity[]
+  PaymentHistory               PaymentHistory[]
 }
 
 model Tier {
@@ -67,8 +68,23 @@ model workspace {
   tasks       Task[]
   selected    User[]    @relation("OpenedWorkspace")
   users       User[]    @relation("Member")
-  owner       User?     @relation("Workspaces", fields: [ownerId], references: [id])
+  owner       User?     @relation("Workspaces", fields: [ownerId], references: [id], onDelete: Cascade)
   ownerId     String?
+}
+
+model PaymentHistory {
+  id        String   @id @default(uuid())
+  amount    Int
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+  user      User?    @relation(fields: [userId], references: [id])
+  userId    String?
+  endDate   DateTime
+  startDate DateTime
+  period    String
+  orderId   String
+  paymentId String
+  status    String
 }
 
 model Team {
@@ -81,7 +97,7 @@ model Team {
   teamLeadId  String?    @unique
   members     User[]     @relation("members")
   project     Project[]
-  workspace   workspace? @relation(fields: [workspaceId], references: [id])
+  workspace   workspace? @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   workspaceId String?
 }
 
@@ -94,7 +110,7 @@ model Project {
   team        Team?         @relation(fields: [teamId], references: [id])
   teamId      String?
   tasks       Task[]
-  workspace   workspace?    @relation(fields: [workspaceId], references: [id])
+  workspace   workspace?    @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   workspaceId String?
   selected    Boolean       @default(false)
   favorite    Boolean       @default(false)
@@ -110,12 +126,12 @@ model Task {
   priority    Priority   @default(NONE)
   createdAt   DateTime   @default(now())
   updatedAt   DateTime   @updatedAt
-  project     Project    @relation(fields: [projectId], references: [id])
+  project     Project    @relation(fields: [projectId], references: [id], onDelete: Cascade)
   projectId   String
   dueDate     DateTime?
-  assignee    User?      @relation(fields: [assigneeId], references: [id])
+  assignee    User?      @relation(fields: [assigneeId], references: [id], onDelete: SetNull)
   assigneeId  String?
-  workspace   workspace? @relation(fields: [workspaceId], references: [id])
+  workspace   workspace? @relation(fields: [workspaceId], references: [id], onDelete: Cascade)
   workspaceId String?
   Activity    Activity[]
 }

@@ -54,6 +54,7 @@
     "nodemailer": "^6.9.13",
     "nprogress": "^0.2.0",
     "prisma": "^5.13.0",
+    "razorpay": "^2.9.4",
     "react": "^18",
     "react-beautiful-dnd": "^13.1.1",
     "react-day-picker": "^8.10.1",
