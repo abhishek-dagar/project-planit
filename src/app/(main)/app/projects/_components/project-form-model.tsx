@@ -34,6 +34,7 @@ import {
 } from "@/components/ui/dropdown-menu";
 import { UserRoundIcon } from "@/components/icons/user-round";
 import { createProject } from "@/lib/actions/project.action";
+import UpgradePlanModal from "@/components/common/upgrade-plan-modal";
 
 interface ProjectFormProps extends React.HTMLAttributes<HTMLDivElement> {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -48,6 +49,9 @@ export function ProjectForm({
   const [teams, setTeams] = useState<any>();
   const [team, setTeam] = useState<any>();
   const [searchTeam, setSearchTeam] = useState("");
+  const [upgradePlanModalOpen, setUpgradePlanModalOpen] =
+    useState<boolean>(false);
+  const [tier, setTier] = useState();
 
   const router = useRouter();
 
@@ -75,11 +79,17 @@ export function ProjectForm({
 
     try {
       //   console.log(values);
-      const { project } = await createProject(values);
+      const { project, err, tier } = await createProject(values);
       if (project) {
         toast.success("project Created");
         setOpen(false);
         router.refresh();
+      } else if (tier.name === "free") {
+        setTier(tier);
+        setUpgradePlanModalOpen(true);
+        // toast.error(err);
+      } else if (err) {
+        toast.error(err);
       } else {
         toast.error("Failed to create project1");
       }
@@ -92,6 +102,11 @@ export function ProjectForm({
 
   return (
     <>
+      <UpgradePlanModal
+        preOpen={upgradePlanModalOpen}
+        setPreOpen={setUpgradePlanModalOpen}
+        tier={tier}
+      />
       <div className="w-full flex justify-center">
         <RocketIcon size={60} selected={true} />
       </div>

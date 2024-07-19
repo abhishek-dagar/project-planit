@@ -11,6 +11,17 @@ export const createWorkspace = async (workspace: any) => {
     const user: any = await currentUser();
 
     if (!user) return { err: "Failed to create workspace" };
+
+    if (
+      user?.workspaces?.length === 1 &&
+      user?.tier.name.toLowerCase() === "free"
+    ) {
+      return {
+        err: "Upgrade your account to create more workspaces",
+        tier: user?.tier,
+      };
+    }
+
     const selectedWorkspaceData =
       user.workspaces && user?.workspaces?.length === 0
         ? { selected: { connect: { id: user.id } } }
@@ -76,7 +87,7 @@ export const deleteWorkspace = async (workspaceId: string) => {
       where: {
         id: workspaceId,
       },
-    }); 
+    });
     return { deletedWorkspace: true };
   } catch (error: any) {
     return { err: error.message };

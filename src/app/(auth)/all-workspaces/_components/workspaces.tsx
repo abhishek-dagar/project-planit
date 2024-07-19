@@ -21,10 +21,12 @@ const Workspaces = ({
 
   const handleWorkspaceClick = async (workspace: any) => {
     try {
-      await updateWorkspace(
-        { id: selectedWorkspace.id, selected: user.id },
-        false
-      );
+      if (selectedWorkspace) {
+        await updateWorkspace(
+          { id: selectedWorkspace.id, selected: user.id },
+          false
+        );
+      }
       await updateWorkspace({ id: workspace.id, selected: user.id }, true);
       router.push("/app/dashboard");
     } catch (err) {

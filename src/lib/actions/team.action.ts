@@ -7,6 +7,22 @@ export const createTeam = async (team: any) => {
   "use server";
   try {
     const user: any = await currentUser();
+    if (!user) return { err: "Failed to create team" };
+
+    let count = 0;
+    for (const workspace of user?.workspaces) {
+      for (const _ of workspace?.teams) {
+        count++;
+      }
+    }
+
+    if (count === 1 && user?.tier.name.toLowerCase() === "free") {
+      return {
+        err: "Upgrade your account to create more teams",
+        tier: user?.tier,
+      };
+    }
+
     const currentWorkspace = await db.workspace.findFirst({
       where: {
         ownerId: user?.id,
@@ -20,6 +36,10 @@ export const createTeam = async (team: any) => {
         id: true,
       },
     });
+
+    if (!currentWorkspace) {
+      return { err: "Failed to create team" };
+    }
     const newTeam = await db.team.create({
       data: { ...team, workspaceId: currentWorkspace?.id },
     });

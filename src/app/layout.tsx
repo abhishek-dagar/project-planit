@@ -2,7 +2,6 @@ import type { Metadata } from "next";
 import { DM_Sans } from "next/font/google";
 import "./globals.css";
 import { ThemeProvider } from "@/components/providers/theme-provider";
-import ProgressBar from "@/components/common/progressbar";
 import { Toaster } from "@/components/ui/sonner";
 import ReduxProvider from "@/components/providers/redux-provider";
 import { Suspense } from "react";

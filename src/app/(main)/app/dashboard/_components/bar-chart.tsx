@@ -49,7 +49,13 @@ const CustomBarChart = ({ data }: Props) => {
             }}
           >
             <CartesianGrid strokeDasharray="3 3" />
-            <XAxis dataKey="name" />
+            <XAxis
+              dataKey="name"
+              tickLine={false}
+              tickMargin={10}
+              axisLine={false}
+              tickFormatter={(value) => `${value}`}
+            />
             <YAxis />
             <Tooltip content={<CustomTooltip />} />
             <Legend />

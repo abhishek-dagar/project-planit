@@ -7,6 +7,19 @@ export const createProject = async (project: any) => {
   "use server";
   try {
     const user: any = await currentUser();
+    let count = 0;
+    for (const workspace of user?.workspaces) {
+      for (const _ of workspace?.projects) {
+        count++;
+      }
+    }
+
+    if (count === 5 && user?.tier.name.toLowerCase() === "free") {
+      return {
+        err: "Upgrade your account to create more projects",
+        tier: user?.tier,
+      };
+    }
     const currentWorkspace = await db.workspace.findFirst({
       where: {
         ownerId: user?.id,
@@ -142,7 +155,7 @@ export const deleteProject = async (projectId: string) => {
     return { deletedProject };
   } catch (error: any) {
     console.log(error.message);
-    
+
     return { err: error.message };
   }
 };
