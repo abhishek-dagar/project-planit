@@ -25,11 +25,15 @@ import { workspaceValidation } from "@/lib/types/workspace.type";
 import { Textarea } from "@/components/ui/textarea";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { createWorkspace } from "@/lib/actions/workspace.action";
+import UpgradePlanModal from "@/components/common/upgrade-plan-modal";
 
 interface WorkspaceProps extends React.HTMLAttributes<HTMLDivElement> {}
 
 export function WorkspaceForm({ className, ...props }: WorkspaceProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [upgradePlanModalOpen, setUpgradePlanModalOpen] =
+    useState<boolean>(false);
+  const [tier, setTier] = useState();
 
   const router = useRouter();
 
@@ -45,10 +49,16 @@ export function WorkspaceForm({ className, ...props }: WorkspaceProps) {
     setIsLoading(true);
 
     try {
-      const { workspace } = await createWorkspace(values);
+      const { workspace, err, tier } = await createWorkspace(values);
       if (workspace) {
         toast.success("Workspace Created");
-          router.push("/app/dashboard");
+        router.push("/app/dashboard");
+      } else if (tier.name === "free") {
+        setTier(tier);
+        setUpgradePlanModalOpen(true);
+        // toast.error(err);
+      } else if (err) {
+        toast.error(err);
       } else {
         toast.error("Failed to create workspace");
       }
@@ -61,6 +71,11 @@ export function WorkspaceForm({ className, ...props }: WorkspaceProps) {
 
   return (
     <>
+      <UpgradePlanModal
+        preOpen={upgradePlanModalOpen}
+        setPreOpen={setUpgradePlanModalOpen}
+        tier={tier}
+      />
       <div className="w-full flex justify-center">
         <Avatar className="h-20 w-20 rounded-xl">
           <AvatarFallback className="rounded-xl capitalize text-2xl">

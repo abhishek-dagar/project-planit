@@ -25,6 +25,7 @@ import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { TeamValidation } from "@/lib/types/team.type";
 import { createTeam } from "@/lib/actions/team.action";
 import UserRound from "@/components/icons/user-round";
+import UpgradePlanModal from "@/components/common/upgrade-plan-modal";
 
 interface TeamFormProps extends React.HTMLAttributes<HTMLDivElement> {
   setOpen: React.Dispatch<React.SetStateAction<boolean>>;
@@ -32,6 +33,9 @@ interface TeamFormProps extends React.HTMLAttributes<HTMLDivElement> {
 
 export function TeamForm({ className, setOpen, ...props }: TeamFormProps) {
   const [isLoading, setIsLoading] = useState<boolean>(false);
+  const [upgradePlanModalOpen, setUpgradePlanModalOpen] =
+    useState<boolean>(false);
+  const [tier, setTier] = useState();
 
   const router = useRouter();
 
@@ -47,12 +51,18 @@ export function TeamForm({ className, setOpen, ...props }: TeamFormProps) {
     setIsLoading(true);
 
     try {
-      const { team } = await createTeam(values);
+      const { team, err, tier } = await createTeam(values);
 
       if (team) {
         toast.success("Team Created");
         setOpen(false);
         router.refresh();
+      } else if (tier.name === "free") {
+        setTier(tier);
+        setUpgradePlanModalOpen(true);
+        // toast.error(err);
+      } else if (err) {
+        toast.error(err);
       } else {
         toast.error("Failed to create team");
       }
@@ -65,6 +75,11 @@ export function TeamForm({ className, setOpen, ...props }: TeamFormProps) {
 
   return (
     <>
+      <UpgradePlanModal
+        preOpen={upgradePlanModalOpen}
+        setPreOpen={setUpgradePlanModalOpen}
+        tier={tier}
+      />
       <div className="w-full flex justify-center">
         <UserRound selected size={60} />
       </div>

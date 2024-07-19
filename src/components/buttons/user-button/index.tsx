@@ -10,12 +10,14 @@ import { useRouter } from "next/navigation";
 import { toast } from "sonner";
 import { Icons } from "../../icons";
 import Link from "next/link";
+import { cn } from "@/lib/utils";
 
 type Props = {
   user: any;
+  isLarge?: boolean;
 };
 
-const UserButton = ({ user }: Props) => {
+const UserButton = ({ user, isLarge }: Props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [currentUser, setCurrentUser] = useState(user);
   const router = useRouter();
@@ -43,13 +45,28 @@ const UserButton = ({ user }: Props) => {
   return (
     currentUser && (
       <Popover>
-        <PopoverTrigger>
-          <Avatar>
-            {/* <AvatarImage src="https://github.com/shadcn.png" /> */}
-            <AvatarFallback className="text-xl uppercase">
-              {currentUser.name?.split("")[0] || "NA"}
-            </AvatarFallback>
-          </Avatar>
+        <PopoverTrigger asChild>
+          <Button
+            variant={"outline"}
+            className={cn(
+              "rounded-full",
+              isLarge ? "pr-0 gap-2" : "border-0 hover:bg-transparent p-0"
+            )}
+          >
+            {isLarge && (
+              <span className="">
+                {currentUser.name?.split(" ")[0] || "NA"}
+              </span>
+            )}
+            <Avatar>
+              {/* <AvatarImage src="https://github.com/shadcn.png" /> */}
+              <AvatarFallback
+                className={cn("text-xl uppercase", isLarge && "text-sm")}
+              >
+                {currentUser.name?.split("")[0] || "NA"}
+              </AvatarFallback>
+            </Avatar>
+          </Button>
         </PopoverTrigger>
         <PopoverContent
           align="end"
