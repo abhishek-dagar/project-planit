@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 
 import { cn } from "@/lib/utils";
 import { Icons } from "@/components/icons";
@@ -48,6 +48,13 @@ export function WorkspaceForm({
       description: workspace.description || "",
     },
   });
+
+  useEffect(() => {
+    workspaceForm.reset({
+      name: workspace.name || "",
+      description: workspace.description || "",
+    });
+  }, [workspace]);
 
   async function onSubmit(values: z.infer<typeof workspaceValidation>) {
     setIsLoading(true);
@@ -127,7 +134,7 @@ export function WorkspaceForm({
               ) : (
                 <></>
               )}
-              Create Workspace
+              Update Workspace
             </Button>
           </div>
         </form>

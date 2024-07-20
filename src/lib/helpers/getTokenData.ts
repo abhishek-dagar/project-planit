@@ -3,12 +3,14 @@
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { db } from "../db";
+import { removeExpiredPlans } from "../actions/payment.action";
 
 export const currentUser = async () => {
   try {
     const token = cookies().get("token")?.value || "";
     if (!token) return null;
     const data: any = jwt.verify(token, process.env.TOKEN_SECRET!);
+
     const user = await db.user.findUnique({
       where: {
         id: data.id,
@@ -103,7 +105,7 @@ export const currentUser = async () => {
         updatedAt: true,
       },
     });
-    if (user?.role?.name === "member") {
+    if (user?.role?.name === "member" || user?.role?.name === "co-manager") {
       user.workspaces = user.workspaceMembers;
       const manager = await db.user.findFirst({
         where: {

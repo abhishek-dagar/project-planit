@@ -83,7 +83,7 @@ const NotificationRow = ({ notification }: { notification: Notification }) => {
       >
         <TooltipProvider>
           <Tooltip delayDuration={0}>
-            <TooltipTrigger>
+            <TooltipTrigger asChild>
               {notification.read ? (
                 <MailOpenIcon size={16} />
               ) : (

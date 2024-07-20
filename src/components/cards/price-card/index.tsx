@@ -42,7 +42,7 @@ const PriceCard = ({ info, active }: PriceCardProps) => {
           </ul>
         </CardItem>
         <div className="flex justify-end items-center mt-8">
-          {!active || info.name === "Free" && (
+          {(!active && info.name !== "free") && (
             <Button
               variant={"link"}
               onClick={() => {

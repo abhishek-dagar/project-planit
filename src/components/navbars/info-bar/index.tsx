@@ -16,9 +16,9 @@ const InfoBar = async (props: Props) => {
   return (
     <div className="h-14 flex flex-row justify-end gap-6 items-center px-4 py-2 w-full dark:bg-black ">
       <Button asChild>
-        <Link href={"/app/settings/workspace/plans"} className="bg-primary/20 shadow-md backdrop-blur-lg  ">
+        {user?.tier?.name.toLocaleLowerCase() !== "free" ? null : <Link href={"/app/settings/workspace/plans"} className="bg-primary/20 shadow-md backdrop-blur-lg  ">
           Upgrade <CrownIcon size={16} />
-        </Link>
+        </Link>}
       </Button>
       <WorkspaceButton />
       <UserButton user={user} />
