@@ -150,7 +150,7 @@ export function SignInForm({ className, ...props }: SignInProps) {
               )}
               Login
             </Button>
-            <Button
+            {/* <Button
               disabled={isLoading}
               variant={"outline"}
               onClick={() => {
@@ -165,7 +165,7 @@ export function SignInForm({ className, ...props }: SignInProps) {
                 <></>
               )}
               Demo Login
-            </Button>
+            </Button> */}
             <p>
               Already have an account?{" "}
               <Link href={"/signup"} className="text-primary">
