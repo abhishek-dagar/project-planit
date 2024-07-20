@@ -69,7 +69,70 @@ export const addPayment = async (payment: any) => {
     return { success: "Payment added successfully" };
   } catch (error: any) {
     console.log(error.message);
-    
+
+    return { err: error.message };
+  }
+};
+
+export const removeExpiredPlans = async () => {
+  "use server";
+  try {
+    const user: any = await currentUser();
+    if (!user) {
+      return { err: "User not found" };
+    }
+
+    const paymentHistory = await db.paymentHistory.findFirst({
+      where: {
+        user: {
+          id: user.id,
+        },
+      },
+    });
+
+    if (paymentHistory?.endDate! > new Date()) {
+      return
+    }
+
+    const tier = await db.tier.findFirst({
+      where: {
+        price: 0,
+      },
+    });
+    if (!tier) {
+      return { err: "Tier not found" };
+    }
+    const updatedUser = await db.user.update({
+      where: { id: user.id },
+      data: {
+        tier: {
+          connect: { id: tier?.id },
+        },
+      },
+    });
+    if (!updatedUser) {
+      return { err: "Failed to expire the plan" };
+    }
+
+    user.members?.map(async (member: any) => {
+      const updatedUser = await db.user.update({
+        where: { id: member.id },
+        data: {
+          tier: {
+            connect: { id: tier?.id },
+          },
+        },
+      });
+
+      if (!updatedUser) {
+        return { err: "Failed to expire the plan" };
+      }
+    });
+
+    return { success: "Plan expired successfully" };
+  } catch (error: any) {
+    console.log(error.message);
+
     return { err: error.message };
   }
 };

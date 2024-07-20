@@ -58,6 +58,15 @@ export function Btn({ workspaces, user }: any) {
       setOpen(false);
     }
   };
+
+  React.useEffect(() => {
+    setSelectedWorkspace(
+      workspaces?.find((workspace: any) =>
+        workspace.selected.find((select: any) => select.id === user.id)
+      )
+    );
+  }, [workspaces, user]);
+
   const handleClose = (value: boolean) => {
     setSearch("");
     setOpen(value);
