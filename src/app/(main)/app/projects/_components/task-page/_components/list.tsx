@@ -96,16 +96,18 @@ const ListPage = ({ tasks, project, user, searchQuery = "" }: Props) => {
             <Droppable key={key} droppableId={key} type="DATA">
               {(provided: DroppableProvided, snapshot) => {
                 return (
-                  <Column
-                    key={key}
-                    tasks={filterTasks}
-                    stat={key}
-                    Icon={Icon}
-                    project={project}
-                    snapshot={snapshot}
-                    provided={provided}
-                    user={user}
-                  />
+                  filterTasks && (
+                    <Column
+                      key={key}
+                      tasks={filterTasks}
+                      stat={key}
+                      Icon={Icon}
+                      project={project}
+                      snapshot={snapshot}
+                      provided={provided}
+                      user={user}
+                    />
+                  )
                 );
               }}
             </Droppable>

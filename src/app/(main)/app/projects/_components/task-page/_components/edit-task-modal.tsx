@@ -57,6 +57,7 @@ const EditTaskModal = ({ task, project, setOpen }: Props) => {
           "Failed to update the description reload page and try again"
         );
       }
+      router.push(getRefresh(searchParams.get("refresh")));
       return;
     } else if (columnId === "title") {
       const { updatedTask } = await updateTask(task.id, { title: value });
