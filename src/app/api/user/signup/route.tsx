@@ -29,7 +29,7 @@ export async function POST(request: NextRequest) {
     // Create user
     const tier = await db.tier.findFirst({
       where: {
-        name: "Free",
+        name: "free",
       },
     });
     const newRole = await db.role.findFirst({
