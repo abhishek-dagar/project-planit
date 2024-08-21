@@ -23,7 +23,9 @@ export function CreateNewTeamModal() {
     return (
       <Dialog open={open} onOpenChange={setOpen}>
         <DialogTrigger asChild>
-          <Button variant={"outline"}>Create Team</Button>
+          <Button variant={"outline"}>
+            Create Team
+          </Button>
         </DialogTrigger>
         <DialogContent>
           <DialogHeader>
@@ -41,10 +43,12 @@ export function CreateNewTeamModal() {
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button variant={"outline"}>Create Team</Button>
+        <Button variant={"outline"} className="text-xs py-0 h-7">
+          Create Team
+        </Button>
       </DrawerTrigger>
       <DrawerContent>
-        <div className="border-t p-4">
+        <div className="p-4">
           <TeamForm setOpen={setOpen} />
         </div>
       </DrawerContent>

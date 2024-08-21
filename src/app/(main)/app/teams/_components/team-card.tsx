@@ -26,7 +26,7 @@ const TeamCard = ({ team }: TeamCardProps) => {
         <CardDescription>{team.description}</CardDescription>
       </CardHeader>
       <CardFooter>
-        <p className="text-muted-foreground text-sm text-end w-full">
+        <p className="text-muted-foreground text-xs md:text-sm text-end w-full">
           create at : {date}
         </p>
       </CardFooter>

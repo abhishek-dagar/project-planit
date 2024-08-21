@@ -20,7 +20,7 @@ export default async function RootLayout({
   
   if(!selectedWorkspace) redirect("/all-workspaces")
   return (
-    <div className="border-l-[1px] border-t-[1px] h-[calc(100vh-3.5rem)] rounded-tl-3xl border-muted-foreground/20 overflow-auto">
+    <div className="border-l-[1px] border-t-[1px] h-[calc(100vh-6.5rem)] md:rounded-tl-3xl border-muted-foreground/20 overflow-auto">
       {children}
     </div>
   );

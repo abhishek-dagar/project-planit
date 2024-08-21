@@ -37,7 +37,7 @@ const Sidebar = ({ user }: Props) => {
   }, [getRefresh(searchParams.get("refresh"))]);
 
   return (
-    <nav className="h-screen overflow-hidden justify-between flex items-center flex-col gap-10 py-6 px-2">
+    <nav className="hidden h-screen overflow-hidden justify-between md:flex items-center flex-col gap-10 py-6 px-2 min-w-10">
       <div className="flex items-center justify-center flex-col gap-8">
         <Logo isSmall />
         <TooltipProvider>

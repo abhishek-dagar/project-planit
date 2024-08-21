@@ -40,7 +40,7 @@ const NotificationTable = ({ read }: { read?: boolean }) => {
   }, [getRefresh(searchParams.get("refresh"))]);
 
   return notifications.length > 0 ? (
-    <div className="flex flex-col items-center py-4 gap-4 relative">
+    <div className="flex flex-col items-center py-4 gap-4 relative w-full">
       <div className="w-3/4 bg-muted rounded-md">
         {notifications.map((notification) => (
           <NotificationRow notification={notification} key={notification.id}/>
@@ -50,7 +50,7 @@ const NotificationTable = ({ read }: { read?: boolean }) => {
   ) : (
     <div className="h-full flex flex-col items-center justify-center">
       <InboxIcon size={100} selected />
-      <p className="text-3xl font-bold">
+      <p className="text-3xl font-bold text-center">
         No {read ? "read" : "Unread"} notification Available
       </p>
       <p className="text-sm text-muted-foreground">

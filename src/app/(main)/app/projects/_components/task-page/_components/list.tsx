@@ -29,7 +29,7 @@ import {
   Droppable,
   DroppableProvided,
 } from "react-beautiful-dnd";
-import { currentUser } from "@/lib/helpers/getTokenData";
+// import { currentUser } from "@/lib/helpers/getTokenData";
 import { toast } from "sonner";
 
 type Props = {
@@ -61,7 +61,7 @@ const ListPage = ({ tasks, project, user, searchQuery = "" }: Props) => {
   return (
     <div
       className={cn(
-        "h-[calc(100vh-222px)] overflow-auto flex flex-col gap-10",
+        "h-[calc(100vh-222px)] overflow-auto flex flex-col gap-10 bg-[radial-gradient(rgb(var(--muted))_1px,transparent_1px)] [background-size:16px_16px]",
         !tasks?.length && "p-5"
       )}
     >
@@ -96,18 +96,16 @@ const ListPage = ({ tasks, project, user, searchQuery = "" }: Props) => {
             <Droppable key={key} droppableId={key} type="DATA">
               {(provided: DroppableProvided, snapshot) => {
                 return (
-                  filterTasks && (
-                    <Column
-                      key={key}
-                      tasks={filterTasks}
-                      stat={key}
-                      Icon={Icon}
-                      project={project}
-                      snapshot={snapshot}
-                      provided={provided}
-                      user={user}
-                    />
-                  )
+                  <Column
+                    key={key}
+                    tasks={filterTasks}
+                    stat={key}
+                    Icon={Icon}
+                    project={project}
+                    snapshot={snapshot}
+                    provided={provided}
+                    user={user}
+                  />
                 );
               }}
             </Droppable>
@@ -133,7 +131,11 @@ const Column = ({
 }: any) => {
   const searchParams = useSearchParams();
   return (
-    <div ref={provided?.innerRef} {...provided?.droppableProps}>
+    <div
+      ref={provided?.innerRef}
+      {...provided?.droppableProps}
+      className={cn({ hidden: !tasks })}
+    >
       <div
         className={cn(
           "text-sm flex items-center gap-2 px-5 py-2 bg-muted rounded-lg"

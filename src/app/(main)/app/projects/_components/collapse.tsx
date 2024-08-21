@@ -55,7 +55,7 @@ const Collapse = ({ project, selected, disabled }: Props) => {
       <CollapsibleContent className="" style={{ marginTop: 0 }}>
         <Link
           href={`/app/projects?projectId=${project.id}&tab=tasks`}
-          className="rounded-md flex items-center gap-2 border px-2 text-sm"
+          className="rounded-md flex items-center gap-2 border-0 px-2 text-sm"
         >
           <Button
             variant="ghost"
@@ -74,7 +74,7 @@ const Collapse = ({ project, selected, disabled }: Props) => {
               project.id
             }&tab=tasks&view=list&groupBy=${searchParams.get("groupBy")}`}
             className={cn(
-              "flex items-center gap-2",
+              "flex items-center gap-2 hover:text-foreground ",
               selected.project &&
                 (!searchParams.get("view") ||
                   searchParams.get("view") === "list") &&
@@ -100,7 +100,7 @@ const Collapse = ({ project, selected, disabled }: Props) => {
                 : "&groupBy=status"
             }`}
             className={cn(
-              "flex items-center gap-2",
+              "flex items-center gap-2 hover:text-foreground",
               selected.project &&
                 searchParams.get("view") === "board" &&
                 "text-foreground"
@@ -120,7 +120,7 @@ const Collapse = ({ project, selected, disabled }: Props) => {
         {disabled !== true && (
           <Link
             href={`/app/projects?projectId=${project.id}&tab=settings`}
-            className="rounded-md flex items-center gap-2 border px-2 text-sm"
+            className="rounded-md flex items-center gap-2 border-0 px-2 text-sm"
           >
             <Button
               variant="ghost"

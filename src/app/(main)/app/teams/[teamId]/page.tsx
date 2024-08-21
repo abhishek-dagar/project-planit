@@ -39,11 +39,11 @@ const Team = async ({ params }: any) => {
     <div className="flex flex-col items-center py-4 gap-4 relative">
       <Link
         href="/app/teams"
-        className="absolute top-10 left-10 underline text-muted-foreground"
+        className="absolute top-0 md:top-10 left-2 md:left-10 underline text-muted-foreground"
       >
         {"<"}Back
       </Link>
-      <div className="w-3/4">
+      <div className="w-[90%] md:w-3/4 mt-4 md:mt-0">
         <h1 className="text-3xl flex gap-2 items-end">
           <UserRoundIcon selected size={50} />
           {team.name}
@@ -51,17 +51,17 @@ const Team = async ({ params }: any) => {
         <p className="text-muted-foreground">Mange team setting</p>
         <Separator />
       </div>
-      <div className="w-3/4">
+      <div className="w-[90%] md:w-3/4">
         <h1 className="text-xl">General Settings</h1>
         <ChangeName team={team} />
         <Separator className="mt-2" />
       </div>
-      <div className="w-3/4">
+      <div className="w-[90%] md:w-3/4">
         <h1 className="text-xl">Team Members</h1>
         <TeamMembers team={team} user={user} workspace={selectedWorkspace} />
         <Separator className="mt-2" />
       </div>
-      <div className="w-3/4 flex flex-col gap-3 items-start">
+      <div className="w-[90%] md:w-3/4 flex flex-col gap-3 items-start">
         <h1 className="text-xl">Delete Team</h1>
         <p className="text-muted-foreground">Are you sure you want to delete</p>
         <DeleteConfirmModal

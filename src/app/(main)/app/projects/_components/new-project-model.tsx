@@ -28,9 +28,7 @@ export function CreateNewProjectModal() {
         <DialogContent>
           <DialogHeader>
             <DialogTitle>Create project</DialogTitle>
-            <DialogDescription>
-              Create a new project to start
-            </DialogDescription>
+            <DialogDescription>Create a new project to start</DialogDescription>
           </DialogHeader>
           <ProjectForm setOpen={setOpen} />
         </DialogContent>
@@ -41,10 +39,12 @@ export function CreateNewProjectModal() {
   return (
     <Drawer open={open} onOpenChange={setOpen}>
       <DrawerTrigger asChild>
-        <Button variant={"outline"}>Create Project</Button>
+        <Button variant={"outline"} className="text-xs py-0 h-7">
+          Create Project
+        </Button>
       </DrawerTrigger>
       <DrawerContent>
-        <div className="border-t p-4">
+        <div className="p-4">
           <ProjectForm setOpen={setOpen} />
         </div>
       </DrawerContent>
