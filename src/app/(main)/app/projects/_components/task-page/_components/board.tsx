@@ -13,7 +13,7 @@ import {
   TaskStatusIcon,
 } from "@/lib/types/task.type";
 import { LucideIcon } from "lucide-react";
-import React, { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import EditTaskModal from "./edit-task-modal";
 import { useSearchParams } from "next/navigation";
 import StatusDropdown from "./status-dropdown";
@@ -44,8 +44,12 @@ const priorities = Object.keys(TaskPriority)
   .filter((key) => isNaN(Number(key)))
   .map((key) => key);
 const BoardPage = ({ tasks, project, user, searchQuery = "" }: Props) => {
+  const scrollRef = useRef<HTMLDivElement>(null);
   const searchParams = useSearchParams();
   const [group, setGroup] = useState<any>();
+  const [isMouseDown, setIsMouseDown] = useState(false);
+  const [startX, setStartX] = useState(0);
+  const [scrollLeft, setScrollLeft] = useState(0);
   useEffect(() => {
     if (searchParams.get("groupBy") === "status") {
       setGroup(statuses);
@@ -53,8 +57,41 @@ const BoardPage = ({ tasks, project, user, searchQuery = "" }: Props) => {
       setGroup(priorities);
     }
   }, [searchParams.get("groupBy")]);
+
+  const handleMouseDown = (e: any) => {
+    setIsMouseDown(true);
+    setStartX(e.pageX - scrollRef.current!.offsetLeft);
+    setScrollLeft(scrollRef.current!.scrollLeft);
+  };
+
+  const handleMouseLeave = () => {
+    setIsMouseDown(false);
+  };
+
+  const handleMouseUp = () => {
+    setIsMouseDown(false);
+  };
+
+  const handleMouseMove = (e: any) => {
+    if (!isMouseDown) return;
+    e.preventDefault();
+    const x = e.pageX - scrollRef.current!.offsetLeft;
+    const walk = (x - startX) * 2;
+    scrollRef.current!.scrollLeft = scrollLeft - walk;
+  };
+
   return (
-    <div className="h-[calc(100vh-222px)] max-w-[calc(100vw-120px)] lg:max-w-[calc(100vw-260px)] p-5 pt-0 overflow-auto flex relative">
+    <div
+      className={cn(
+        "h-[calc(100vh-222px)] sm:max-w-[calc(100vw-160px)] lg:max-w-[calc(100vw-260px)] p-5 pt-0 overflow-auto flex relative bg-[radial-gradient(rgb(var(--muted))_2px,transparent_0px)] [background-size:16px_16px]",
+        { "select-none": isMouseDown }
+      )}
+      ref={scrollRef}
+      onMouseDown={handleMouseDown}
+      onMouseLeave={handleMouseLeave}
+      onMouseUp={handleMouseUp}
+      onMouseMove={handleMouseMove}
+    >
       {tasks?.length ? (
         <div className="flex flex-col gap-2">
           {tasks

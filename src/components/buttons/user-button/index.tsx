@@ -63,7 +63,9 @@ const UserButton = ({ user, isLarge }: Props) => {
               <AvatarFallback
                 className={cn("text-xl uppercase", isLarge && "text-sm")}
               >
-                {currentUser.name?.split("")[0] || "NA"}
+                {currentUser.name?.split("")[0] ||
+                  currentUser.email?.split("")[0] ||
+                  "NA"}
               </AvatarFallback>
             </Avatar>
           </Button>

@@ -15,8 +15,8 @@ const Dashboard = async () => {
 
   return (
     <div className="flex flex-col gap-4 relative">
-      <div className="sticky top-0 z-[20] py-3 px-6 bg-background/50 backdrop-blur-lg border-b">
-        <h1 className="text-4xl flex items-center">
+      <div className="sticky top-0 z-[10] py-1 md:py-3 px-6 bg-background/50 backdrop-blur-lg flex items-center justify-between border-b">
+        <h1 className="text-xl md:text-4xl flex items-center">
           <Home selected={true} size={30} className="mr-2" />
           Dashboard
         </h1>

@@ -14,8 +14,8 @@ const Teams = async () => {
         teams?.length > 0 ? "" : "h-full"
       }`}
     >
-      <div className="sticky top-0 z-[10] py-3 px-6 bg-background/50 backdrop-blur-lg flex items-center justify-between border-b">
-        <h1 className="text-4xl flex items-center">
+      <div className="sticky top-0 z-[10] py-1 md:py-3 px-6 bg-background/50 backdrop-blur-lg flex items-center justify-between border-b">
+        <h1 className="text-xl md:text-4xl flex items-center">
           <TeamIcon selected={true} size={30} className="mr-2" />
           Teams
         </h1>

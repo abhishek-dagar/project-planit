@@ -137,7 +137,7 @@ const TaskPage = ({ project }: Props) => {
   return (
     <div>
       {/* heading */}
-      <div className="flex items-center justify-between border-b px-4">
+      <div className="flex items-center justify-between border-b px-4 flex-wrap py-2">
         <div className="flex items-center gap-2">
           <Input
             placeholder="search..."

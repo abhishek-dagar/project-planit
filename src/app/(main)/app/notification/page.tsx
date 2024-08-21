@@ -13,8 +13,8 @@ const Notification = () => {
   return (
     <Tabs defaultValue="account" className="relative h-full" value={tab}>
       <div className="flex flex-col gap-4 h-full">
-        <div className="flex md:gap-4 flex-col md:flex-row md:items-center border-b sticky top-0 z-[10] bg-background/50 backdrop-blur-lg">
-          <h1 className="text-4xl py-3 pl-6 flex items-center">
+        <div className="sticky top-0 z-[10] py-1 md:py-3 px-6 bg-background/50 backdrop-blur-lg flex items-center justify-between border-b">
+          <h1 className="text-xl md:text-4xl flex items-center">
             <NotificationIcon selected={true} size={30} className="mr-2" />
             Notification
           </h1>
