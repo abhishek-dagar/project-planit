@@ -18,6 +18,7 @@ import { fetchNotifications } from "@/lib/actions/notification.action";
 import { Notification } from "@/lib/types/notification.type";
 import { getRefresh } from "@/lib/helpers/getRefersh";
 import { cn } from "@/lib/utils";
+import "./index.css";
 
 type Props = {
   user: any;
@@ -90,8 +91,8 @@ const Sidebar = ({ user }: Props) => {
           </ul>
         </TooltipProvider>
         <Separator />
-        {/* <div className="flex items-center flex-col gap-9 dark:bg-[#353346]/30 py-4 px-2 rounded-full h-56 overflow-scroll border-[1px]">
-          <div className="relative dark:bg-[#353346]/70 p-2 rounded-full dark:border-t-[2px] border-[1px] dark:border-t-[#353346]">
+        <div className="flex items-center flex-col gap-9 dark:bg-[#353346]/30 py-4 px-1 rounded-full max-h-56 overflow-auto no-slide-bar border-[1px]">
+          {/* <div className="relative dark:bg-[#353346]/70 p-2 rounded-full dark:border-t-[2px] border-[1px] dark:border-t-[#353346]">
             <LucideMousePointerClick className="dark:text-white" size={14} />
             <div className="border-l-2 border-muted-foreground/50 h-6 absolute left-1/2 transform translate-x-[-50%] -bottom-[30px]" />
           </div>
@@ -102,11 +103,35 @@ const Sidebar = ({ user }: Props) => {
           <div className="relative dark:bg-[#353346]/70 p-2 rounded-full dark:border-t-[2px] border-[1px] dark:border-t-[#353346]">
             <Database className="text-muted-foreground" size={14} />
             <div className="border-l-2 border-muted-foreground/50 h-6 absolute left-1/2 transform translate-x-[-50%] -bottom-[30px]"></div>
-          </div>
-          <div className="relative dark:bg-[#353346]/70 p-2 rounded-full dark:border-t-[2px] border-[1px] dark:border-t-[#353346]">
-            <GitBranch className="text-muted-foreground" size={14} />
-          </div>
-        </div> */}
+          </div> */}
+          <TooltipProvider>
+            <Tooltip delayDuration={0}>
+              <TooltipTrigger>
+                <Link href="/app/workflow-map">
+                  <div
+                    className={cn(
+                      "relative dark:bg-[#353346]/70 p-2 rounded-full dark:border-t-[2px] border-[1px] dark:border-t-[#353346]",
+                      { "bg-[#EEE0FF]": pathName === "/app/workflow-map" }
+                    )}
+                  >
+                    <GitBranch
+                      className={cn("text-muted-foreground", {
+                        "text-[#9F54FF]": pathName === "/app/workflow-map",
+                      })}
+                      size={14}
+                    />
+                  </div>
+                </Link>
+              </TooltipTrigger>
+              <TooltipContent
+                side="right"
+                className="bg-black/10 backdrop-blur-xl"
+              >
+                Workflow Map
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
+        </div>
       </div>
       <div className="flex items-center justify-center flex-col gap-8">
         <Link
@@ -118,11 +143,11 @@ const Sidebar = ({ user }: Props) => {
           className={clsx(
             "group h-8 w-8 flex items-center justify-center  scale-[1] rounded-lg p-[3px]  cursor-pointer",
             {
-              "dark:bg-[#2F006B] bg-[#EEE0FF] ": pathName === "/settings",
+              "dark:bg-[#2F006B] bg-[#EEE0FF] ": pathName.includes("settings"),
             }
           )}
         >
-          <Settings selected={pathName === "/settings"} />
+          <Settings selected={pathName.includes("settings")} />
         </Link>
       </div>
     </nav>
