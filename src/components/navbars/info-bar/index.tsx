@@ -13,12 +13,18 @@ type Props = {};
 const InfoBar = async (props: Props) => {
   const user = await currentUser();
   if (!user) redirect("/signin");
+
   return (
     <div className="h-14 flex flex-row justify-end gap-6 items-center px-4 py-2 w-full dark:bg-black ">
       <Button asChild>
-        {user?.tier?.name.toLocaleLowerCase() !== "free" ? null : <Link href={"/app/settings/workspace/plans"} className="bg-primary/20 shadow-md backdrop-blur-lg  ">
-          Upgrade <CrownIcon size={16} />
-        </Link>}
+        {user?.tier?.name.toLocaleLowerCase() !== "free" ? null : (
+          <Link
+            href={"/app/settings/workspace/plans"}
+            className="bg-primary/70 shadow-md"
+          >
+            Upgrade <CrownIcon size={16} />
+          </Link>
+        )}
       </Button>
       <WorkspaceButton />
       <UserButton user={user} />

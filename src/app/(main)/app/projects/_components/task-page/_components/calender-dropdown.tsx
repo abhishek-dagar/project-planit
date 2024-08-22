@@ -148,15 +148,15 @@ export function CalendarForm({
             )}
           </div>
         </div>
-        <div className="flex gap-2">
-          <div className="flex flex-col justify-evenly w-[200px] bg-background rounded-tr-xl px-2 py-5">
+        <div className="flex justify-center gap-2">
+          <div className="hidden md:flex flex-col justify-evenly md:w-[200px] bg-background rounded-tr-xl px-2 py-5">
             {customButtons.map((btn) => (
               <Button
                 key={btn.label}
-                className="w-full flex justify-between bg-transparent hover:bg-muted text-[14px]"
+                className="w-full flex justify-between bg-transparent hover:bg-muted text-xs md:text-[14px]"
                 onClick={() => addDays(btn.days)}
               >
-                <span>{btn.label}</span>
+                <span className="text-foreground">{btn.label}</span>
                 <span className="text-muted-foreground">
                   {moment(new Date()).add(btn.days, "days").format("MMM DD")}
                 </span>
@@ -166,7 +166,7 @@ export function CalendarForm({
               className="w-full flex justify-between bg-transparent hover:bg-muted text-[14px]"
               onClick={() => handleDateChange(undefined)}
             >
-              <span>Clear Due Date</span>
+              <span className="text-foreground">Clear Due Date</span>
             </Button>
           </div>
           <Calendar

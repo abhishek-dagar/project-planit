@@ -13,12 +13,15 @@ const Notification = () => {
   return (
     <Tabs defaultValue="account" className="relative h-full" value={tab}>
       <div className="flex flex-col gap-4 h-full">
-        <div className="sticky top-0 z-[10] py-1 md:py-3 px-6 bg-background/50 backdrop-blur-lg flex items-center justify-between border-b">
+        <div className="sticky top-0 z-[10] py-1 md:py-3 px-6 bg-background/50 backdrop-blur-lg flex items-center justify-between md:justify-normal border-b">
           <h1 className="text-xl md:text-4xl flex items-center">
             <NotificationIcon selected={true} size={30} className="mr-2" />
             Notification
           </h1>
-          <Separator orientation="vertical" className="h-10 hidden md:block" />
+          <Separator
+            orientation="vertical"
+            className="h-10 hidden md:block ml-3"
+          />
           <TabsList className="bg-transparent">
             <TabsTrigger
               value="unread"

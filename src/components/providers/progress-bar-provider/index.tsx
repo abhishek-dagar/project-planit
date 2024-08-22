@@ -11,6 +11,7 @@ const ProgressbarProviders = ({ children }: { children: React.ReactNode }) => {
         options={{ showSpinner: true }}
         color="rgb(var(--primary))"
         showOnShallow
+        showSpinner={false}
       />
     </>
   );

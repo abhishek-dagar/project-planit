@@ -21,6 +21,7 @@ type Props = {
 const TaskPage = ({ project }: Props) => {
   const [tasks, setTasks] = useState<any>([]);
   const [search, setSearch] = useState("");
+  const [isDragging, setIsDragging] = useState(false);
   const [filter, setFilter] = useState<{
     status: string[];
     priority: string[];
@@ -48,7 +49,8 @@ const TaskPage = ({ project }: Props) => {
   }, []);
   const getTasks = async () => {
     let groupBy = searchParams.get("groupBy") || "";
-    if (searchParams.get("view") === "board" && groupBy=="") groupBy = "status";
+    if (searchParams.get("view") === "board" && groupBy == "")
+      groupBy = "status";
     if (groupBy !== "status" && groupBy !== "priority") groupBy = "";
     const { tasks } = await fetchTasks(
       project.id,
@@ -62,6 +64,7 @@ const TaskPage = ({ project }: Props) => {
   };
 
   const handleDragEnd = async (result: DropResult) => {
+    setIsDragging(false);
     const { destination, source } = result;
     let groupBy: string | null = searchParams.get("groupBy");
 
@@ -156,13 +159,19 @@ const TaskPage = ({ project }: Props) => {
         {(user?.role?.name !== "member" ||
           project?.team?.teamLead?.id === user?.id) && <CreateTaskModal />}
       </div>
-      <DragDropContext onDragEnd={handleDragEnd}>
+      <DragDropContext
+        onDragEnd={handleDragEnd}
+        onDragStart={() => {
+          setIsDragging(true);
+        }}
+      >
         {searchParams.get("view") === "board" ? (
           <BoardPage
             tasks={tasks}
             project={project}
             searchQuery={search}
             user={user}
+            isDragging={isDragging}
           />
         ) : (
           <ListPage

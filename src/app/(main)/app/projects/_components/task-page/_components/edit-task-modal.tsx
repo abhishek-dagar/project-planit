@@ -92,6 +92,7 @@ const EditTaskModal = ({ task, project, setOpen }: Props) => {
         placeholder="Task title"
         className="border-none focus-visible:ring-0 focus-visible:ring-offset-0 focus-visible:border-0 font-semibold text-xl"
         value={title}
+        autoFocus
         onChange={(e) => {
           setTitle(e.target.value);
           debounceRequest("title", e.target.value);

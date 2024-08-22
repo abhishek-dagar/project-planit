@@ -13,7 +13,7 @@ export const createWorkspace = async (workspace: any) => {
     if (!user) return { err: "Failed to create workspace" };
 
     if (
-      user?.workspaces?.length === 1 &&
+      user?.workspaces?.length >= 1 &&
       user?.tier.name.toLowerCase() === "free"
     ) {
       return {

@@ -35,13 +35,13 @@ export default async function projectLayout({
         {user?.role?.name !== "member" && <CreateNewProjectModal />}
       </div>
       <ResizablePanelGroup direction="horizontal" className="h-full">
-        <ResizablePanel maxSize={20} defaultSize={20}>
+        <ResizablePanel maxSize={20} defaultSize={20} className="hidden md:block">
           <SubSidebar
             projects={projects}
             disabled={user?.role?.name === "member"}
           />
         </ResizablePanel>
-        <ResizableHandle withHandle className="hover:bg-primary" />
+        <ResizableHandle withHandle className="hidden md:flex hover:bg-primary" />
         <ResizablePanel defaultSize={80}>{children}</ResizablePanel>
       </ResizablePanelGroup>
     </div>

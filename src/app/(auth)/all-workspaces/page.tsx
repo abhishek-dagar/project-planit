@@ -4,6 +4,7 @@ import {
   Card,
   CardContent,
   CardDescription,
+  CardFooter,
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
@@ -34,20 +35,21 @@ const AllWorkspace = async (props: Props) => {
   );
   return (
     <div className="flex items-center relative justify-center h-screen w-screen">
-      <div className="absolute top-5 left-5">
+      <div className="absolute top-1 left-1 md:top-5 md:left-5">
         <Link
           href={selectedWorkspace ? "/app/dashboard" : "#"}
-          className="text-muted-foreground underline flex items-center gap-2"
+          className="text-sm md:text-sm text-muted-foreground underline flex items-center gap-2"
         >
           {"<"} Go to dashboard
         </Link>
       </div>
-      <div className="absolute top-5 right-5">
+      <div className="absolute top-1 right-1 md:top-5 md:right-5">
         <Logo />
       </div>
 
       <Card className="flex flex-col items-center justify-center min-w-full md:min-w-[450px] w-full md:w-[80%] rounded-xl shadow-2xl">
         <CardHeader className="flex flex-col items-center justify-center">
+          <div className="md:hidden h-16" />
           <CardTitle className="flex gap-2 items-center justify-center">
             <NetworkIcon size={40} />
             <p>Workspaces</p>
@@ -67,6 +69,7 @@ const AllWorkspace = async (props: Props) => {
           <h1>All Members</h1>
           <AllMembers user={user} />
         </CardContent>
+        <CardFooter className="md:hidden">hello</CardFooter>
       </Card>
     </div>
   );

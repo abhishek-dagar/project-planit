@@ -26,7 +26,7 @@ export enum TaskStatus {
 }
 export const TaskStatusColor: { [key: string]: string } = {
   BACKLOG: "#bec2c8",
-  TODO: "#ffffff",
+  TODO: "#bec2c8",
   IN_PROGRESS: "#7f77f1",
   COMPLETED: "#6bc950",
   CANCELLED: "#af2d1f",
@@ -47,7 +47,7 @@ export enum TaskPriority {
   NONE,
 }
 export const TaskPriorityColor: { [key: string]: string } = {
-  LOW: "#ffffff",
+  LOW: "#bec2c8",
   MEDIUM: "#6dd9fa",
   HIGH: "#d9da07",
   URGENT: "#af2d1f",

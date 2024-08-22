@@ -92,7 +92,7 @@ export function Btn({ workspaces, user }: any) {
           </Button>
         </DropdownMenuTrigger>
         <DropdownMenuContent
-          className="min-w-[200px] md:w-[300px] max-h-[300px] overflow-auto"
+          className="min-w-[200px] md:w-[300px] max-h-[315px] overflow-auto"
           align="end"
         >
           <div className="flex items-center gap-4 px-2 py-1.5">
@@ -105,28 +105,28 @@ export function Btn({ workspaces, user }: any) {
           </div>
           {user?.role?.name !== "member" && (
             <>
-              <DropdownMenuItem>
+              <DropdownMenuItem asChild>
                 <Link
                   href={"/app/settings/workspace/general"}
-                  className="flex items-center gap-2 w-full"
+                  className="flex items-center gap-2 w-full cursor-pointer"
                 >
                   <SettingsIcon size={16} />
                   <p>Manage Workspace</p>
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem asChild>
                 <Link
                   href={"/workspace"}
-                  className="flex items-center gap-2 w-full"
+                  className="flex items-center gap-2 w-full cursor-pointer"
                 >
                   <SettingsIcon size={16} />
                   <p>Create new Workspace</p>
                 </Link>
               </DropdownMenuItem>
-              <DropdownMenuItem>
+              <DropdownMenuItem asChild>
                 <Link
                   href={"/all-workspaces"}
-                  className="flex items-center gap-2 w-full"
+                  className="flex items-center gap-2 w-full cursor-pointer"
                 >
                   <NetworkIcon size={16} />
                   <p>All workspaces</p>

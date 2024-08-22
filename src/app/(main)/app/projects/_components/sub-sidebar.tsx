@@ -20,7 +20,7 @@ const SubSidebar = ({ projects, disabled }: Props) => {
         <Input
           placeholder="Search"
           value={search}
-          className="rounded-full px-3"
+          className="rounded-full px-3 border-0"
           frontIcon={<SearchIcon size={14} className="text-muted-foreground" />}
           onChange={(e) => setSearch(e.target.value)}
         />

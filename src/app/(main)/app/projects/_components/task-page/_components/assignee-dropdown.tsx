@@ -1,13 +1,5 @@
 import {
-  Calculator,
-  Calendar,
-  Check,
-  CreditCard,
-  LucideIcon,
-  Settings,
-  Smile,
-  User,
-  UserCircleIcon,
+  UserCircleIcon
 } from "lucide-react";
 
 import {
@@ -16,9 +8,7 @@ import {
   CommandGroup,
   CommandInput,
   CommandItem,
-  CommandList,
-  CommandSeparator,
-  CommandShortcut,
+  CommandList
 } from "@/components/ui/command";
 import React, { useEffect, useState } from "react";
 import {
@@ -28,20 +18,11 @@ import {
 } from "@/components/ui/popover";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
-import {
-  TaskPriority,
-  TaskPriorityColor,
-  TaskPriorityIcon,
-  TaskStatusColor,
-  TaskStatusIcon,
-} from "@/lib/types/task.type";
 import { updateTask } from "@/lib/actions/task.action";
 import { toast } from "sonner";
 import { useRouter, useSearchParams } from "next/navigation";
-import { fetchProject } from "@/lib/actions/project.action";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { getRefresh } from "@/lib/helpers/getRefersh";
-import { currentUser } from "@/lib/helpers/getTokenData";
 
 interface Props {
   taskId: string;

@@ -29,12 +29,14 @@ import {
   DroppableProvided,
 } from "react-beautiful-dnd";
 import { toast } from "sonner";
+import { useMediaQuery } from "@/components/custom-hooks/media-query";
 
 type Props = {
   tasks: any;
   project: any;
   searchQuery?: string;
   user: any;
+  isDragging?: boolean;
 };
 
 const statuses = Object.keys(TaskStatus)
@@ -43,13 +45,20 @@ const statuses = Object.keys(TaskStatus)
 const priorities = Object.keys(TaskPriority)
   .filter((key) => isNaN(Number(key)))
   .map((key) => key);
-const BoardPage = ({ tasks, project, user, searchQuery = "" }: Props) => {
+const BoardPage = ({
+  tasks,
+  project,
+  user,
+  isDragging,
+  searchQuery = "",
+}: Props) => {
   const scrollRef = useRef<HTMLDivElement>(null);
   const searchParams = useSearchParams();
   const [group, setGroup] = useState<any>();
   const [isMouseDown, setIsMouseDown] = useState(false);
   const [startX, setStartX] = useState(0);
   const [scrollLeft, setScrollLeft] = useState(0);
+  const isDesktop = useMediaQuery("(min-width: 768px)");
   useEffect(() => {
     if (searchParams.get("groupBy") === "status") {
       setGroup(statuses);
@@ -59,20 +68,24 @@ const BoardPage = ({ tasks, project, user, searchQuery = "" }: Props) => {
   }, [searchParams.get("groupBy")]);
 
   const handleMouseDown = (e: any) => {
+    if (!isDesktop || isDragging) return;
     setIsMouseDown(true);
     setStartX(e.pageX - scrollRef.current!.offsetLeft);
     setScrollLeft(scrollRef.current!.scrollLeft);
   };
 
   const handleMouseLeave = () => {
+    if (!isDesktop || isDragging) return;
     setIsMouseDown(false);
   };
 
   const handleMouseUp = () => {
+    if (!isDesktop || isDragging) return;
     setIsMouseDown(false);
   };
 
   const handleMouseMove = (e: any) => {
+    if (!isDesktop || isDragging) return;
     if (!isMouseDown) return;
     e.preventDefault();
     const x = e.pageX - scrollRef.current!.offsetLeft;
@@ -292,8 +305,8 @@ const BoardCard = ({ task, project, provided, snapshot, user }: any) => {
           </div>
         </div>
       </DialogTrigger>
-      <DialogContent className="max-w-[100vw] w-[75vw] max-h-[100vh] h-[75vh] flex flex-col gap-0">
-        <DialogHeader className="block h-10">
+      <DialogContent className="max-w-[100vw] md:w-[75vw] max-h-[100vh] md:h-[75vh] flex flex-col gap-0 px-3 md:px-6">
+        <DialogHeader className="block text-start h-10">
           <span className="border bg-muted px-3 py-1 rounded-md">
             {project?.name}
           </span>
