@@ -50,6 +50,7 @@ const CustomPieChart = ({ data }: Props) => {
           className={className}
         >
           {payload.name}
+          {` (${value})`}
         </text>
         <Sector
           cx={cx}

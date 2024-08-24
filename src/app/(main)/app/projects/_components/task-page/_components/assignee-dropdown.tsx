@@ -1,6 +1,4 @@
-import {
-  UserCircleIcon
-} from "lucide-react";
+import { UserCircleIcon } from "lucide-react";
 
 import {
   Command,
@@ -8,7 +6,7 @@ import {
   CommandGroup,
   CommandInput,
   CommandItem,
-  CommandList
+  CommandList,
 } from "@/components/ui/command";
 import React, { useEffect, useState } from "react";
 import {
@@ -23,6 +21,7 @@ import { toast } from "sonner";
 import { useRouter, useSearchParams } from "next/navigation";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { getRefresh } from "@/lib/helpers/getRefersh";
+import { currentUser } from "@/lib/helpers/getTokenData";
 
 interface Props {
   taskId: string;
@@ -41,14 +40,14 @@ const AssigneeDropdown = ({
   const [open, setOpen] = React.useState(false);
   const [value, setValue] = React.useState<any>();
   const [members, setMembers] = useState<any>();
+  const [user, setUser] = useState<any>();
   const router = useRouter();
   const searchParams = useSearchParams();
 
   const handleOpen = (value: boolean) => {
     if (disabled) {
       toast.error("You are not authorized to perform this action", {
-        description:
-          "Only the team lead or manager can assign task",
+        description: "Only the team lead or manager can assign task",
       });
       return;
     }
@@ -84,8 +83,18 @@ const AssigneeDropdown = ({
       setOpen(false);
     }
   };
+
   useEffect(() => {
-    setMembers(team?.members);
+    const getUser = async () => {
+      const user = await currentUser();
+      if (team?.members) {
+        setMembers([user, ...team?.members]);
+      } else {
+        setMembers([user]);
+      }
+      setUser(user);
+    };
+    getUser();
   }, [searchParams.get("projectId")]);
   useEffect(() => {
     setValue(assignee);
@@ -154,9 +163,16 @@ const AssigneeDropdown = ({
                     onSelect={(currentValue: any) => {
                       handleUpdateAssignee(currentValue, member.name);
                     }}
-                    className="flex justify-between"
+                    className="flex items-center gap-2"
                   >
-                    <p className="flex gap-2">{member.name}</p>
+                    <Avatar className="h-6 w-6">
+                      <AvatarFallback className="uppercase">
+                        {member.name === user?.name ? "M" : member.name[0]}
+                      </AvatarFallback>
+                    </Avatar>
+                    <p className="flex gap-2 truncate">
+                      {member.name === user?.name ? "Me" : member.name}
+                    </p>
                   </CommandItem>
                 );
               })}

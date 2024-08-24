@@ -22,7 +22,7 @@ const nodes: Node[] = [
       description:
         "Efficient workspaces designed to inspire productivity, foster collaboration, and accommodate your professional needs.",
     },
-    position: { x: 250, y: 5 },
+    position: { x: 150, y: -205 },
   },
   {
     id: "2",
@@ -62,11 +62,11 @@ const nodes: Node[] = [
     type: "Action",
     data: {
       title: "Members",
-      icon: "task",
+      icon: "member",
       description:
         "Add members to your workspace, teams and collaborate with them in real-time.",
     },
-    position: { x: -800, y: 305 },
+    position: { x: -800, y: 405 },
   },
 ];
 
@@ -107,7 +107,7 @@ const WorkflowMap = () => {
       >
         <Background variant={BackgroundVariant.Dots} />
         <Controls
-          className="[&_button]:bg-background border border-border [&_button]:border-border"
+          className="[&_button]:bg-background [&_button]:hover:bg-muted rounded-md overflow-hidden border border-border [&_button]:border-border"
           showInteractive={false}
           showZoom={false}
         />

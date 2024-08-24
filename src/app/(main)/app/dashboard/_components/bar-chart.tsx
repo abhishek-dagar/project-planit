@@ -56,7 +56,7 @@ const CustomBarChart = ({ data }: Props) => {
               axisLine={false}
               tickFormatter={(value) => `${value}`}
             />
-            <YAxis />
+            <YAxis/>
             <Tooltip content={<CustomTooltip />} />
             <Legend />
             <Bar

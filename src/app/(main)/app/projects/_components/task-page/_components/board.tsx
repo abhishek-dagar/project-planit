@@ -12,7 +12,7 @@ import {
   TaskStatusColor,
   TaskStatusIcon,
 } from "@/lib/types/task.type";
-import { LucideIcon } from "lucide-react";
+import { ChevronDownCircle, LucideIcon } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
 import EditTaskModal from "./edit-task-modal";
 import { useSearchParams } from "next/navigation";
@@ -30,6 +30,12 @@ import {
 } from "react-beautiful-dnd";
 import { toast } from "sonner";
 import { useMediaQuery } from "@/components/custom-hooks/media-query";
+import { Button } from "@/components/ui/button";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
 
 type Props = {
   tasks: any;
@@ -121,7 +127,12 @@ const BoardPage = ({
             tasks["IN_PROGRESS"] ||
             tasks["COMPLETED"] ||
             tasks["CANCELLED"] ||
-            tasks["BACKLOG"]) &&
+            tasks["BACKLOG"] ||
+            tasks["LOW"] ||
+            tasks["MEDIUM"] ||
+            tasks["HIGH"] ||
+            tasks["URGENT"] ||
+            tasks["NONE"]) &&
             group &&
             group?.map((key: any) => {
               const Icon: LucideIcon =
@@ -164,42 +175,64 @@ const BoardColumn = ({
   snapshot,
   user,
 }: any) => {
+  const [open, setOpen] = useState(true);
   return (
     <div ref={provided.innerRef} {...provided.droppableProps}>
-      <div className={cn("w-[250px] flex flex-col gap-2 pt-5")}>
-        <div
-          className={`text-sm flex items-center gap-2 px-5 py-2 bg-muted rounded-t-lg border-t-4 z-[10] sticky top-0 shadow-lg`}
-          style={{
-            borderColor: TaskStatusColor[stat] || TaskPriorityColor[stat],
-          }}
-        >
-          <Icon
-            size={16}
-            color={TaskStatusColor[stat] || TaskPriorityColor[stat]}
-          />
-          <span>{stat}</span>
-          <span className="px-1.5 rounded-full border border-primary bg-background">
-            {tasks ? tasks.length : "0"}
-          </span>
-        </div>
-        <div className="flex flex-col gap-2">
-          {tasks?.map((task: any, index: number) => (
-            <Draggable key={task.id} draggableId={task.id} index={index}>
-              {(provided: DraggableProvided, snapshot) => (
-                <BoardCard
-                  key={task.id}
-                  task={task}
-                  project={project}
-                  snapshot={snapshot}
-                  provided={provided}
-                  user={user}
+      <Collapsible open={open} onOpenChange={setOpen} className="space-y-2">
+        <div className={cn("w-[250px] flex flex-col gap-2 pt-5")}>
+          <div
+            className={`text-sm flex items-center justify-between gap-2 px-5 py-2 bg-muted rounded-t-lg border-t-4 z-[10] sticky top-0 shadow-lg`}
+            style={{
+              borderColor: TaskStatusColor[stat] || TaskPriorityColor[stat],
+            }}
+          >
+            <div className="flex items-center gap-2">
+              <Icon
+                size={16}
+                color={TaskStatusColor[stat] || TaskPriorityColor[stat]}
+              />
+              <span>{stat}</span>
+              <span className="px-1.5 rounded-full border border-primary bg-background">
+                {tasks ? tasks.length : "0"}
+              </span>
+            </div>
+            <CollapsibleTrigger asChild>
+              <Button
+                variant="outline"
+                size="icon"
+                className="h-5 w-5 bg-muted text-muted-foreground hover:text-foreground"
+                onClick={() => setOpen(!open)}
+              >
+                <ChevronDownCircle
+                  size={14}
+                  className={cn("rotate-180 transition-all duration-300", {
+                    "rotate-0": open,
+                  })}
                 />
-              )}
-            </Draggable>
-          ))}
-          <div className="h-20 bg-transparent" />
+              </Button>
+            </CollapsibleTrigger>
+          </div>
+          <CollapsibleContent className="" style={{ marginTop: 0 }}>
+            <div className={cn("flex flex-col gap-2 transition-all h-[600px]")}>
+              {tasks?.map((task: any, index: number) => (
+                <Draggable key={task.id} draggableId={task.id} index={index}>
+                  {(provided: DraggableProvided, snapshot) => (
+                    <BoardCard
+                      key={task.id}
+                      task={task}
+                      project={project}
+                      snapshot={snapshot}
+                      provided={provided}
+                      user={user}
+                    />
+                  )}
+                </Draggable>
+              ))}
+              <div className="h-20 bg-transparent" />
+            </div>
+          </CollapsibleContent>
         </div>
-      </div>
+      </Collapsible>
       {provided.placeholder}
     </div>
   );

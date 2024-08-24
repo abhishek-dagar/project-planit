@@ -22,7 +22,7 @@ export default async function RootLayout({
 }>) {
   await removeExpiredPlans();
   return (
-    <html lang="en" suppressHydrationWarning>
+    <html lang="en" suppressHydrationWarning className="scroll-smooth">
       <head>
         <link rel="shortcut icon" href="/logo.svg" />
       </head>

@@ -53,7 +53,7 @@ const DeleteConfirmModal = ({ onConfirm, redirectTo }: Props) => {
           Delete
         </Button>
       </AlertDialogTrigger>
-      <AlertDialogContent>
+      <AlertDialogContent className="border-destructive bg-destructive/10 backdrop-blur-lg">
         <AlertDialogHeader>
           <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
           <AlertDialogDescription>
@@ -64,7 +64,11 @@ const DeleteConfirmModal = ({ onConfirm, redirectTo }: Props) => {
         <AlertDialogFooter>
           <AlertDialogCancel>Cancel</AlertDialogCancel>
           <AlertDialogAction asChild>
-            <Button variant={"destructive"} onClick={handleConfirm}>
+            <Button
+              variant={"destructive"}
+              onClick={handleConfirm}
+              className="border-destructive bg-destructive/70 hover:bg-destructive py-0 focus-visible:ring-destructive"
+            >
               Delete
             </Button>
           </AlertDialogAction>

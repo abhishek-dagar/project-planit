@@ -1,4 +1,4 @@
-import { GripVerticalIcon, LucideIcon } from "lucide-react";
+import { ChevronDownCircle, GripVerticalIcon, LucideIcon } from "lucide-react";
 import React, { useEffect, useState } from "react";
 import {
   TaskPriority,
@@ -31,6 +31,12 @@ import {
 } from "react-beautiful-dnd";
 // import { currentUser } from "@/lib/helpers/getTokenData";
 import { toast } from "sonner";
+import {
+  Collapsible,
+  CollapsibleContent,
+  CollapsibleTrigger,
+} from "@/components/ui/collapsible";
+import { Button } from "@/components/ui/button";
 
 type Props = {
   tasks: any;
@@ -85,7 +91,12 @@ const ListPage = ({ tasks, project, user, searchQuery = "" }: Props) => {
         tasks["IN_PROGRESS"] ||
         tasks["COMPLETED"] ||
         tasks["CANCELLED"] ||
-        tasks["BACKLOG"] ? (
+        tasks["BACKLOG"] ||
+        tasks["LOW"] ||
+        tasks["MEDIUM"] ||
+        tasks["HIGH"] ||
+        tasks["URGENT"] ||
+        tasks["NONE"] ? (
         group &&
         group?.map((key: any) => {
           const Icon: LucideIcon = TaskStatusIcon[key] || TaskPriorityIcon[key];
@@ -130,47 +141,69 @@ const Column = ({
   user,
 }: any) => {
   const searchParams = useSearchParams();
+  const [open, setOpen] = useState(true);
   return (
     <div
       ref={provided?.innerRef}
       {...provided?.droppableProps}
       className={cn({ hidden: !tasks })}
     >
-      <div
-        className={cn(
-          "text-sm flex items-center gap-2 px-5 py-2 bg-muted rounded-lg"
-        )}
-      >
-        <Icon
-          size={16}
-          color={TaskStatusColor[stat] || TaskPriorityColor[stat]}
-        />
-        <span>{stat}</span>
-        <span>{tasks ? tasks.length : "0"}</span>
-      </div>
-      <div>
-        {tasks ? (
-          tasks.map((task: any, index: number) => (
-            <Draggable key={task.id} draggableId={task.id} index={index}>
-              {(provided: DraggableProvided, snapshot) => (
-                <Row
-                  key={task.id}
-                  task={task}
-                  project={project}
-                  border
-                  snapshot={snapshot}
-                  provided={provided}
-                  user={user}
-                />
-              )}
-            </Draggable>
-          ))
-        ) : (
-          <p className="text-muted-foreground text-center">
-            No task in {stat} {searchParams.get("groupBy")}
-          </p>
-        )}
-      </div>
+      <Collapsible open={open} onOpenChange={setOpen} className="space-y-2">
+        <div
+          className={cn(
+            "text-sm flex items-center gap-2 px-5 pl-2 py-2 bg-muted rounded-lg"
+          )}
+        >
+          <CollapsibleTrigger asChild>
+            <Button
+              variant="outline"
+              size="icon"
+              className="h-5 w-5 bg-muted text-muted-foreground hover:text-foreground"
+              onClick={() => setOpen(!open)}
+            >
+              <ChevronDownCircle
+                size={14}
+                className={cn("rotate-180 transition-all duration-300", {
+                  "rotate-0": open,
+                })}
+              />
+            </Button>
+          </CollapsibleTrigger>
+          <div className="flex items-center gap-2">
+            <Icon
+              size={16}
+              color={TaskStatusColor[stat] || TaskPriorityColor[stat]}
+            />
+            <span>{stat}</span>
+            <span>{tasks ? tasks.length : "0"}</span>
+          </div>
+        </div>
+        <CollapsibleContent className="" style={{ marginTop: 0 }}>
+          <div>
+            {tasks ? (
+              tasks.map((task: any, index: number) => (
+                <Draggable key={task.id} draggableId={task.id} index={index}>
+                  {(provided: DraggableProvided, snapshot) => (
+                    <Row
+                      key={task.id}
+                      task={task}
+                      project={project}
+                      border
+                      snapshot={snapshot}
+                      provided={provided}
+                      user={user}
+                    />
+                  )}
+                </Draggable>
+              ))
+            ) : (
+              <p className="text-muted-foreground text-center">
+                No task in {stat} {searchParams.get("groupBy")}
+              </p>
+            )}
+          </div>
+        </CollapsibleContent>
+      </Collapsible>
       {provided.placeholder}
     </div>
   );
@@ -299,8 +332,8 @@ const Row = ({ task, project, border, provided, snapshot, user }: any) => {
           </div>
         </div>
       </DialogTrigger>
-      <DialogContent className="max-w-[100vw] w-[75vw] max-h-[100vh] h-[75vh] flex flex-col gap-0">
-        <DialogHeader className="block h-10">
+      <DialogContent className="max-w-[100vw] md:w-[75vw] max-h-[100vh] md:h-[75vh] flex flex-col gap-0 px-3 md:px-6">
+        <DialogHeader className="block text-start h-10">
           <span className="border bg-muted px-3 py-1 rounded-md">
             {project?.name}
           </span>

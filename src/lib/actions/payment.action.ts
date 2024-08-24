@@ -88,10 +88,13 @@ export const removeExpiredPlans = async () => {
           id: user.id,
         },
       },
+      orderBy: {
+        endDate: "desc",
+      }
     });
 
     if (paymentHistory?.endDate! > new Date()) {
-      return
+      return;
     }
 
     const tier = await db.tier.findFirst({

@@ -13,12 +13,20 @@ export default async function SettingsLayout({
   children: React.ReactNode;
 }>) {
   const user = await currentUser();
-  if (user?.role?.name === "manager" && user.workspaces &&user?.workspaces?.length < 1)
+  if (
+    user?.role?.name === "manager" &&
+    user.workspaces &&
+    user?.workspaces?.length < 1
+  )
     redirect("/workspace");
   return (
     <div className="h-full relative">
       <ResizablePanelGroup direction="horizontal" className="h-full">
-        <ResizablePanel maxSize={20} defaultSize={20}>
+        <ResizablePanel
+          maxSize={20}
+          defaultSize={20}
+          className="hidden md:block"
+        >
           <SubSidebar user={user} />
         </ResizablePanel>
         <ResizableHandle withHandle className="hover:bg-primary" />
