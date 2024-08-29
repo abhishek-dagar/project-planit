@@ -22,6 +22,7 @@ import { useRouter, useSearchParams } from "next/navigation";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
 import { getRefresh } from "@/lib/helpers/getRefersh";
 import { currentUser } from "@/lib/helpers/getTokenData";
+import UserAvatar from "@/components/common/user-avatar";
 
 interface Props {
   taskId: string;
@@ -165,11 +166,12 @@ const AssigneeDropdown = ({
                     }}
                     className="flex items-center gap-2"
                   >
-                    <Avatar className="h-6 w-6">
+                    {/* <Avatar className="h-6 w-6">
                       <AvatarFallback className="uppercase">
                         {member.name === user?.name ? "M" : member.name[0]}
                       </AvatarFallback>
-                    </Avatar>
+                    </Avatar> */}
+                    <UserAvatar text={member.name === user?.name ? "M" : member.name[0]} id={member.id} isSmall/>
                     <p className="flex gap-2 truncate">
                       {member.name === user?.name ? "Me" : member.name}
                     </p>

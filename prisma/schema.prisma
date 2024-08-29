@@ -21,6 +21,7 @@ model User {
   role                         Role?            @relation(fields: [roleId], references: [id])
   roleId                       String?
   isVerified                   Boolean          @default(false)
+  isOnline                     Boolean          @default(false)
   forgotPasswordToken          String?
   forgotPasswordTokenExpiresAt DateTime?
   verifyToken                  String?
@@ -44,6 +45,26 @@ model User {
   activityFor                  Activity[]       @relation("Activity")
   activity                     Activity[]
   PaymentHistory               PaymentHistory[]
+  SenderChat                   Chat[]           @relation("sender")
+  ReciverChat                  Chat[]           @relation("reciver")
+}
+
+model Chat {
+  id        String        @id @default(uuid())
+  message   String
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+  from      User          @relation("sender", fields: [fromId], references: [id])
+  fromId    String
+  status    MessageStatus @default(SENT)
+  to        User          @relation("reciver", fields: [toId], references: [id])
+  toId      String
+}
+
+enum MessageStatus {
+  SENT
+  DELIVERED
+  READ
 }
 
 model Tier {

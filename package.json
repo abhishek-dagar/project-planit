@@ -55,6 +55,8 @@
     "nodemailer": "^6.9.13",
     "nprogress": "^0.2.0",
     "prisma": "^5.13.0",
+    "pusher": "^5.2.0",
+    "pusher-js": "^8.4.0-rc2",
     "razorpay": "^2.9.4",
     "react": "^18",
     "react-beautiful-dnd": "^13.1.1",

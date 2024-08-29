@@ -19,6 +19,7 @@ import { Notification } from "@/lib/types/notification.type";
 import { getRefresh } from "@/lib/helpers/getRefersh";
 import { cn } from "@/lib/utils";
 import "./index.css";
+import { notifyUserOffline, notifyUserOnline } from "@/lib/actions/user.action";
 
 type Props = {
   user: any;
@@ -28,6 +29,12 @@ const Sidebar = ({ user }: Props) => {
   const pathName = usePathname();
   const [notifications, setNotifications] = useState<Notification[]>([]);
   const searchParams = useSearchParams();
+  useEffect(() => {
+    notifyUserOnline();
+    return () => {
+      notifyUserOffline();
+    };
+  }, []);
   useEffect(() => {
     const fetch = async () => {
       const { notifications } = await fetchNotifications({ read: false });

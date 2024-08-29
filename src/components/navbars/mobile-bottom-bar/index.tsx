@@ -25,7 +25,7 @@ const MobileBottomBar = ({ user }: Props) => {
     fetch();
   }, [getRefresh(searchParams.get("refresh"))]);
   return (
-    <div className="md:hidden h-12 w-full bg-muted">
+    <div className="md:hidden h-12 w-full bg-background border-t">
       <ul className="h-full flex items-center justify-around gap-3">
         {menuOptions.map((menuItem) => {
           if (user?.role?.name === "member" && menuItem.name === "Teams")

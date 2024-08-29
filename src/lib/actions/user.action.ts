@@ -57,3 +57,13 @@ export const userSignOut = async () => {
     return { err: error.message };
   }
 };
+
+// Call this function when a user comes online
+export const notifyUserOnline = async () => {
+  await axios.post("/api/user/status", { status: true });
+};
+
+// Call this function when a user goes offline
+export const notifyUserOffline = async () => {
+  await axios.post("/api/user/status", { status: false });
+};

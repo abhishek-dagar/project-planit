@@ -79,6 +79,7 @@ const BoardPage = ({
     setStartX(e.pageX - scrollRef.current!.offsetLeft);
     setScrollLeft(scrollRef.current!.scrollLeft);
   };
+  
 
   const handleMouseLeave = () => {
     if (!isDesktop || isDragging) return;
@@ -102,7 +103,7 @@ const BoardPage = ({
   return (
     <div
       className={cn(
-        "h-[calc(100vh-222px)] sm:max-w-[calc(100vw-160px)] lg:max-w-[calc(100vw-260px)] p-5 pt-0 overflow-auto flex relative bg-[radial-gradient(rgb(var(--muted))_2px,transparent_0px)] [background-size:16px_16px]",
+        "h-[calc(100vh-222px)] md:max-w-[calc(100vw-20%-2.5rem)] lg:max-w-[calc(100vw-260px)] p-5 pt-0 overflow-auto flex relative bg-[radial-gradient(rgb(var(--muted))_2px,transparent_0px)] [background-size:16px_16px]",
         { "select-none": isMouseDown }
       )}
       ref={scrollRef}
@@ -213,7 +214,7 @@ const BoardColumn = ({
             </CollapsibleTrigger>
           </div>
           <CollapsibleContent className="" style={{ marginTop: 0 }}>
-            <div className={cn("flex flex-col gap-2 transition-all h-[600px]")}>
+            <div className={cn("flex flex-col gap-2")}>
               {tasks?.map((task: any, index: number) => (
                 <Draggable key={task.id} draggableId={task.id} index={index}>
                   {(provided: DraggableProvided, snapshot) => (

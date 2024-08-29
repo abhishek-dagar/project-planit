@@ -1,8 +1,3 @@
-export interface PriceDetailType {
-  id?: string;
-  name: string;
-  description: string;
-  price: number;
-  features: string[];
-  period?: number;
-}
+import { PaymentHistory } from "@prisma/client";
+
+export interface PriceDetailType extends PaymentHistory{}
