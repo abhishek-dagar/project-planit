@@ -1,0 +1,17 @@
+{
+    "name": "ws_server",
+    "version": "1.0.0",
+    "private": true,
+    "scripts": {
+        "start": "node ./dist/index.js",
+        "build": "tsc --project ./tsconfig.json",
+        "dev": "tsc-watch --project ./tsconfig.json --onSuccess \"node ./dist/index.js\""
+    },
+    "devDependencies": {
+        "tsc-watch": "^6.2.0",
+        "typescript": "^5.5.4"
+    },
+    "dependencies": {
+        "socket.io": "^4.7.5"
+    }
+}

@@ -1,0 +1,89 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+*::-webkit-scrollbar {
+  width: 5px;
+  height: 5px;
+}
+
+/* Track */
+::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+@layer base {
+  :root {
+    --background: 255 255 255;
+    --foreground: 3 7 18;
+    --card: 255 255 255;
+    --card-foreground: 3 7 18;
+    --popover: 255 255 255;
+    --popover-foreground: 3 7 18;
+    --primary: 124 58 237;
+    --primary-foreground: 249 250 251;
+    --secondary: 243 244 246;
+    --secondary-foreground: 17 24 39;
+    --muted: 243 244 246;
+    --muted-foreground: 107 114 128;
+    --accent: 243 244 246;
+    --accent-foreground: 17 24 39;
+    --destructive: 239 68 68;
+    --destructive-foreground: 249 250 251;
+    --border: 229 231 235;
+    --input: 229 231 235;
+    --ring: 124 58 237;
+    --radius: 0.5rem;
+    *::-webkit-scrollbar-thumb {
+      background: #bebfc1;
+      border-radius: 100px;
+    }
+  }
+
+  html[class*="dark-violet"] {
+    --background: 3 7 18;
+    --foreground: 249 250 251;
+    --card: 3 7 18;
+    --card-foreground: 249 250 251;
+    --popover: 3 7 18;
+    --popover-foreground: 249 250 251;
+    --primary: 117 64 169;
+    --primary-foreground: 249 250 251;
+    --secondary: 31 41 55;
+    --secondary-foreground: 249 250 251;
+    --muted: 31 41 55;
+    --muted-foreground: 156 163 175;
+    --accent: 31 41 55;
+    --accent-foreground: 249 250 251;
+    --destructive: 239 68 68;
+    --destructive-foreground: 249 250 251;
+    --border: 31 41 55;
+    --input: 31 41 55;
+    --ring: 117 64 169;
+    /* Handle */
+    *::-webkit-scrollbar-thumb {
+      background: #1f2937;
+      border-radius: 100px;
+    }
+
+    /* Handle on hover */
+    /* *::-webkit-scrollbar-thumb:hover {
+      background: #555;
+    } */
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground;
+  }
+}
