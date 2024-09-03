@@ -1,3 +1,3 @@
-import { PaymentHistory } from "@prisma/client";
+import { Tier } from "@prisma/client";
 
-export interface PriceDetailType extends PaymentHistory{}
+export interface PriceDetailType extends Tier {}

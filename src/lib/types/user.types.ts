@@ -1,7 +1,7 @@
 import * as z from "zod";
 import { WorkspaceType } from "./workspace.type";
 import { PriceDetailType } from "./price.type";
-import { Role, User } from "@prisma/client";
+import { PaymentHistory, Role, User } from "@prisma/client";
 import { TeamType } from "./team.type";
 import { NotificationType } from "./notification.type";
 import { ActivityType } from "./activity.type";
@@ -76,7 +76,7 @@ export interface UserType extends Omit<User, "password"> {
   members: UserType[];
   workspaces: WorkspaceType[];
   workspaceMembers?: UserType[];
-  PaymentHistory?: PriceDetailType[];
+  PaymentHistory?: PaymentHistory[];
   team?: TeamType;
   manager?: UserType;
 }
