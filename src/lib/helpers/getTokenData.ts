@@ -3,7 +3,6 @@
 import jwt from "jsonwebtoken";
 import { cookies } from "next/headers";
 import { db } from "../db";
-import { removeExpiredPlans } from "../actions/payment.action";
 
 export const currentUser = async () => {
   try {
@@ -11,7 +10,7 @@ export const currentUser = async () => {
     if (!token) return null;
     const data: any = jwt.verify(token, process.env.TOKEN_SECRET!);
 
-    const user = await db.user.findUnique({
+    const user: any = await db.user.findUnique({
       where: {
         id: data.id,
       },
@@ -115,11 +114,11 @@ export const currentUser = async () => {
             },
           },
         },
-        select: {
-          id: true,
+        include: {
+          members: true,
         },
       });
-      return { ...user, managerId: manager?.id };
+      return { ...user, manager, managerId: manager?.id };
     }
     return { ...user, managerId: null };
   } catch (error) {

@@ -1,17 +1,7 @@
 import { z } from "zod";
-import { TeamType } from "./team.type";
+import { Project } from "@prisma/client";
 
-export interface ProjectType {
-  id?: string;
-  name: string;
-  description: string;
-  workspaceId: string;
-  createdAt: Date;
-  updatedAt: Date;
-  Team: TeamType;
-  Tasks: string[];
-  status: ProjectStatus;
-}
+export interface ProjectType extends Project {}
 
 export const ProjectValidation = z.object({
   name: z.string(),

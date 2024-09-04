@@ -1,6 +1,10 @@
 import * as z from "zod";
 import { WorkspaceType } from "./workspace.type";
 import { PriceDetailType } from "./price.type";
+import { PaymentHistory, Role, User } from "@prisma/client";
+import { TeamType } from "./team.type";
+import { NotificationType } from "./notification.type";
+import { ActivityType } from "./activity.type";
 
 export const UserRegisterValidation = z
   .object({
@@ -62,26 +66,22 @@ export const UpdatePasswordValidation = z
     }
   });
 
-export interface UserType {
-  email: string;
-  password?: string;
-  name: string;
-  role: Role;
-  isVerified: boolean;
-  id: string;
+export interface UserType extends Omit<User, "password"> {
+  NotificationReciver?: NotificationType[];
+  NotificationSender?: NotificationType[];
+  OpenedWorkspace?: WorkspaceType[];
+  activityFor?: ActivityType[];
+  activity?: ActivityType[];
+  role: RoleType | null;
   members: UserType[];
-  tier: PriceDetailType;
   workspaces: WorkspaceType[];
-  tasks: string[];
+  workspaceMembers?: UserType[];
+  PaymentHistory?: PaymentHistory[];
+  team?: TeamType;
+  manager?: UserType;
 }
 
-export interface Role {
-  id: string;
-  name: string;
-  description: string;
-  permissions: Permissions[];
-  user: UserType[];
-}
+export interface RoleType extends Role {}
 
 enum Permissions {
   CREATE = "CREATE",

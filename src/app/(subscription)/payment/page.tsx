@@ -1,19 +1,17 @@
 "use client";
 import { useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
-import { Input } from "@/components/ui/input";
-import { Label } from "@/components/ui/label";
 import PriceCard from "@/components/cards/normal-price-card";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
-import { CheckIcon, IndianRupeeIcon, Loader2Icon } from "lucide-react";
+import { Tabs, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { CheckIcon, IndianRupeeIcon } from "lucide-react";
 import { currentUser } from "@/lib/helpers/getTokenData";
 import { useRouter, useSearchParams } from "next/navigation";
 import { toast } from "sonner";
-import { priceDetails } from "@/lib/config/price.config";
 import { Icons } from "@/components/icons";
-import UserButton from "@/components/buttons/user-button";
 import moment from "moment";
 import { addPayment } from "@/lib/actions/payment.action";
+import { PriceDetailType } from "@/lib/types/price.type";
+import { fetchTiers } from "@/lib/actions/tier.action";
 
 function Payment() {
   const [currency, setCurrency] = useState("INR");
@@ -21,6 +19,7 @@ function Payment() {
   const [period, setPeriod] = useState("1");
   const [selectedPlan, setSelectedPlan] = useState(0);
   const [totalBill, setTotalBill] = useState(0);
+  const [priceDetails, setPriceDetails] = useState<PriceDetailType[]>([]);
   const [user, setUser] = useState<any>(null);
   const route = useRouter();
   const searchParams = useSearchParams();
@@ -128,6 +127,8 @@ function Payment() {
       if (!current_user) {
         route.push("/signin");
       }
+      const { tiers } = await fetchTiers();
+      if (tiers) setPriceDetails(tiers);
       setUser(current_user);
     };
     getUser();
@@ -179,7 +180,7 @@ function Payment() {
                 selected={selectedPlan === priceInfo.price}
                 info={{
                   ...priceInfo,
-                  period: parseInt(period),
+                  // period: parseInt(period),
                 }}
               />
             </button>

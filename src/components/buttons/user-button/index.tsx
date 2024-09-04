@@ -11,6 +11,8 @@ import { toast } from "sonner";
 import { Icons } from "../../icons";
 import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { pusherClient } from "@/lib/pusher";
+import UserAvatar from "@/components/common/user-avatar";
 
 type Props = {
   user: any;
@@ -20,7 +22,23 @@ type Props = {
 const UserButton = ({ user, isLarge }: Props) => {
   const [isLoading, setIsLoading] = useState(false);
   const [currentUser, setCurrentUser] = useState(user);
+  const [status, setStatus] = useState(false);
   const router = useRouter();
+
+  // useEffect(() => {
+  //   if (currentUser) {
+  //     pusherClient.subscribe(currentUser.id);
+
+  //     pusherClient.bind("user-status", (status: any) => {
+  //       // setIncomingMessages((prev) => [...prev, text])
+  //       setStatus(status);
+  //     });
+
+  //     return () => {
+  //       pusherClient.unsubscribe(currentUser.id);
+  //     };
+  //   }
+  // }, []);
 
   const handleLogout = async () => {
     setIsLoading(true);
@@ -58,16 +76,29 @@ const UserButton = ({ user, isLarge }: Props) => {
                 {currentUser.name?.split(" ")[0] || "NA"}
               </span>
             )}
-            <Avatar>
-              {/* <AvatarImage src="https://github.com/shadcn.png" /> */}
+            <UserAvatar
+              text={
+                currentUser.name?.split("")[0] ||
+                currentUser.email?.split("")[0]
+              }
+              id={currentUser.id}
+              isLarge={isLarge}
+            />
+            {/* <Avatar className="overflow-visible">
               <AvatarFallback
                 className={cn("text-xl uppercase", isLarge && "text-sm")}
               >
                 {currentUser.name?.split("")[0] ||
                   currentUser.email?.split("")[0] ||
                   "NA"}
+                <span
+                  className={cn(
+                    "h-3 w-3 bg-red-500 absolute bottom-0.5 right-0.5 rounded-full border-2 border-background",
+                    { "bg-green-500": status }
+                  )}
+                />
               </AvatarFallback>
-            </Avatar>
+            </Avatar> */}
           </Button>
         </PopoverTrigger>
         <PopoverContent

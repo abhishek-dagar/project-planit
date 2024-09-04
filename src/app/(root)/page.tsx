@@ -1,19 +1,17 @@
 import PriceCard from "@/components/cards/price-card";
 import { BorderBeam } from "@/components/magicui/border-beam";
-import { priceDetails } from "@/lib/config/price.config";
 import { currentUser } from "@/lib/helpers/getTokenData";
 import { PriceDetailType } from "@/lib/types/price.type";
-import {
-  MoveRight
-} from "lucide-react";
+import { MoveRight } from "lucide-react";
 import Link from "next/link";
 import HeroImage from "./_components/hero-image";
 import ParticleContainer from "./_components/partical-container";
 import FeatureSection from "./_components/features-section";
-
+import { fetchTiers } from "@/lib/actions/tier.action";
 
 export default async function Home() {
   const user = await currentUser();
+  const { tiers } = await fetchTiers();
 
   //WIP: remove fault IMAge for home page
   return (
@@ -55,7 +53,7 @@ export default async function Home() {
         id="features"
         className="text-center mx-auto max-w-[80rem] px-6 md:px-8"
       >
-        <FeatureSection/>
+        <FeatureSection />
       </section>
       <div className="[--color:#ffbd7a] pointer-events-none relative -z-[2] mx-auto h-[50rem] overflow-hidden [mask-image:radial-gradient(ellipse_at_center_center,#000,transparent_50%)] my-[-18.8rem] before:absolute before:inset-0 before:h-full before:w-full before:opacity-40 before:[background-image:radial-gradient(circle_at_bottom_center,var(--color),transparent_70%)] after:absolute after:-left-1/2 after:top-1/2 after:aspect-[1/0.7] after:w-[200%] after:rounded-[50%] after:border-t after:border-[rgb(var(--border))] after:bg-background" />
       <section id="pricing">
@@ -72,7 +70,7 @@ export default async function Home() {
             </p>
           </div>
           <div className="flex flex-wrap items-center justify-center flex-col md:flex-row gap-8">
-            {priceDetails.map((info: PriceDetailType) => (
+            {tiers?.map((info: PriceDetailType) => (
               <PriceCard key={info.name} info={info} />
             ))}
           </div>

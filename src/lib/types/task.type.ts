@@ -1,3 +1,4 @@
+import { Task } from "@prisma/client";
 import {
   BanIcon,
   Circle,
@@ -16,6 +17,8 @@ import { z } from "zod";
 export const TaskCreateValidation = z.object({
   title: z.string().min(3).max(100),
 });
+
+export interface TaskType extends Task {}
 
 export enum TaskStatus {
   BACKLOG,

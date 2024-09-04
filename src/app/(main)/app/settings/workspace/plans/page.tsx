@@ -1,10 +1,8 @@
 import PriceCard from "@/components/cards/price-card";
 import { fetchTiers } from "@/lib/actions/tier.action";
-import { priceDetails } from "@/lib/config/price.config";
 import { currentUser } from "@/lib/helpers/getTokenData";
 import { PriceDetailType } from "@/lib/types/price.type";
 import { redirect } from "next/navigation";
-import React from "react";
 
 const Plans = async() => {
   const user = await currentUser();

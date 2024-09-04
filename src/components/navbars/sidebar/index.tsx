@@ -15,10 +15,11 @@ import Logo from "@/components/icons/logo";
 import { menuOptions } from "@/lib/config/menu.config";
 import Settings from "@/components/icons/settings";
 import { fetchNotifications } from "@/lib/actions/notification.action";
-import { Notification } from "@/lib/types/notification.type";
 import { getRefresh } from "@/lib/helpers/getRefersh";
 import { cn } from "@/lib/utils";
 import "./index.css";
+import { notifyUserOffline, notifyUserOnline } from "@/lib/actions/user.action";
+import { NotificationType } from "@/lib/types/notification.type";
 
 type Props = {
   user: any;
@@ -26,8 +27,14 @@ type Props = {
 
 const Sidebar = ({ user }: Props) => {
   const pathName = usePathname();
-  const [notifications, setNotifications] = useState<Notification[]>([]);
+  const [notifications, setNotifications] = useState<NotificationType[]>([]);
   const searchParams = useSearchParams();
+  useEffect(() => {
+    notifyUserOnline();
+    return () => {
+      notifyUserOffline();
+    };
+  }, []);
   useEffect(() => {
     const fetch = async () => {
       const { notifications } = await fetchNotifications({ read: false });
